@@ -1,0 +1,156 @@
+[
+  {
+    "Country name": "Fiji",
+    "ISOCode": "FJ",
+    "Population": 919430,
+    "Region": "Melanesia",
+    "landMass": 18274
+  },
+  {
+    "Country name": "New Caledonia",
+    "ISOCode": "NC",
+    "Population": 287138,
+    "Region": "Melanesia",
+    "landMass": 18575
+  },
+  {
+    "Country name": "Papua New Guinea",
+    "ISOCode": "PG",
+    "Population": 10203180,
+    "Region": "Melanesia",
+    "landMass": 462840
+  },
+  {
+    "Country name": "Solomon Islands",
+    "ISOCode": "SB",
+    "Population": 781093,
+    "Region": "Melanesia",
+    "landMass": 28896
+  },
+  {
+    "Country name": "Vanuatu",
+    "ISOCode": "VU",
+    "Population": 313075,
+    "Region": "Melanesia",
+    "landMass": 12189
+  },
+  {
+    "Country name": "Guam",
+    "ISOCode": "GU",
+    "Population": 165205,
+    "Region": "Micronesia",
+    "landMass": 549
+  },
+  {
+    "Country name": "Kiribati",
+    "ISOCode": "KI",
+    "Population": 130498,
+    "Region": "Micronesia",
+    "landMass": 811
+  },
+  {
+    "Country name": "Marshall Islands",
+    "ISOCode": "MH",
+    "Population": 40123,
+    "Region": "Micronesia",
+    "landMass": 181
+  },
+  {
+    "Country name": "Micronesia (Federated States of)",
+    "ISOCode": "FM",
+    "Population": 112142,
+    "Region": "Micronesia",
+    "landMass": 702
+  },
+  {
+    "Country name": "Nauru",
+    "ISOCode": "NR",
+    "Population": 11847,
+    "Region": "Micronesia",
+    "landMass": 21
+  },
+  {
+    "Country name": "Northern Mariana Islands",
+    "ISOCode": "MP",
+    "Population": 46130,
+    "Region": "Micronesia",
+    "landMass": 464
+  },
+  {
+    "Country name": "Palau",
+    "ISOCode": "PW",
+    "Population": 17805,
+    "Region": "Micronesia",
+    "landMass": 459
+  },
+  {
+    "Country name": "American Samoa",
+    "ISOCode": "AS",
+    "Population": 48386,
+    "Region": "Polynesia",
+    "landMass": 199
+  },
+  {
+    "Country name": "Cook Islands",
+    "ISOCode": "CK",
+    "Population": 14778,
+    "Region": "Polynesia",
+    "landMass": 236
+  },
+  {
+    "Country name": "Niue",
+    "ISOCode": "NU",
+    "Population": 1869,
+    "Region": "Polynesia",
+    "landMass": 260
+  },
+  {
+    "Country name": "Pitcairn",
+    "ISOCode": "PN",
+    "Population": 50,
+    "Region": "Polynesia",
+    "landMass": 47
+  },
+  {
+    "Country name": "Samoa",
+    "ISOCode": "WS",
+    "Population": 215295,
+    "Region": "Polynesia",
+    "landMass": 2831
+  },
+  {
+    "Country name": "Tokelau",
+    "ISOCode": "TK",
+    "Population": 2330,
+    "Region": "Polynesia",
+    "landMass": 12
+  },
+  {
+    "Country name": "Tonga",
+    "ISOCode": "TO",
+    "Population": 105081,
+    "Region": "Polynesia",
+    "landMass": 747
+  },
+  {
+    "Country name": "Tuvalu",
+    "ISOCode": "TV",
+    "Population": 10042,
+    "Region": "Polynesia",
+    "landMass": 26
+  },
+  {
+    "Country name": "Wallis and Futuna",
+    "ISOCode": "WF",
+    "Population": 11525,
+    "Region": "Polynesia",
+    "landMass": 142
+  },
+  {
+    "Country name": "French Polynesia",
+    "ISOCode": "PF",
+    "Population": 280406,
+    "Region": "Polynesia",
+    "landMass": 4167
+  }
+]
