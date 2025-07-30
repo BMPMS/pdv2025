@@ -1,5 +1,43 @@
 @import "../../node_modules/tailwindcss";
 
+/* Base font-size (mobile first) */
+html {
+  font-size: 75%; /* 14.4px */
+}
+
+@media (min-width: 500px) {
+  html {
+    font-size: 50%;
+  }
+}
+
+
+@media (min-width: 550px) {
+  html {
+    font-size: 60%;
+  }
+}
+
+
+@media (min-width: 668px) {
+  html {
+    font-size: 80%;
+  }
+}
+
+
+@media (min-width: 768px) {
+  html {
+    font-size: 90%;
+  }
+}
+
+@media (min-width: 1024px) {
+  html {
+    font-size: 100%;
+  }
+}
+
 .noselect {
   user-select: none;
   -webkit-user-select: none; /* Safari */

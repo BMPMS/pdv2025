@@ -1,4 +1,4 @@
-import {Boundary, Country, EEZGeoJSON} from "@/types";
+import {Boundary, Country, EEZGeoJSON, Region} from "@/types";
 import * as d3 from "d3";
 
 const getMidpoint = (points: [number, number][]) => {
@@ -37,13 +37,39 @@ const iso2ToIso3Map: Record<string, string> = {
         PF: "PYF"
 }
 
-const iso3ToIso2Map = Object.fromEntries(
+export const iso3ToIso2Map = Object.fromEntries(
     Object.entries(iso2ToIso3Map).map(([iso2, iso3]) => [iso3, iso2])
 );
 
+export const getRegionData =  (boundaryData: Boundary[]) => {
+    const boundaryByRegion = Array.from(
+        d3.group(boundaryData, (g) => g.dataPoint.Region)
+    );
+    return boundaryByRegion.reduce((acc, entry) => {
+        let points = entry[1].map((m) => m.centroid);
+        if (points.length <= 2) {
+            points = points.concat(points);
+        }
+        const hullPoints = points as [number, number][];
+        const hull = d3.polygonHull(hullPoints);
+        if(hull){
+            acc.push({
+                region: entry[0],
+                countries: entry[1].map((m) => m.iso),
+                hull
+            });
+        }
+        return acc;
+    }, [] as Region[]);
 
-export const getBoundaryData = (geoJson: EEZGeoJSON, countryData: Country[], path: d3.GeoPath<any, d3.GeoPermissibleObjects>) => {
-    const radiusRange = [15, 40];
+}
+
+export const getBoundaryData = (
+    geoJson: EEZGeoJSON, countryData: Country[],
+    path: d3.GeoPath<any,
+        d3.GeoPermissibleObjects>,
+    maxRadius: number) => {
+    const radiusRange = [maxRadius/3, maxRadius];
     let populationRange = d3.extent(countryData, (d) => d.Population / d.landMass)
 
     const boundaryByIso = Array.from(
@@ -71,7 +97,7 @@ export const getBoundaryData = (geoJson: EEZGeoJSON, countryData: Country[], pat
             } else {
                 acc.push({
                     iso: entry[0],
-                    centroid: getMidpoint(centroids),
+                    centroid: getMidpoint(centroids) as [number, number],
                     radius: radiusScale(dataPoint.Population / dataPoint.landMass),
                     dataPoint
                 });

@@ -1,15 +1,29 @@
 import type { FC } from "react";
-import React, { useRef, useEffect} from 'react';
-import {Country, EEZGeoJSON} from "@/types";
+import React, {useRef, useEffect, useState} from 'react';
+import {Boundary, Country, EEZGeoJSON, Region, Theme} from "@/types";
 import * as d3 from "d3";
-import {getBoundaryData} from "@/app/components/MapPanel_functions";
+import {getBoundaryData, getRegionData} from "@/app/components/MapPanel_functions";
+import {getRem} from "@/app/dataFunctions";
 
 interface MapPanelProps {
     countryData: Country[];
-    countryGeoJson: EEZGeoJSON
+    countryGeoJson: EEZGeoJSON;
+    filterByCountryOrRegion:(filterVar: string, filterType: string) => void;
 }
 
-const MapPanel: FC<MapPanelProps> = ({ countryData, countryGeoJson }) => {
+const MapPanel: FC<MapPanelProps> = ({ countryData, countryGeoJson,filterByCountryOrRegion }) => {
+
+    const [tick, setTick] = useState(0);
+    const clickedNodes: React.RefObject<string[]>  = useRef([]);
+    const clickedLabel: React.RefObject<string>  = useRef("");
+
+    // Modified hook that returns the tick value
+    useEffect(() => {
+        const handleResize = () => setTick(t => t + 1);
+        window.addEventListener('resize', handleResize);
+        return () => window.removeEventListener('resize', handleResize);
+    }, []);
+
     const ref = useRef(null);
     useEffect(() => {
         if (!ref.current) return;
@@ -24,6 +38,19 @@ const MapPanel: FC<MapPanelProps> = ({ countryData, countryGeoJson }) => {
             containerNode;
         svg.attr("width", svgWidth).attr("height", svgHeight);
 
+        const fontSize = getRem() * 1.1;
+
+        svg.select(".dashboardTitle")
+            .attr("x",svgWidth - 10)
+            .attr("y",fontSize * 0.3)
+            .attr("font-size", fontSize * 1.5)
+            .style("dominant-baseline","text-before-edge")
+            .attr("fill","#484848")
+            .attr("text-anchor","end")
+            .text("DATA + TARGET tracker")
+
+
+
         const projection = d3
             .geoIdentity()
             .reflectY(true)
@@ -31,8 +58,28 @@ const MapPanel: FC<MapPanelProps> = ({ countryData, countryGeoJson }) => {
 
         const path = d3.geoPath(projection);
 
-        const boundaryData = getBoundaryData(countryGeoJson,countryData, path);
+        const boundaryData = getBoundaryData(countryGeoJson,countryData, path,fontSize);
 
+        const boundaryDataMinX = d3.min(boundaryData, (d) => d.centroid[0] - d.radius);
+
+        svg.select(".selectedCountryOrRegion")
+            .attr("x",boundaryDataMinX || 10)
+            .attr("y",svgHeight  - fontSize * 0.5)
+            .attr("font-size", fontSize)
+            .attr("fill","#484848")
+            .attr("text-anchor","start")
+            .text("")
+
+        const resetBoundaryOpacity = (d: Boundary) =>  clickedNodes.current.length === 0 || clickedNodes.current.includes(d.iso) ? 1 : 0.2;
+        const resetHullOpacity = (d: Region) =>  clickedNodes.current.length === 0 || clickedNodes.current.includes(d.region) ? 0.2 : 0;
+
+
+        const boundaryHullMouseout = () => {
+            svg.select(".selectedCountryOrRegion").text(clickedLabel.current);
+            svg.selectAll<SVGPathElement,Region>(".regionHull").attr("opacity",resetHullOpacity);
+            svg.selectAll<SVGCircleElement,Boundary>(".boundaryCircle").attr("fill-opacity",resetBoundaryOpacity);
+
+        }
         const boundaryGroup = svg
             .select(".countryGroup")
             .selectAll(".boundariesGroup")
@@ -69,31 +116,43 @@ const MapPanel: FC<MapPanelProps> = ({ countryData, countryGeoJson }) => {
         boundaryGroup
             .select(".boundaryCircle")
             .attr("cursor","pointer")
-            .attr("filter","url(#drop-shadow)")
+            .attr("filter","url(#drop-shadow-map)")
             .attr("r", (d) => d.radius)
             .attr("fill", (d, i) => `url(#countryImage${i})`)
-            .on("mouseover",(event) => {
-                d3.selectAll(".boundaryCircle").interrupt().attr("fill-opacity",1);
-                d3.select(event.currentTarget)
-                    .interrupt()
-                    .transition()
-                    .duration(100)
-                    .attr("fill-opacity",0.7);
+            .on("mouseover",(event,d) => {
+                d3.select(".selectedCountryOrRegion").text(`${d.dataPoint["Country name"]}`);
+                d3.selectAll<SVGCircleElement,Boundary>(".boundaryCircle")
+                    .attr("fill-opacity",(c) => c.iso === d.iso || clickedNodes.current.includes(c.iso)? 1 : 0.2);
+                d3.selectAll<SVGPathElement,Region>(".regionHull").attr("opacity",(h) => clickedNodes.current.includes(h.region) ? 0.2 : 0);
             })
             .on("mouseout",() => {
-                d3.selectAll(".boundaryCircle").interrupt().attr("fill-opacity",1);
-            });
+                boundaryHullMouseout();
+              })
+            .on("click", (event, d) => {
+                if(clickedNodes.current.length === 1 && clickedNodes.current.includes(d.iso)){
+                    // this country clicked
+                    clickedNodes.current = [];
+                    clickedLabel.current = "";
+                    filterByCountryOrRegion("","");
+                } else {
+                    clickedNodes.current = [d.iso];
+                    clickedLabel.current = d.dataPoint["Country name"];
+                    filterByCountryOrRegion(d.iso,"Country");
+                }
+                boundaryHullMouseout();
+
+            })
 
         // simulation to move region circles into place
         const simulation = d3
             .forceSimulation()
             .alphaDecay(0.1)
-            .force("x", d3.forceX((d) => d.centroid[0]).strength(0.4))
-            .force("y", d3.forceY((d) => d.centroid[1]).strength(0.4))
+            .force("x", d3.forceX<Boundary>((d) => d.centroid[0]).strength(0.4))
+            .force("y", d3.forceY<Boundary>((d) => d.centroid[1]).strength(0.4))
             .force(
                 "collide",
                 d3
-                    .forceCollide()
+                    .forceCollide<Boundary>()
                     .radius((d) => d.radius * 1.05)
                     .strength(1)
             );
@@ -104,21 +163,7 @@ const MapPanel: FC<MapPanelProps> = ({ countryData, countryGeoJson }) => {
         // transform group
         boundaryGroup.attr("transform", (d) => `translate(${d.x},${d.y})`);
 
-        const boundaryByRegion = Array.from(
-            d3.group(boundaryData, (g) => g.dataPoint.Region)
-        );
-
-        const regionData = boundaryByRegion.reduce((acc, entry) => {
-            let points: [number,number][] = entry[1].map((m) => m.centroid);
-            if (points.length <= 2) {
-                points = points.concat(points);
-            }
-            acc.push({
-                region: entry[0],
-                hull: d3.polygonHull(points)
-            });
-            return acc;
-        }, [] as {region: string, hull: [number, number][]});
+        const regionData = getRegionData(boundaryData);
 
         const regionGroup = svg
             .select(".regionGroup")
@@ -132,22 +177,50 @@ const MapPanel: FC<MapPanelProps> = ({ countryData, countryGeoJson }) => {
 
         regionGroup
             .select(".regionHull")
+            .attr("cursor","pointer")
+            .attr("filter","url(#drop-shadow-map)")
             .attr("fill", "#808080")
             .attr("stroke", "#808080")
             .attr("opacity", 0.15)
             .attr("stroke-linecap", "round")
             .attr("stroke-linejoin", "round")
             .attr("stroke-width", 30)
-            .attr("d", (d) => `M${d.hull.join("L")}Z`);
+            .attr("d", (d) => `M${d.hull.join("L")}Z`)
+            .on("mouseover",(event,d) => {
+                d3.select(".selectedCountryOrRegion").text(`${d.region} - ${d.countries.length} countries`);
+                d3.selectAll<SVGPathElement,Region>(".regionHull")
+                    .attr("opacity",(h) => clickedNodes.current.includes(h.region) || h.region === d.region ? 0.2 : 0);
+                d3.selectAll<SVGCircleElement,Boundary>(".boundaryCircle")
+                    .attr("fill-opacity", (c) => c.dataPoint.Region === d.region || clickedNodes.current.includes(c.iso) ? 1 : 0.2);
+            })
+            .on("mouseout",() => {
+                boundaryHullMouseout();
+            })
+            .on("click", (event, d) => {
+                if(clickedNodes.current.includes(d.region)){
+                    clickedNodes.current = [];
+                    clickedLabel.current = "";
+                    filterByCountryOrRegion( "" , "");
 
-    }, [countryData])
+                } else {
+                    clickedNodes.current = d.countries.concat([d.region]);
+                    clickedLabel.current = `${d.region} - ${d.countries.length} countries`;
+                    filterByCountryOrRegion( d.region,"Region");
+
+                }
+                boundaryHullMouseout();
+            })
+
+    }, [countryData, tick])
     return (
         <svg ref={ref}>
             <defs>
-                <filter id="drop-shadow" x="-20%" y="-20%" width="140%" height="140%">
-                    <feDropShadow dx="2" dy="3" stdDeviation="4" flood-opacity="0.2"/>
+                <filter id="drop-shadow-map" x="-5%" y="-5%" width="110%" height="110%">
+                    <feDropShadow dx="0.5" dy="1" stdDeviation="1.5" floodOpacity="0.1"/>
                 </filter>
             </defs>
+            <text className={"dashboardTitle"}></text>
+            <text className={"selectedCountryOrRegion"}></text>
             <g className={"regionGroup"}></g>
             <g className={"countryGroup"}></g>
         </svg>

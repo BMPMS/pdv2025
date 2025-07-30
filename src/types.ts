@@ -1,3 +1,9 @@
+export type Region = {
+region: string;
+countries: string[];
+hull: [number, number][];
+}
+
 export type Country = {
     "Country name":string;
     ISOCode:string;
@@ -6,9 +12,9 @@ export type Country = {
     landMass: number;
 }
 
-export type Boundary = {
+export interface Boundary extends d3.SimulationNodeDatum  {
     iso: string;
-    centroid: number[];
+    centroid: [number, number];
     radius: number;
     dataPoint: Country ;
 }
@@ -52,6 +58,7 @@ export type TimeData = {
 }
 
 export type FormattedData = {
+    countryFilter: string;
     indicator: string;
     type: string;
     data: DataResult[];

@@ -14,6 +14,7 @@
   "dependencies": {
     "@fortawesome/fontawesome-free": "^6.7.2",
     "d3": "^7.9.0",
+    "d3-voronoi-treemap": "^1.1.2",
     "graphology": "^0.26.0",
     "next": "^15.3.0",
     "react": "^19.0.0",

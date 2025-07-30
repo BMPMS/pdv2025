@@ -1,0 +1,3100 @@
+[
+  {
+    "indicator": "AG_PRD_FIESMS",
+    "type": "time",
+    "data": [
+      {
+        "country": "PG",
+        "data": [
+          {
+            "year": 2017,
+            "value": 57.3
+          },
+          {
+            "year": 2018,
+            "value": 57.3
+          },
+          {
+            "year": 2019,
+            "value": 57.3
+          },
+          {
+            "year": 2020,
+            "value": 57.3
+          },
+          {
+            "year": 2021,
+            "value": 57.3
+          },
+          {
+            "year": 2022,
+            "value": 57.3
+          }
+        ],
+        "targetResult": "needsAttention"
+      }
+    ]
+  },
+  {
+    "indicator": "BPI_LSC",
+    "type": "#",
+    "data": [
+      {
+        "country": "PG",
+        "data": 10.63,
+        "targetResult": "needsAttention"
+      }
+    ]
+  },
+  {
+    "indicator": "BPI_MANAF5",
+    "type": "#",
+    "data": [
+      {
+        "country": "PG",
+        "data": 3,
+        "targetResult": "nearTarget"
+      }
+    ]
+  },
+  {
+    "indicator": "BPI_MANAGL2",
+    "type": "#",
+    "data": [
+      {
+        "country": "PG",
+        "data": 4,
+        "targetResult": "nearTarget"
+      }
+    ]
+  },
+  {
+    "indicator": "BPI_MANAL1",
+    "type": "#",
+    "data": [
+      {
+        "country": "PG",
+        "data": 1,
+        "targetResult": "needsAttention"
+      }
+    ]
+  },
+  {
+    "indicator": "BPI_MANAP1",
+    "type": "#",
+    "data": [
+      {
+        "country": "PG",
+        "data": 5,
+        "targetResult": "onTarget"
+      }
+    ]
+  },
+  {
+    "indicator": "BPI_MANASL2",
+    "type": "#",
+    "data": [
+      {
+        "country": "PG",
+        "data": 3,
+        "targetResult": "nearTarget"
+      }
+    ]
+  },
+  {
+    "indicator": "BPI_NRF",
+    "type": "#",
+    "data": [
+      {
+        "country": "PG",
+        "data": 16,
+        "targetResult": "nearTarget"
+      }
+    ]
+  },
+  {
+    "indicator": "BPI_NRM",
+    "type": "INVALID",
+    "data": []
+  },
+  {
+    "indicator": "BPI_PAU",
+    "type": "%",
+    "data": [
+      {
+        "country": "PG",
+        "data": 95,
+        "targetResult": "needsAttention"
+      }
+    ]
+  },
+  {
+    "indicator": "BPI_PRU",
+    "type": "%",
+    "data": [
+      {
+        "country": "PG",
+        "data": 61,
+        "targetResult": "needsAttention"
+      }
+    ]
+  },
+  {
+    "indicator": "BX_TRF_PWKR",
+    "type": "%",
+    "data": [
+      {
+        "country": "PG",
+        "data": 0.03,
+        "targetResult": "overStretch"
+      }
+    ]
+  },
+  {
+    "indicator": "CC_EST",
+    "type": "time",
+    "data": [
+      {
+        "country": "PG",
+        "data": [
+          {
+            "year": 1996,
+            "value": -0.43
+          },
+          {
+            "year": 1998,
+            "value": -0.7
+          },
+          {
+            "year": 2000,
+            "value": -0.79
+          },
+          {
+            "year": 2002,
+            "value": -0.95
+          },
+          {
+            "year": 2003,
+            "value": -0.81
+          },
+          {
+            "year": 2004,
+            "value": -1
+          },
+          {
+            "year": 2005,
+            "value": -1.15
+          },
+          {
+            "year": 2006,
+            "value": -1.14
+          },
+          {
+            "year": 2007,
+            "value": -1.12
+          },
+          {
+            "year": 2008,
+            "value": -1.18
+          },
+          {
+            "year": 2009,
+            "value": -1.24
+          },
+          {
+            "year": 2010,
+            "value": -1.04
+          },
+          {
+            "year": 2011,
+            "value": -1.03
+          },
+          {
+            "year": 2012,
+            "value": -0.94
+          },
+          {
+            "year": 2013,
+            "value": -0.96
+          },
+          {
+            "year": 2014,
+            "value": -0.91
+          },
+          {
+            "year": 2015,
+            "value": -0.95
+          },
+          {
+            "year": 2016,
+            "value": -0.94
+          },
+          {
+            "year": 2017,
+            "value": -0.91
+          },
+          {
+            "year": 2018,
+            "value": -0.87
+          },
+          {
+            "year": 2019,
+            "value": -1
+          },
+          {
+            "year": 2020,
+            "value": -0.6
+          },
+          {
+            "year": 2021,
+            "value": -0.77
+          },
+          {
+            "year": 2022,
+            "value": -0.7
+          },
+          {
+            "year": 2023,
+            "value": -0.66
+          }
+        ],
+        "targetResult": "needsAttention"
+      }
+    ]
+  },
+  {
+    "indicator": "CR_3",
+    "type": "%",
+    "data": [
+      {
+        "country": "PG",
+        "data": 12.5,
+        "targetResult": "needsAttention"
+      }
+    ]
+  },
+  {
+    "indicator": "DC_TRF_TOTL",
+    "type": "time",
+    "data": [
+      {
+        "country": "PG",
+        "data": [
+          {
+            "year": 2000,
+            "value": 333100670
+          },
+          {
+            "year": 2001,
+            "value": 238240670
+          },
+          {
+            "year": 2002,
+            "value": 253680000
+          },
+          {
+            "year": 2003,
+            "value": 240159400
+          },
+          {
+            "year": 2004,
+            "value": 199040000
+          },
+          {
+            "year": 2005,
+            "value": 497742330
+          },
+          {
+            "year": 2006,
+            "value": 417747330
+          },
+          {
+            "year": 2007,
+            "value": 521417330
+          },
+          {
+            "year": 2008,
+            "value": 328990000
+          },
+          {
+            "year": 2009,
+            "value": 2264210000
+          },
+          {
+            "year": 2010,
+            "value": 5366158000
+          },
+          {
+            "year": 2011,
+            "value": 2043579140
+          },
+          {
+            "year": 2012,
+            "value": 4576412030
+          },
+          {
+            "year": 2013,
+            "value": 2561570000
+          },
+          {
+            "year": 2014,
+            "value": -2344274350
+          },
+          {
+            "year": 2015,
+            "value": -2324819140
+          },
+          {
+            "year": 2016,
+            "value": 421810490
+          },
+          {
+            "year": 2017,
+            "value": 399560960
+          },
+          {
+            "year": 2018,
+            "value": 677768360
+          },
+          {
+            "year": 2019,
+            "value": 528391370
+          },
+          {
+            "year": 2020,
+            "value": 1490430970
+          },
+          {
+            "year": 2021,
+            "value": 424328330
+          },
+          {
+            "year": 2022,
+            "value": 572455900
+          }
+        ],
+        "targetResult": "overStretch"
+      }
+    ]
+  },
+  {
+    "indicator": "DOWNSOFT-M",
+    "type": "%_SEX",
+    "data": []
+  },
+  {
+    "indicator": "DOWNSOFT-F",
+    "type": "%_SEX",
+    "data": []
+  },
+  {
+    "indicator": "DT_TDS_DECT",
+    "type": "time",
+    "data": [
+      {
+        "country": "PG",
+        "data": [
+          {
+            "year": 1976,
+            "value": 5.17
+          },
+          {
+            "year": 1977,
+            "value": 3.85
+          },
+          {
+            "year": 1978,
+            "value": 5.69
+          },
+          {
+            "year": 1979,
+            "value": 5.45
+          },
+          {
+            "year": 1980,
+            "value": 6.3
+          },
+          {
+            "year": 1981,
+            "value": 7.54
+          },
+          {
+            "year": 1982,
+            "value": 10.72
+          },
+          {
+            "year": 1983,
+            "value": 10.61
+          },
+          {
+            "year": 1984,
+            "value": 15.72
+          },
+          {
+            "year": 1985,
+            "value": 12.88
+          },
+          {
+            "year": 1986,
+            "value": 11.21
+          },
+          {
+            "year": 1987,
+            "value": 12.48
+          },
+          {
+            "year": 1988,
+            "value": 18.43
+          },
+          {
+            "year": 1989,
+            "value": 14.89
+          },
+          {
+            "year": 1990,
+            "value": 18.38
+          },
+          {
+            "year": 1991,
+            "value": 12.91
+          },
+          {
+            "year": 1992,
+            "value": 8.69
+          },
+          {
+            "year": 1993,
+            "value": 9.31
+          },
+          {
+            "year": 1994,
+            "value": 12.46
+          },
+          {
+            "year": 1995,
+            "value": 10.07
+          },
+          {
+            "year": 1996,
+            "value": 8.33
+          },
+          {
+            "year": 1997,
+            "value": 10.57
+          },
+          {
+            "year": 1998,
+            "value": 8.34
+          },
+          {
+            "year": 1999,
+            "value": 8.47
+          },
+          {
+            "year": 2000,
+            "value": 8.04
+          },
+          {
+            "year": 2001,
+            "value": 7.09
+          },
+          {
+            "year": 2002,
+            "value": 7.78
+          },
+          {
+            "year": 2003,
+            "value": 7.3
+          },
+          {
+            "year": 2004,
+            "value": 8.39
+          },
+          {
+            "year": 2005,
+            "value": 5.88
+          },
+          {
+            "year": 2006,
+            "value": 3.46
+          },
+          {
+            "year": 2007,
+            "value": 4.05
+          },
+          {
+            "year": 2008,
+            "value": 3.12
+          },
+          {
+            "year": 2009,
+            "value": 1.81
+          },
+          {
+            "year": 2010,
+            "value": 1.38
+          },
+          {
+            "year": 2011,
+            "value": 1.34
+          },
+          {
+            "year": 2012,
+            "value": 1.4
+          },
+          {
+            "year": 2013,
+            "value": 1.46
+          },
+          {
+            "year": 2014,
+            "value": 1.03
+          },
+          {
+            "year": 2015,
+            "value": 1.01
+          },
+          {
+            "year": 2016,
+            "value": 1.33
+          },
+          {
+            "year": 2017,
+            "value": 1.36
+          },
+          {
+            "year": 2018,
+            "value": 1.78
+          },
+          {
+            "year": 2019,
+            "value": 3.81
+          },
+          {
+            "year": 2020,
+            "value": 10.67
+          },
+          {
+            "year": 2021,
+            "value": 5.8
+          },
+          {
+            "year": 2022,
+            "value": 2.52
+          },
+          {
+            "year": 2023,
+            "value": 3.81
+          }
+        ],
+        "targetResult": "overStretch"
+      }
+    ]
+  },
+  {
+    "indicator": "EGI",
+    "type": "time",
+    "data": [
+      {
+        "country": "PG",
+        "data": [
+          {
+            "year": 2003,
+            "value": 0.25
+          },
+          {
+            "year": 2004,
+            "value": 0.24
+          },
+          {
+            "year": 2005,
+            "value": 0.25
+          },
+          {
+            "year": 2008,
+            "value": 0.21
+          },
+          {
+            "year": 2010,
+            "value": 0.2
+          },
+          {
+            "year": 2012,
+            "value": 0.21
+          },
+          {
+            "year": 2014,
+            "value": 0.12
+          },
+          {
+            "year": 2016,
+            "value": 0.19
+          },
+          {
+            "year": 2018,
+            "value": 0.28
+          },
+          {
+            "year": 2022,
+            "value": 0.32
+          },
+          {
+            "year": 2024,
+            "value": 0.31
+          }
+        ],
+        "targetResult": "nearTarget"
+      }
+    ]
+  },
+  {
+    "indicator": "EG_ACS_ELEC-U",
+    "type": "%_URBANIZATION",
+    "data": [
+      {
+        "country": "PG",
+        "data": 83.6,
+        "targetResult": "onTarget"
+      }
+    ]
+  },
+  {
+    "indicator": "EG_ACS_ELEC-R",
+    "type": "%_URBANIZATION",
+    "data": [
+      {
+        "country": "PG",
+        "data": 56.8,
+        "targetResult": "nearTarget"
+      }
+    ]
+  },
+  {
+    "indicator": "EG_FEC_RNEW",
+    "type": "time",
+    "data": [
+      {
+        "country": "PG",
+        "data": [
+          {
+            "year": 2000,
+            "value": 66.38
+          },
+          {
+            "year": 2001,
+            "value": 63.44
+          },
+          {
+            "year": 2002,
+            "value": 62.49
+          },
+          {
+            "year": 2003,
+            "value": 60.52
+          },
+          {
+            "year": 2004,
+            "value": 57.6
+          },
+          {
+            "year": 2005,
+            "value": 58.56
+          },
+          {
+            "year": 2006,
+            "value": 58.86
+          },
+          {
+            "year": 2007,
+            "value": 56.92
+          },
+          {
+            "year": 2008,
+            "value": 56.85
+          },
+          {
+            "year": 2009,
+            "value": 55.99
+          },
+          {
+            "year": 2010,
+            "value": 55.19
+          },
+          {
+            "year": 2011,
+            "value": 54.63
+          },
+          {
+            "year": 2012,
+            "value": 55.29
+          },
+          {
+            "year": 2013,
+            "value": 56.38
+          },
+          {
+            "year": 2014,
+            "value": 54.91
+          },
+          {
+            "year": 2015,
+            "value": 53.28
+          },
+          {
+            "year": 2016,
+            "value": 52.72
+          },
+          {
+            "year": 2017,
+            "value": 52.52
+          },
+          {
+            "year": 2018,
+            "value": 51.19
+          },
+          {
+            "year": 2019,
+            "value": 51.09
+          },
+          {
+            "year": 2020,
+            "value": 51.39
+          },
+          {
+            "year": 2021,
+            "value": 51.62
+          },
+          {
+            "year": 2022,
+            "value": 50.78
+          }
+        ],
+        "targetResult": "overStretch"
+      }
+    ]
+  },
+  {
+    "indicator": "EN_MAR_BEALITSQ",
+    "type": "time",
+    "data": []
+  },
+  {
+    "indicator": "ER_GRF_PLNTSTOR",
+    "type": "time",
+    "data": [
+      {
+        "country": "PG",
+        "data": [
+          {
+            "year": 1995,
+            "value": 1048
+          },
+          {
+            "year": 2000,
+            "value": 1200
+          },
+          {
+            "year": 2005,
+            "value": 1337
+          },
+          {
+            "year": 2010,
+            "value": 1387
+          },
+          {
+            "year": 2012,
+            "value": 1443
+          },
+          {
+            "year": 2014,
+            "value": 1470
+          },
+          {
+            "year": 2016,
+            "value": 1569
+          },
+          {
+            "year": 2017,
+            "value": 1627
+          },
+          {
+            "year": 2018,
+            "value": 1628
+          },
+          {
+            "year": 2019,
+            "value": 1630
+          },
+          {
+            "year": 2020,
+            "value": 1975
+          },
+          {
+            "year": 2021,
+            "value": 2569
+          },
+          {
+            "year": 2022,
+            "value": 2940
+          }
+        ],
+        "targetResult": "needsAttention"
+      }
+    ]
+  },
+  {
+    "indicator": "ER_H2O_FWTL",
+    "type": "time",
+    "data": [
+      {
+        "country": "PG",
+        "data": [
+          {
+            "year": 2018,
+            "value": 1400000
+          }
+        ],
+        "targetResult": "overStretch"
+      }
+    ]
+  },
+  {
+    "indicator": "ER_MRN_MARINKBA",
+    "type": "time",
+    "data": [
+      {
+        "country": "PG",
+        "data": [
+          {
+            "year": 2000,
+            "value": 1.29
+          },
+          {
+            "year": 2001,
+            "value": 1.29
+          },
+          {
+            "year": 2002,
+            "value": 1.63
+          },
+          {
+            "year": 2003,
+            "value": 1.63
+          },
+          {
+            "year": 2004,
+            "value": 1.63
+          },
+          {
+            "year": 2005,
+            "value": 1.63
+          },
+          {
+            "year": 2006,
+            "value": 1.63
+          },
+          {
+            "year": 2007,
+            "value": 1.63
+          },
+          {
+            "year": 2008,
+            "value": 1.63
+          },
+          {
+            "year": 2009,
+            "value": 1.63
+          },
+          {
+            "year": 2010,
+            "value": 1.63
+          },
+          {
+            "year": 2011,
+            "value": 1.63
+          },
+          {
+            "year": 2012,
+            "value": 1.63
+          },
+          {
+            "year": 2013,
+            "value": 1.63
+          },
+          {
+            "year": 2014,
+            "value": 1.63
+          },
+          {
+            "year": 2015,
+            "value": 1.63
+          },
+          {
+            "year": 2016,
+            "value": 1.63
+          },
+          {
+            "year": 2017,
+            "value": 1.63
+          },
+          {
+            "year": 2018,
+            "value": 1.63
+          },
+          {
+            "year": 2019,
+            "value": 1.63
+          }
+        ],
+        "targetResult": "needsAttention"
+      }
+    ]
+  },
+  {
+    "indicator": "ER_PTD_TOT",
+    "type": "time",
+    "data": []
+  },
+  {
+    "indicator": "ER_RSK_LST",
+    "type": "time",
+    "data": [
+      {
+        "country": "PG",
+        "data": [
+          {
+            "year": 1993,
+            "value": 0.92
+          },
+          {
+            "year": 1994,
+            "value": 0.91
+          },
+          {
+            "year": 1995,
+            "value": 0.91
+          },
+          {
+            "year": 1996,
+            "value": 0.91
+          },
+          {
+            "year": 1997,
+            "value": 0.91
+          },
+          {
+            "year": 1998,
+            "value": 0.91
+          },
+          {
+            "year": 1999,
+            "value": 0.9
+          },
+          {
+            "year": 2000,
+            "value": 0.9
+          },
+          {
+            "year": 2001,
+            "value": 0.9
+          },
+          {
+            "year": 2002,
+            "value": 0.89
+          },
+          {
+            "year": 2003,
+            "value": 0.89
+          },
+          {
+            "year": 2004,
+            "value": 0.89
+          },
+          {
+            "year": 2005,
+            "value": 0.88
+          },
+          {
+            "year": 2006,
+            "value": 0.88
+          },
+          {
+            "year": 2007,
+            "value": 0.88
+          },
+          {
+            "year": 2008,
+            "value": 0.87
+          },
+          {
+            "year": 2009,
+            "value": 0.87
+          },
+          {
+            "year": 2010,
+            "value": 0.87
+          },
+          {
+            "year": 2011,
+            "value": 0.86
+          },
+          {
+            "year": 2012,
+            "value": 0.86
+          },
+          {
+            "year": 2013,
+            "value": 0.86
+          },
+          {
+            "year": 2014,
+            "value": 0.85
+          },
+          {
+            "year": 2015,
+            "value": 0.85
+          },
+          {
+            "year": 2016,
+            "value": 0.85
+          },
+          {
+            "year": 2017,
+            "value": 0.84
+          },
+          {
+            "year": 2018,
+            "value": 0.84
+          },
+          {
+            "year": 2019,
+            "value": 0.84
+          },
+          {
+            "year": 2020,
+            "value": 0.83
+          },
+          {
+            "year": 2021,
+            "value": 0.83
+          },
+          {
+            "year": 2022,
+            "value": 0.83
+          },
+          {
+            "year": 2023,
+            "value": 0.82
+          },
+          {
+            "year": 2024,
+            "value": 0.82
+          }
+        ],
+        "targetResult": "onTarget"
+      }
+    ]
+  },
+  {
+    "indicator": "FB_BNK_ACCSS-M",
+    "type": "%_SEX",
+    "data": []
+  },
+  {
+    "indicator": "FB_BNK_ACCSS-F",
+    "type": "%_SEX",
+    "data": []
+  },
+  {
+    "indicator": "GC_GOB_TAXD",
+    "type": "time",
+    "data": [
+      {
+        "country": "PG",
+        "data": [
+          {
+            "year": 2000,
+            "value": 62.68
+          },
+          {
+            "year": 2001,
+            "value": 86.51
+          },
+          {
+            "year": 2002,
+            "value": 83.59
+          },
+          {
+            "year": 2014,
+            "value": 66.21
+          },
+          {
+            "year": 2015,
+            "value": 65.07
+          },
+          {
+            "year": 2016,
+            "value": 62.07
+          },
+          {
+            "year": 2017,
+            "value": 68.63
+          },
+          {
+            "year": 2018,
+            "value": 64.93
+          },
+          {
+            "year": 2019,
+            "value": 60.53
+          },
+          {
+            "year": 2020,
+            "value": 50.53
+          },
+          {
+            "year": 2021,
+            "value": 55.29
+          },
+          {
+            "year": 2022,
+            "value": 67.46
+          },
+          {
+            "year": 2023,
+            "value": 71.61
+          }
+        ],
+        "targetResult": "onTarget"
+      }
+    ]
+  },
+  {
+    "indicator": "GER_5T8",
+    "type": "%",
+    "data": [
+      {
+        "country": "PG",
+        "data": 1.95,
+        "targetResult": "needsAttention"
+      }
+    ]
+  },
+  {
+    "indicator": "GE_EST",
+    "type": "time",
+    "data": [
+      {
+        "country": "PG",
+        "data": [
+          {
+            "year": 1996,
+            "value": -0.34
+          },
+          {
+            "year": 1998,
+            "value": -0.48
+          },
+          {
+            "year": 2000,
+            "value": -0.36
+          },
+          {
+            "year": 2002,
+            "value": -0.5
+          },
+          {
+            "year": 2003,
+            "value": -0.53
+          },
+          {
+            "year": 2004,
+            "value": -0.69
+          },
+          {
+            "year": 2005,
+            "value": -0.89
+          },
+          {
+            "year": 2006,
+            "value": -0.76
+          },
+          {
+            "year": 2007,
+            "value": -0.65
+          },
+          {
+            "year": 2008,
+            "value": -0.7
+          },
+          {
+            "year": 2009,
+            "value": -0.75
+          },
+          {
+            "year": 2010,
+            "value": -0.73
+          },
+          {
+            "year": 2011,
+            "value": -0.72
+          },
+          {
+            "year": 2012,
+            "value": -0.74
+          },
+          {
+            "year": 2013,
+            "value": -0.66
+          },
+          {
+            "year": 2014,
+            "value": -0.61
+          },
+          {
+            "year": 2015,
+            "value": -0.6
+          },
+          {
+            "year": 2016,
+            "value": -0.74
+          },
+          {
+            "year": 2017,
+            "value": -0.66
+          },
+          {
+            "year": 2018,
+            "value": -0.66
+          },
+          {
+            "year": 2019,
+            "value": -0.79
+          },
+          {
+            "year": 2020,
+            "value": -0.83
+          },
+          {
+            "year": 2021,
+            "value": -0.89
+          },
+          {
+            "year": 2022,
+            "value": -0.81
+          },
+          {
+            "year": 2023,
+            "value": -0.8
+          }
+        ],
+        "targetResult": "needsAttention"
+      }
+    ]
+  },
+  {
+    "indicator": "GR_G14_GDP",
+    "type": "time",
+    "data": [
+      {
+        "country": "PG",
+        "data": [
+          {
+            "year": 2000,
+            "value": 19.22
+          },
+          {
+            "year": 2001,
+            "value": 18.47
+          },
+          {
+            "year": 2002,
+            "value": 15.6
+          },
+          {
+            "year": 2014,
+            "value": 20.79
+          },
+          {
+            "year": 2015,
+            "value": 18.3
+          },
+          {
+            "year": 2016,
+            "value": 16.12
+          },
+          {
+            "year": 2017,
+            "value": 15.89
+          },
+          {
+            "year": 2018,
+            "value": 17.74
+          },
+          {
+            "year": 2019,
+            "value": 16.54
+          },
+          {
+            "year": 2020,
+            "value": 14.66
+          },
+          {
+            "year": 2021,
+            "value": 15.13
+          },
+          {
+            "year": 2022,
+            "value": 16.66
+          },
+          {
+            "year": 2023,
+            "value": 17.79
+          }
+        ],
+        "targetResult": "nearTarget"
+      }
+    ]
+  },
+  {
+    "indicator": "IC_GEN_MGTL",
+    "type": "%",
+    "data": [
+      {
+        "country": "PG",
+        "data": 17.74,
+        "targetResult": "needsAttention"
+      }
+    ]
+  },
+  {
+    "indicator": "IT_MOB_4GNTWK",
+    "type": "%",
+    "data": [
+      {
+        "country": "PG",
+        "data": 50,
+        "targetResult": "nearTarget"
+      }
+    ]
+  },
+  {
+    "indicator": "IT_MOB_OWN-M",
+    "type": "%_SEX",
+    "data": []
+  },
+  {
+    "indicator": "IT_MOB_OWN-F",
+    "type": "%_SEX",
+    "data": []
+  },
+  {
+    "indicator": "IT_NET_BBND",
+    "type": "#",
+    "data": [
+      {
+        "country": "PG",
+        "data": 0.21,
+        "targetResult": "needsAttention"
+      }
+    ]
+  },
+  {
+    "indicator": "IT_USE_ii99",
+    "type": "%",
+    "data": [
+      {
+        "country": "PG",
+        "data": 11.2,
+        "targetResult": "needsAttention"
+      }
+    ]
+  },
+  {
+    "indicator": "MAILFILE-M",
+    "type": "%_SEX",
+    "data": []
+  },
+  {
+    "indicator": "MAILFILE-F",
+    "type": "%_SEX",
+    "data": []
+  },
+  {
+    "indicator": "NCSI_POLI",
+    "type": "#",
+    "data": []
+  },
+  {
+    "indicator": "NCSI_RANK",
+    "type": "%",
+    "data": []
+  },
+  {
+    "indicator": "NY_GDP_PCAP",
+    "type": "%",
+    "data": [
+      {
+        "country": "PG",
+        "data": 0.8,
+        "targetResult": "nearTarget"
+      }
+    ]
+  },
+  {
+    "indicator": "OSI",
+    "type": "time",
+    "data": [
+      {
+        "country": "PG",
+        "data": [
+          {
+            "year": 2003,
+            "value": 0.17
+          },
+          {
+            "year": 2004,
+            "value": 0.12
+          },
+          {
+            "year": 2005,
+            "value": 0.16
+          },
+          {
+            "year": 2008,
+            "value": 0.09
+          },
+          {
+            "year": 2010,
+            "value": 0.07
+          },
+          {
+            "year": 2012,
+            "value": 0.23
+          },
+          {
+            "year": 2014,
+            "value": 0.01
+          },
+          {
+            "year": 2016,
+            "value": 0.17
+          },
+          {
+            "year": 2018,
+            "value": 0.27
+          },
+          {
+            "year": 2022,
+            "value": 0.33
+          },
+          {
+            "year": 2024,
+            "value": 0.34
+          }
+        ],
+        "targetResult": "nearTarget"
+      }
+    ]
+  },
+  {
+    "indicator": "PSD2GDP",
+    "type": "time",
+    "data": [
+      {
+        "country": "PG",
+        "data": [
+          {
+            "year": 2014,
+            "value": 88.8
+          },
+          {
+            "year": 2015,
+            "value": 104.8
+          },
+          {
+            "year": 2016,
+            "value": 33.7
+          },
+          {
+            "year": 2017,
+            "value": 33.1
+          },
+          {
+            "year": 2018,
+            "value": 35.5
+          }
+        ],
+        "targetResult": "onTarget"
+      }
+    ]
+  },
+  {
+    "indicator": "PV_EST",
+    "type": "time",
+    "data": [
+      {
+        "country": "PG",
+        "data": [
+          {
+            "year": 1996,
+            "value": -0.78
+          },
+          {
+            "year": 1998,
+            "value": -0.11
+          },
+          {
+            "year": 2000,
+            "value": -0.21
+          },
+          {
+            "year": 2002,
+            "value": -0.55
+          },
+          {
+            "year": 2003,
+            "value": -0.56
+          },
+          {
+            "year": 2004,
+            "value": -0.55
+          },
+          {
+            "year": 2005,
+            "value": -0.92
+          },
+          {
+            "year": 2006,
+            "value": -0.87
+          },
+          {
+            "year": 2007,
+            "value": -0.75
+          },
+          {
+            "year": 2008,
+            "value": -0.61
+          },
+          {
+            "year": 2009,
+            "value": -0.79
+          },
+          {
+            "year": 2010,
+            "value": -0.81
+          },
+          {
+            "year": 2011,
+            "value": -0.75
+          },
+          {
+            "year": 2012,
+            "value": -0.59
+          },
+          {
+            "year": 2013,
+            "value": -0.52
+          },
+          {
+            "year": 2014,
+            "value": -0.34
+          },
+          {
+            "year": 2015,
+            "value": -0.42
+          },
+          {
+            "year": 2016,
+            "value": -0.5
+          },
+          {
+            "year": 2017,
+            "value": -0.69
+          },
+          {
+            "year": 2018,
+            "value": -0.66
+          },
+          {
+            "year": 2019,
+            "value": -0.71
+          },
+          {
+            "year": 2020,
+            "value": -0.65
+          },
+          {
+            "year": 2021,
+            "value": -0.58
+          },
+          {
+            "year": 2022,
+            "value": -0.66
+          },
+          {
+            "year": 2023,
+            "value": -0.48
+          }
+        ],
+        "targetResult": "needsAttention"
+      }
+    ]
+  },
+  {
+    "indicator": "RL_EST",
+    "type": "time",
+    "data": [
+      {
+        "country": "PG",
+        "data": [
+          {
+            "year": 1996,
+            "value": -0.62
+          },
+          {
+            "year": 1998,
+            "value": -0.52
+          },
+          {
+            "year": 2000,
+            "value": -0.76
+          },
+          {
+            "year": 2002,
+            "value": -0.75
+          },
+          {
+            "year": 2003,
+            "value": -0.95
+          },
+          {
+            "year": 2004,
+            "value": -0.76
+          },
+          {
+            "year": 2005,
+            "value": -1.01
+          },
+          {
+            "year": 2006,
+            "value": -0.83
+          },
+          {
+            "year": 2007,
+            "value": -0.86
+          },
+          {
+            "year": 2008,
+            "value": -0.92
+          },
+          {
+            "year": 2009,
+            "value": -0.91
+          },
+          {
+            "year": 2010,
+            "value": -0.93
+          },
+          {
+            "year": 2011,
+            "value": -0.81
+          },
+          {
+            "year": 2012,
+            "value": -0.83
+          },
+          {
+            "year": 2013,
+            "value": -0.94
+          },
+          {
+            "year": 2014,
+            "value": -0.77
+          },
+          {
+            "year": 2015,
+            "value": -0.87
+          },
+          {
+            "year": 2016,
+            "value": -0.78
+          },
+          {
+            "year": 2017,
+            "value": -0.82
+          },
+          {
+            "year": 2018,
+            "value": -0.76
+          },
+          {
+            "year": 2019,
+            "value": -0.8
+          },
+          {
+            "year": 2020,
+            "value": -0.71
+          },
+          {
+            "year": 2021,
+            "value": -0.75
+          },
+          {
+            "year": 2022,
+            "value": -0.62
+          },
+          {
+            "year": 2023,
+            "value": -0.54
+          }
+        ],
+        "targetResult": "needsAttention"
+      }
+    ]
+  },
+  {
+    "indicator": "RQ_EST",
+    "type": "time",
+    "data": [
+      {
+        "country": "PG",
+        "data": [
+          {
+            "year": 1996,
+            "value": -0.43
+          },
+          {
+            "year": 1998,
+            "value": -0.4
+          },
+          {
+            "year": 2000,
+            "value": -0.33
+          },
+          {
+            "year": 2002,
+            "value": -0.6
+          },
+          {
+            "year": 2003,
+            "value": -0.64
+          },
+          {
+            "year": 2004,
+            "value": -0.8
+          },
+          {
+            "year": 2005,
+            "value": -0.99
+          },
+          {
+            "year": 2006,
+            "value": -0.77
+          },
+          {
+            "year": 2007,
+            "value": -0.61
+          },
+          {
+            "year": 2008,
+            "value": -0.69
+          },
+          {
+            "year": 2009,
+            "value": -0.58
+          },
+          {
+            "year": 2010,
+            "value": -0.57
+          },
+          {
+            "year": 2011,
+            "value": -0.53
+          },
+          {
+            "year": 2012,
+            "value": -0.52
+          },
+          {
+            "year": 2013,
+            "value": -0.52
+          },
+          {
+            "year": 2014,
+            "value": -0.35
+          },
+          {
+            "year": 2015,
+            "value": -0.57
+          },
+          {
+            "year": 2016,
+            "value": -0.57
+          },
+          {
+            "year": 2017,
+            "value": -0.67
+          },
+          {
+            "year": 2018,
+            "value": -0.53
+          },
+          {
+            "year": 2019,
+            "value": -0.54
+          },
+          {
+            "year": 2020,
+            "value": -0.68
+          },
+          {
+            "year": 2021,
+            "value": -0.83
+          },
+          {
+            "year": 2022,
+            "value": -0.68
+          },
+          {
+            "year": 2023,
+            "value": -0.64
+          }
+        ],
+        "targetResult": "needsAttention"
+      }
+    ]
+  },
+  {
+    "indicator": "SE_ACC_HNDWSH",
+    "type": "%",
+    "data": [
+      {
+        "country": "PG",
+        "data": 10,
+        "targetResult": "needsAttention"
+      }
+    ]
+  },
+  {
+    "indicator": "SE_ACS_CMPTR",
+    "type": "%",
+    "data": []
+  },
+  {
+    "indicator": "SE_ACS_DISAB",
+    "type": "%",
+    "data": []
+  },
+  {
+    "indicator": "SE_ACS_ELECT",
+    "type": "%",
+    "data": []
+  },
+  {
+    "indicator": "SE_ACS_H2O",
+    "type": "%",
+    "data": [
+      {
+        "country": "PG",
+        "data": 51,
+        "targetResult": "needsAttention"
+      }
+    ]
+  },
+  {
+    "indicator": "SE_ACS_INTNT",
+    "type": "%",
+    "data": []
+  },
+  {
+    "indicator": "SE_ACS_SANIT",
+    "type": "%",
+    "data": [
+      {
+        "country": "PG",
+        "data": 28,
+        "targetResult": "needsAttention"
+      }
+    ]
+  },
+  {
+    "indicator": "SE_GC_TCAQ-1",
+    "type": "%_EDUCATION",
+    "data": []
+  },
+  {
+    "indicator": "SE_GC_TCAQ-2-3",
+    "type": "%_EDUCATION",
+    "data": []
+  },
+  {
+    "indicator": "SE_PRE_PARTN-M",
+    "type": "%_SEX",
+    "data": [
+      {
+        "country": "PG",
+        "data": 66.07,
+        "targetResult": "onTarget"
+      }
+    ]
+  },
+  {
+    "indicator": "SE_PRE_PARTN-F",
+    "type": "%_SEX",
+    "data": [
+      {
+        "country": "PG",
+        "data": 66.47,
+        "targetResult": "onTarget"
+      }
+    ]
+  },
+  {
+    "indicator": "SE_TOT_PRFL-SKILL_MIN_LTRCY",
+    "type": "%_COMPOSITE_BREAKDOWN",
+    "data": [
+      {
+        "country": "PG",
+        "data": 66,
+        "targetResult": "onTarget"
+      }
+    ]
+  },
+  {
+    "indicator": "SE_TOT_PRFL-SKILL_MIN_NMRCY",
+    "type": "%_COMPOSITE_BREAKDOWN",
+    "data": [
+      {
+        "country": "PG",
+        "data": 77,
+        "targetResult": "overStretch"
+      }
+    ]
+  },
+  {
+    "indicator": "SG_DSR_LEGREG",
+    "type": "YN",
+    "data": [
+      {
+        "country": "PG",
+        "data": "onTarget",
+        "targetResult": "onTarget"
+      }
+    ]
+  },
+  {
+    "indicator": "SG_GEN_PARL",
+    "type": "%",
+    "data": [
+      {
+        "country": "PG",
+        "data": 2.7,
+        "targetResult": "needsAttention"
+      }
+    ]
+  },
+  {
+    "indicator": "SG_INF_ACCSS",
+    "type": "YN",
+    "data": []
+  },
+  {
+    "indicator": "SG_LGL_GENEQEMP",
+    "type": "%",
+    "data": [
+      {
+        "country": "PG",
+        "data": 30,
+        "targetResult": "needsAttention"
+      }
+    ]
+  },
+  {
+    "indicator": "SG_LGL_GENEQLFP",
+    "type": "%",
+    "data": [
+      {
+        "country": "PG",
+        "data": 63.64,
+        "targetResult": "nearTarget"
+      }
+    ]
+  },
+  {
+    "indicator": "SG_LGL_GENEQMAR",
+    "type": "%",
+    "data": [
+      {
+        "country": "PG",
+        "data": 72.73,
+        "targetResult": "onTarget"
+      }
+    ]
+  },
+  {
+    "indicator": "SG_LGL_GENEQVAW",
+    "type": "%",
+    "data": [
+      {
+        "country": "PG",
+        "data": 66.67,
+        "targetResult": "onTarget"
+      }
+    ]
+  },
+  {
+    "indicator": "SG_PLN_RECNDI",
+    "type": "%",
+    "data": [
+      {
+        "country": "PG",
+        "data": 97.26,
+        "targetResult": "overStretch"
+      }
+    ]
+  },
+  {
+    "indicator": "SG_REG_BRTH",
+    "type": "%",
+    "data": [
+      {
+        "country": "PG",
+        "data": 24,
+        "targetResult": "needsAttention"
+      }
+    ]
+  },
+  {
+    "indicator": "SG_REG_BRTHDETH",
+    "type": "YN",
+    "data": [
+      {
+        "country": "PG",
+        "data": "needsAttention",
+        "targetResult": "needsAttention"
+      }
+    ]
+  },
+  {
+    "indicator": "SG_STT_FPOS",
+    "type": "YN",
+    "data": [
+      {
+        "country": "PG",
+        "data": "onTarget",
+        "targetResult": "onTarget"
+      }
+    ]
+  },
+  {
+    "indicator": "SH_ALC_CONSPT-M",
+    "type": "#_SEX",
+    "data": [
+      {
+        "country": "PG",
+        "data": 1.84,
+        "targetResult": "overStretch"
+      }
+    ]
+  },
+  {
+    "indicator": "SH_ALC_CONSPT-F",
+    "type": "#_SEX",
+    "data": [
+      {
+        "country": "PG",
+        "data": 0.38,
+        "targetResult": "overStretch"
+      }
+    ]
+  },
+  {
+    "indicator": "SH_DTH_NCD",
+    "type": "%",
+    "data": [
+      {
+        "country": "PG",
+        "data": 28.4,
+        "targetResult": "overStretch"
+      }
+    ]
+  },
+  {
+    "indicator": "SH_DYN_MORT",
+    "type": "#",
+    "data": [
+      {
+        "country": "PG",
+        "data": 43.5,
+        "targetResult": "nearTarget"
+      }
+    ]
+  },
+  {
+    "indicator": "SH_FPL_INFM",
+    "type": "%",
+    "data": [
+      {
+        "country": "PG",
+        "data": 56.7,
+        "targetResult": "nearTarget"
+      }
+    ]
+  },
+  {
+    "indicator": "SH_FPL_MTMM",
+    "type": "%",
+    "data": [
+      {
+        "country": "PG",
+        "data": 49.2,
+        "targetResult": "needsAttention"
+      }
+    ]
+  },
+  {
+    "indicator": "SH_H2O_IMPR",
+    "type": "%",
+    "data": [
+      {
+        "country": "PG",
+        "data": 39.6,
+        "targetResult": "needsAttention"
+      }
+    ]
+  },
+  {
+    "indicator": "SH_HIV_INCD",
+    "type": "#",
+    "data": [
+      {
+        "country": "PG",
+        "data": 0.28,
+        "targetResult": "overStretch"
+      }
+    ]
+  },
+  {
+    "indicator": "SH_IHR_CAPS",
+    "type": "%",
+    "data": [
+      {
+        "country": "PG",
+        "data": 40,
+        "targetResult": "nearTarget"
+      }
+    ]
+  },
+  {
+    "indicator": "SH_MED_DEN-221",
+    "type": "#_OCCUPATION",
+    "data": []
+  },
+  {
+    "indicator": "SH_MED_DEN-222",
+    "type": "#_OCCUPATION",
+    "data": []
+  },
+  {
+    "indicator": "SH_MED_DEN-2261",
+    "type": "#_OCCUPATION",
+    "data": []
+  },
+  {
+    "indicator": "SH_MED_DEN-2262",
+    "type": "#_OCCUPATION",
+    "data": []
+  },
+  {
+    "indicator": "SH_PRV_SMOK-M",
+    "type": "%_SEX",
+    "data": [
+      {
+        "country": "PG",
+        "data": 50.4,
+        "targetResult": "needsAttention"
+      }
+    ]
+  },
+  {
+    "indicator": "SH_PRV_SMOK-F",
+    "type": "%_SEX",
+    "data": [
+      {
+        "country": "PG",
+        "data": 22.2,
+        "targetResult": "nearTarget"
+      }
+    ]
+  },
+  {
+    "indicator": "SH_SAN_SAFE",
+    "type": "%",
+    "data": [
+      {
+        "country": "PG",
+        "data": 28.34,
+        "targetResult": "needsAttention"
+      }
+    ]
+  },
+  {
+    "indicator": "SH_STA_BRTC",
+    "type": "%",
+    "data": [
+      {
+        "country": "PG",
+        "data": 56.4,
+        "targetResult": "nearTarget"
+      }
+    ]
+  },
+  {
+    "indicator": "SH_STA_MALR",
+    "type": "YN",
+    "data": [
+      {
+        "country": "PG",
+        "data": "needsAttention",
+        "targetResult": "needsAttention"
+      }
+    ]
+  },
+  {
+    "indicator": "SH_STA_MORT",
+    "type": "#",
+    "data": [
+      {
+        "country": "PG",
+        "data": 192,
+        "targetResult": "nearTarget"
+      }
+    ]
+  },
+  {
+    "indicator": "SH_STA_WASH-M",
+    "type": "%_SEX",
+    "data": [
+      {
+        "country": "PG",
+        "data": 27.9,
+        "targetResult": "needsAttention"
+      }
+    ]
+  },
+  {
+    "indicator": "SH_STA_WASH-F",
+    "type": "%_SEX",
+    "data": [
+      {
+        "country": "PG",
+        "data": 21.8,
+        "targetResult": "needsAttention"
+      }
+    ]
+  },
+  {
+    "indicator": "SH_TBS_INCD",
+    "type": "time",
+    "data": [
+      {
+        "country": "PG",
+        "data": [
+          {
+            "year": 2000,
+            "value": 432
+          },
+          {
+            "year": 2001,
+            "value": 432
+          },
+          {
+            "year": 2002,
+            "value": 432
+          },
+          {
+            "year": 2003,
+            "value": 432
+          },
+          {
+            "year": 2004,
+            "value": 432
+          },
+          {
+            "year": 2005,
+            "value": 432
+          },
+          {
+            "year": 2006,
+            "value": 432
+          },
+          {
+            "year": 2007,
+            "value": 432
+          },
+          {
+            "year": 2008,
+            "value": 432
+          },
+          {
+            "year": 2009,
+            "value": 432
+          },
+          {
+            "year": 2010,
+            "value": 432
+          },
+          {
+            "year": 2011,
+            "value": 432
+          },
+          {
+            "year": 2012,
+            "value": 432
+          },
+          {
+            "year": 2013,
+            "value": 432
+          },
+          {
+            "year": 2014,
+            "value": 432
+          },
+          {
+            "year": 2015,
+            "value": 432
+          },
+          {
+            "year": 2016,
+            "value": 432
+          },
+          {
+            "year": 2017,
+            "value": 432
+          },
+          {
+            "year": 2018,
+            "value": 432
+          },
+          {
+            "year": 2019,
+            "value": 432
+          },
+          {
+            "year": 2020,
+            "value": 432
+          },
+          {
+            "year": 2021,
+            "value": 432
+          },
+          {
+            "year": 2022,
+            "value": 432
+          },
+          {
+            "year": 2023,
+            "value": 432
+          }
+        ],
+        "targetResult": "needsAttention"
+      }
+    ]
+  },
+  {
+    "indicator": "SI_COV_BENFTS",
+    "type": "%",
+    "data": [
+      {
+        "country": "PG",
+        "data": 9.1,
+        "targetResult": "needsAttention"
+      }
+    ]
+  },
+  {
+    "indicator": "SI_HEI_TOTL",
+    "type": "%",
+    "data": []
+  },
+  {
+    "indicator": "SI_POV_DAY1",
+    "type": "%",
+    "data": [
+      {
+        "country": "PG",
+        "data": 17.7,
+        "targetResult": "nearTarget"
+      }
+    ]
+  },
+  {
+    "indicator": "SI_POV_NAHC",
+    "type": "%",
+    "data": [
+      {
+        "country": "PG",
+        "data": 36.9,
+        "targetResult": "nearTarget"
+      }
+    ]
+  },
+  {
+    "indicator": "SI_RMT_COST",
+    "type": "%",
+    "data": [
+      {
+        "country": "PG",
+        "data": 16.87,
+        "targetResult": "needsAttention"
+      }
+    ]
+  },
+  {
+    "indicator": "SL_DOM_TSPD-M",
+    "type": "%_SEX",
+    "data": []
+  },
+  {
+    "indicator": "SL_DOM_TSPD-F",
+    "type": "%_SEX",
+    "data": []
+  },
+  {
+    "indicator": "SL_EMP_EARN",
+    "type": "INVALID",
+    "data": []
+  },
+  {
+    "indicator": "SL_TLF_MANF",
+    "type": "%",
+    "data": [
+      {
+        "country": "PG",
+        "data": 1.8,
+        "targetResult": "needsAttention"
+      }
+    ]
+  },
+  {
+    "indicator": "SL_TLF_NEET-M",
+    "type": "%_SEX",
+    "data": [
+      {
+        "country": "PG",
+        "data": 24.39,
+        "targetResult": "nearTarget"
+      }
+    ]
+  },
+  {
+    "indicator": "SL_TLF_NEET-F",
+    "type": "%_SEX",
+    "data": [
+      {
+        "country": "PG",
+        "data": 31.17,
+        "targetResult": "needsAttention"
+      }
+    ]
+  },
+  {
+    "indicator": "SL_TLF_UEM",
+    "type": "%",
+    "data": [
+      {
+        "country": "PG",
+        "data": 2.19,
+        "targetResult": "overStretch"
+      }
+    ]
+  },
+  {
+    "indicator": "SPC_11_b_2",
+    "type": "%",
+    "data": [
+      {
+        "country": "PG",
+        "data": 0,
+        "targetResult": "needsAttention"
+      }
+    ]
+  },
+  {
+    "indicator": "SPC_12_4_2",
+    "type": "INVALID",
+    "data": []
+  },
+  {
+    "indicator": "SPC_12_5_1",
+    "type": "INVALID",
+    "data": []
+  },
+  {
+    "indicator": "SPC_13_b_1",
+    "type": "%",
+    "data": [
+      {
+        "country": "PG",
+        "data": 100,
+        "targetResult": "overStretch"
+      }
+    ]
+  },
+  {
+    "indicator": "SPC_14_2_1",
+    "type": "%",
+    "data": []
+  },
+  {
+    "indicator": "SPC_14_6_1",
+    "type": "#",
+    "data": [
+      {
+        "country": "PG",
+        "data": "missing",
+        "targetResult": "missing"
+      }
+    ]
+  },
+  {
+    "indicator": "SPC_14_b_1",
+    "type": "#",
+    "data": [
+      {
+        "country": "PG",
+        "data": "missing",
+        "targetResult": "missing"
+      }
+    ]
+  },
+  {
+    "indicator": "SPC_15_8_1",
+    "type": "YN",
+    "data": [
+      {
+        "country": "PG",
+        "data": "onTarget",
+        "targetResult": "onTarget"
+      }
+    ]
+  },
+  {
+    "indicator": "SPC_16_3_1-M",
+    "type": "%_SEX",
+    "data": []
+  },
+  {
+    "indicator": "SPC_16_3_1-F",
+    "type": "%_SEX",
+    "data": []
+  },
+  {
+    "indicator": "SPC_16_6_1",
+    "type": "time",
+    "data": [
+      {
+        "country": "PG",
+        "data": [
+          {
+            "year": 2007,
+            "value": 120.1
+          },
+          {
+            "year": 2008,
+            "value": 107.9
+          },
+          {
+            "year": 2009,
+            "value": 100.2
+          },
+          {
+            "year": 2010,
+            "value": 108
+          },
+          {
+            "year": 2011,
+            "value": 100.6
+          },
+          {
+            "year": 2012,
+            "value": 95.1
+          },
+          {
+            "year": 2013,
+            "value": 96
+          },
+          {
+            "year": 2014,
+            "value": 96.3
+          },
+          {
+            "year": 2015,
+            "value": 83.3
+          },
+          {
+            "year": 2016,
+            "value": 91.9
+          },
+          {
+            "year": 2017,
+            "value": 99.8
+          },
+          {
+            "year": 2018,
+            "value": 109.6
+          },
+          {
+            "year": 2019,
+            "value": 110.7
+          },
+          {
+            "year": 2020,
+            "value": 103.6
+          }
+        ],
+        "targetResult": "overStretch"
+      }
+    ]
+  },
+  {
+    "indicator": "SPC_17_3_1",
+    "type": "time",
+    "data": [
+      {
+        "country": "PG",
+        "data": [
+          {
+            "year": 2000,
+            "value": 98.23303
+          },
+          {
+            "year": 2001,
+            "value": 63.77039
+          },
+          {
+            "year": 2002,
+            "value": 18.27881
+          },
+          {
+            "year": 2003,
+            "value": 101.02569
+          },
+          {
+            "year": 2004,
+            "value": 25.75608
+          },
+          {
+            "year": 2005,
+            "value": 33.5273
+          },
+          {
+            "year": 2006,
+            "value": -6.87009
+          },
+          {
+            "year": 2007,
+            "value": 95.77284
+          },
+          {
+            "year": 2008,
+            "value": -30.36936
+          },
+          {
+            "year": 2009,
+            "value": 423.20898
+          },
+          {
+            "year": 2010,
+            "value": 29.0517
+          },
+          {
+            "year": 2011,
+            "value": -309.57794
+          },
+          {
+            "year": 2012,
+            "value": 25.0042
+          },
+          {
+            "year": 2013,
+            "value": 18.22224
+          },
+          {
+            "year": 2014,
+            "value": -30.06431
+          },
+          {
+            "year": 2015,
+            "value": 27.99441
+          },
+          {
+            "year": 2016,
+            "value": -39.76492
+          },
+          {
+            "year": 2017,
+            "value": -180.17671
+          },
+          {
+            "year": 2018,
+            "value": 337.94779
+          },
+          {
+            "year": 2019,
+            "value": 333.97491
+          }
+        ],
+        "targetResult": "overStretch"
+      }
+    ]
+  },
+  {
+    "indicator": "SPC_1_2_2",
+    "type": "%",
+    "data": [
+      {
+        "country": "PG",
+        "data": 4.5,
+        "targetResult": "overStretch"
+      }
+    ]
+  },
+  {
+    "indicator": "SPC_2_4_1",
+    "type": "%",
+    "data": [
+      {
+        "country": "PG",
+        "data": 30,
+        "targetResult": "nearTarget"
+      }
+    ]
+  },
+  {
+    "indicator": "SPC_3_8_1",
+    "type": "#",
+    "data": [
+      {
+        "country": "PG",
+        "data": 30.39,
+        "targetResult": "needsAttention"
+      }
+    ]
+  },
+  {
+    "indicator": "SPC_4_6_1",
+    "type": "%",
+    "data": [
+      {
+        "country": "PG",
+        "data": 78.8,
+        "targetResult": "onTarget"
+      }
+    ]
+  },
+  {
+    "indicator": "SPC_5_2_2",
+    "type": "%",
+    "data": []
+  },
+  {
+    "indicator": "SPC_5_a_2",
+    "type": "YN",
+    "data": []
+  },
+  {
+    "indicator": "SPC_6_3_1",
+    "type": "%",
+    "data": []
+  },
+  {
+    "indicator": "SPC_7_b_1",
+    "type": "#",
+    "data": [
+      {
+        "country": "PG",
+        "data": 0.383,
+        "targetResult": "needsAttention"
+      }
+    ]
+  },
+  {
+    "indicator": "SPC_8_9_1",
+    "type": "time",
+    "data": []
+  },
+  {
+    "indicator": "SPC_PROXY_2",
+    "type": "INVALID",
+    "data": []
+  },
+  {
+    "indicator": "SP_DYN_ADKL",
+    "type": "#",
+    "data": [
+      {
+        "country": "PG",
+        "data": 68,
+        "targetResult": "needsAttention"
+      }
+    ]
+  },
+  {
+    "indicator": "ST_EEV_ACCSEEA",
+    "type": "#",
+    "data": []
+  },
+  {
+    "indicator": "VA_EST",
+    "type": "time",
+    "data": [
+      {
+        "country": "PG",
+        "data": [
+          {
+            "year": 1996,
+            "value": 0.08
+          },
+          {
+            "year": 1998,
+            "value": 0.08
+          },
+          {
+            "year": 2000,
+            "value": -0.06
+          },
+          {
+            "year": 2002,
+            "value": -0.16
+          },
+          {
+            "year": 2003,
+            "value": -0.21
+          },
+          {
+            "year": 2004,
+            "value": -0.42
+          },
+          {
+            "year": 2005,
+            "value": -0.31
+          },
+          {
+            "year": 2006,
+            "value": 0.01
+          },
+          {
+            "year": 2007,
+            "value": 0.07
+          },
+          {
+            "year": 2008,
+            "value": 0.01
+          },
+          {
+            "year": 2009,
+            "value": -0.01
+          },
+          {
+            "year": 2010,
+            "value": -0.03
+          },
+          {
+            "year": 2011,
+            "value": -0.04
+          },
+          {
+            "year": 2012,
+            "value": -0.06
+          },
+          {
+            "year": 2013,
+            "value": 0
+          },
+          {
+            "year": 2014,
+            "value": 0.01
+          },
+          {
+            "year": 2015,
+            "value": 0.04
+          },
+          {
+            "year": 2016,
+            "value": 0.16
+          },
+          {
+            "year": 2017,
+            "value": 0.13
+          },
+          {
+            "year": 2018,
+            "value": 0.06
+          },
+          {
+            "year": 2019,
+            "value": 0.09
+          },
+          {
+            "year": 2020,
+            "value": 0.03
+          },
+          {
+            "year": 2021,
+            "value": 0.03
+          },
+          {
+            "year": 2022,
+            "value": -0.02
+          },
+          {
+            "year": 2023,
+            "value": 0.01
+          }
+        ],
+        "targetResult": "nearTarget"
+      }
+    ]
+  },
+  {
+    "indicator": "VC_DSR_AFFCT",
+    "type": "time",
+    "data": [
+      {
+        "country": "PG",
+        "data": [
+          {
+            "year": 2005,
+            "value": 2
+          },
+          {
+            "year": 2006,
+            "value": 216
+          },
+          {
+            "year": 2007,
+            "value": 56284
+          },
+          {
+            "year": 2008,
+            "value": 36393
+          },
+          {
+            "year": 2009,
+            "value": 580
+          },
+          {
+            "year": 2010,
+            "value": 0
+          },
+          {
+            "year": 2011,
+            "value": 0
+          },
+          {
+            "year": 2012,
+            "value": 172
+          },
+          {
+            "year": 2013,
+            "value": 264
+          },
+          {
+            "year": 2014,
+            "value": 0
+          },
+          {
+            "year": 2015,
+            "value": 0
+          },
+          {
+            "year": 2019,
+            "value": 2100
+          },
+          {
+            "year": 2020,
+            "value": 3297
+          }
+        ],
+        "targetResult": "needsAttention"
+      }
+    ]
+  },
+  {
+    "indicator": "VC_DSR_LSGP",
+    "type": "time",
+    "data": [
+      {
+        "country": "PG",
+        "data": [
+          {
+            "year": 2005,
+            "value": 0
+          },
+          {
+            "year": 2006,
+            "value": 0
+          },
+          {
+            "year": 2007,
+            "value": 0.01
+          },
+          {
+            "year": 2008,
+            "value": 0.01
+          },
+          {
+            "year": 2009,
+            "value": 0
+          },
+          {
+            "year": 2010,
+            "value": 0
+          },
+          {
+            "year": 2011,
+            "value": 0
+          },
+          {
+            "year": 2012,
+            "value": 0
+          },
+          {
+            "year": 2013,
+            "value": 0
+          },
+          {
+            "year": 2014,
+            "value": 0
+          },
+          {
+            "year": 2015,
+            "value": 0
+          },
+          {
+            "year": 2019,
+            "value": 0
+          },
+          {
+            "year": 2020,
+            "value": 0
+          }
+        ],
+        "targetResult": "overStretch"
+      }
+    ]
+  },
+  {
+    "indicator": "VC_VAW_MARR",
+    "type": "%",
+    "data": [
+      {
+        "country": "PG",
+        "data": 25.5,
+        "targetResult": "needsAttention"
+      }
+    ]
+  }
+]

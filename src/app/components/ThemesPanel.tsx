@@ -1,12 +1,24 @@
 import type { FC } from "react";
-import React, { useRef, useEffect} from 'react';
+import React, {useRef, useEffect, useState} from 'react';
 import {Theme} from "@/types";
-import * as d3 from "d3";
 
+import * as d3 from "d3";
+import {getRem} from "@/app/dataFunctions";
 interface ThemesPanelProps {
     themeData: Theme[];
+    filterByTheme: (themeIndex: number ) => void;
 }
-const ThemesPanel: FC<ThemesPanelProps> = ({ themeData }) => {
+const ThemesPanel: FC<ThemesPanelProps> = ({ themeData, filterByTheme }) => {
+    const [tick, setTick] = useState(0);
+    const clickedNode: React.RefObject<number>  = useRef(-1);
+
+    // Modified hook that returns the tick value
+    useEffect(() => {
+        const handleResize = () => setTick(t => t + 1);
+        window.addEventListener('resize', handleResize);
+        return () => window.removeEventListener('resize', handleResize);
+    }, []);
+
     const ref = useRef(null);
     useEffect(() => {
         if (!ref.current) return;
@@ -22,28 +34,40 @@ const ThemesPanel: FC<ThemesPanelProps> = ({ themeData }) => {
         svg.attr("width", svgWidth).attr("height", svgHeight);
 
 
-        const circlePadding = 8;
-        const themesPerRow = 4;
-        const widthSpace = svgWidth/themesPerRow;
-        const heightSpace = (svgHeight - (circlePadding * 2))/2;
-        const circleSpace = Math.min(widthSpace,heightSpace);
-        const circleRadius = (circleSpace - circlePadding)/2;
+        const fontSize = getRem() * 1.1;
+        const sideMargins = fontSize/2;
+        const circlePadding = sideMargins/2;
+        const themesPerRow = 7;
+        const widthSpace = (svgWidth - (sideMargins * 2))/themesPerRow;
+        const circleRadius = Math.min(25,(widthSpace - circlePadding)/2, svgHeight/6);
 
         svg.select(".themeTitle")
-            .attr("x",5)
-            .attr("y",circlePadding + circleRadius + 2)
-            .attr("font-size",14)
-            .style("dominant-baseline","middle")
-            .attr("font-weight",600)
+            .attr("x",sideMargins + circlePadding/2)
+            .attr("y",fontSize * 0.3)
+            .attr("font-size",fontSize)
+            .style("dominant-baseline","text-before-edge")
+            .attr("fill","#484848")
+            .attr("font-weight",500)
             .attr("text-anchor","start")
-            .text("THEMES")
+            .text("Thematic Areas")
+
+        svg.select(".selectedTheme")
+            .attr("x",sideMargins + circlePadding/2)
+            .attr("y",svgHeight  - fontSize * 0.5)
+            .attr("font-size",fontSize )
+            .attr("fill","#484848")
+            .attr("text-anchor","start")
+            .text("")
+
 
         const getThemeTransform = (d: Theme, i: number) => {
-            const multiple = i+1;
-            const transformX =  ((multiple % themesPerRow) + 0.5) * widthSpace;
-            const transformY = circlePadding  + (parseInt(String(multiple/themesPerRow))+ 0.5) * heightSpace;
+            const multiple = i;
+            const transformX =  sideMargins + ((multiple % themesPerRow) + 0.5) * widthSpace;
+            const transformY = svgHeight/2;
             return `translate(${transformX},${transformY})`
         }
+
+        const resetThemeOpacity = (d: Theme) =>  clickedNode.current === -1 || clickedNode.current === d.index ? 1 : 0.2;
         const themeGroup =  svg
             .selectAll(".themesGroup")
             .data(themeData)
@@ -55,45 +79,67 @@ const ThemesPanel: FC<ThemesPanelProps> = ({ themeData }) => {
             });
 
         themeGroup.attr("transform",getThemeTransform)
-
-        themeGroup.select(".themeCircle")
-            .attr("filter","url(#drop-shadow)")
-            .attr("r", circleRadius)
-            .attr("fill", (d) => d.fill)
-            .attr("cursor","pointer")
-            .on("mouseover",(event) => {
-                d3.selectAll(".themeCircle").interrupt().attr("fill-opacity",1);
+            .on("mouseover",(event,d) => {
+                d3.selectAll<SVGGElement,Theme>(".themesGroup").interrupt().attr("opacity",resetThemeOpacity);
                 d3.select(event.currentTarget)
                     .interrupt()
                     .transition()
                     .duration(100)
-                    .attr("fill-opacity",0.7);
+                    .attr("opacity",1);
+                svg.select(".selectedTheme").text(d.theme);
             })
             .on("mouseout",() => {
-                d3.selectAll(".themeCircle").interrupt().attr("fill-opacity",1);
+                svg.selectAll<SVGGElement,Theme>(".themesGroup")
+                    .interrupt()
+                    .attr("opacity",resetThemeOpacity);
+                if(clickedNode.current === -1){
+                    svg.select(".selectedTheme").text("");
+                }
             })
+            .on("click", (event, d) => {
+                clickedNode.current = clickedNode.current === d.index ? -1 : d.index;
+                svg.selectAll<SVGGElement,Theme>(".themesGroup")
+                    .interrupt()
+                    .attr("opacity",resetThemeOpacity);
+                if(clickedNode.current !== -1){
+                    svg.select(".selectedTheme").text(d.theme);
+                }
+                filterByTheme(clickedNode.current);
+            })
+
+
+        themeGroup.select(".themeCircle")
+            .attr("filter","url(#drop-shadow-themes)")
+            .attr("r", circleRadius)
+            .attr("fill","white")
+            .attr("stroke-width",circleRadius/7)
+            .attr("stroke","#808080")
+           // .attr("stroke", (d) => d.fill)
+            .attr("cursor","pointer");
 
         themeGroup.select(".themeLabel")
             .attr("pointer-events","none")
             .attr("text-anchor", "middle")
             .style("dominant-baseline","middle")
             .attr("font-weight",600)
-            .attr("font-size",30)
-            .attr("fill","white")
-            .attr("dy",3)
+            .attr("font-size",circleRadius * 1.5)
+           // .attr("fill",(d) => d.fill)
+            .attr("fill","#808080")
+            .attr("dy",circleRadius * 0.15)
             .text((d) => d.index);
 
 
-    }, [themeData])
+    }, [themeData,tick])
     return (
         <svg ref={ref}>
 
             <defs>
-                <filter id="drop-shadow" x="-20%" y="-20%" width="140%" height="140%">
-                    <feDropShadow dx="2" dy="3" stdDeviation="4" flood-opacity="0.2"/>
+                <filter id="drop-shadow-themes" x="-5%" y="-5%" width="110%" height="110%">
+                    <feDropShadow dx="0.5" dy="1" stdDeviation="1.5" floodOpacity="0.1"/>
                 </filter>
             </defs>
             <text className={"themeTitle"}></text>
+            <text className={"selectedTheme"}></text>
         </svg>
     );
 }
