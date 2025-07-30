@@ -114,11 +114,13 @@ export const generateRightTabPath = (tabWidth: number, tabHeight: number, overal
     const tabStartX = overallWidth - tabWidth;
 
     const path = [
-        `M 0 ${tabHeight}`,                                 // Start at origin
+        `M 0 ${tabHeight + 5}`,
+        `L 0 ${tabHeight}`,                                 // Start at origin
         `H ${tabStartX}`,                        // Move to start of tab
         `V ${0 + radius}`,              // Go up to just before the top
         `A ${radius} ${radius} 0 0 1 ${tabStartX + radius} ${0}`, // Rounded convex corner (up and right)
-        `H ${overallWidth}`                      // End at top right of tab
+        `H ${overallWidth}`,                      // End at top right of tab
+        `L ${overallWidth} ${tabHeight + 5}`
     ];
 
     return path.join(' ');

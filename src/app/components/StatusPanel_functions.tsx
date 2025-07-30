@@ -1,6 +1,7 @@
 import {FormattedData, DataResult} from "@/types";
 // @ts-ignore
 import { voronoiTreemap } from 'd3-voronoi-treemap';
+import seedrandom from 'seedrandom';
 import * as d3 from "d3";
 
 type VoronoiData = {
@@ -159,7 +160,9 @@ export const getVoronoi = (rootChildren: VoronoiData[], dataPoints: [number, num
         m.value = m.data.value;
     });
 
-    const voronoiTreemapFunction = voronoiTreemap().clip(dataPoints);
+    const rng = seedrandom('20');
+
+    const voronoiTreemapFunction = voronoiTreemap().prng(rng).clip(dataPoints);
 
     voronoiTreemapFunction(root);
 

@@ -25,7 +25,7 @@ export default function RootLayout({
       <body
         className={`${figTree.variable} ${figTree.variable} antialiased`}
       >
-      <div className="min-w-96 min-h-64 w-full overflow-x-auto">
+      <div className="min-w-96 min-h-64 w-full overflow-x-auto p-0">
         {children}
       </div>
       </body>

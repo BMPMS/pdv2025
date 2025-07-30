@@ -4,7 +4,7 @@ import {Boundary, Country, EEZGeoJSON, Region, Theme} from "@/types";
 import * as d3 from "d3";
 import {generateRightTabPath, getBoundaryData, getRegionData} from "@/app/components/MapPanel_functions";
 import {getRem} from "@/app/dataFunctions";
-import {measureWidth} from "@/app/components/VoronoiChart_functions";
+import {measureWidth} from "@/app/components/StatusPanel_functions";
 
 interface MapPanelProps {
     countryData: Country[];
@@ -45,6 +45,7 @@ const MapPanel: FC<MapPanelProps> = ({ countryData, countryGeoJson,filterByCount
         const tabHeight = fontSize * 1.5;
 
         svg.select(".dashboardTitle")
+            .attr("pointer-events","none")
             .attr("x",svgWidth - 10)
             .attr("y",fontSize * 0.3)
             .attr("font-size", fontSize * 1.5)
@@ -54,13 +55,15 @@ const MapPanel: FC<MapPanelProps> = ({ countryData, countryGeoJson,filterByCount
             .text("DATA + TARGET tracker");
 
         svg.select(".mapTabPath")
-            .attr("fill","none")
+            .attr("pointer-events","none")
+            .attr("fill","transparent")
             .attr("stroke","#E8E8E8")
             .attr("stroke-width",2)
             .attr("d", generateRightTabPath(tabWidth,tabHeight,svgWidth ))
-            .attr("transform",`translate(0,${svgHeight - tabHeight - 1})`)
+            .attr("transform",`translate(0,${svgHeight - tabHeight - 0.5})`)
 
         svg.select(".selectedCountryOrRegion")
+            .attr("pointer-events","none")
             .attr("x",svgWidth - tabWidth/2)
             .attr("y",svgHeight  - (tabHeight * 0.85)/2 )
             .style("dominant-baseline", "middle")
@@ -70,18 +73,15 @@ const MapPanel: FC<MapPanelProps> = ({ countryData, countryGeoJson,filterByCount
             .text(clickedLabel);
 
         svg.select(".clickToFilterLabel")
+            .attr("pointer-events","none")
             .attr("x", svgWidth - tabWidth - 5)
-            .attr("y",svgHeight  - fontSize/2 )
+            .attr("y",svgHeight  - fontSize * 0.6 )
             .style("font-style","italic")
             .style("dominant-baseline", "middle")
-            .attr("font-size",fontSize * 0.6 )
+            .attr("font-size",fontSize * 0.7 )
             .attr("fill","#808080")
             .attr("text-anchor","end")
             .text("click countries or regions to filter");
-
-
-
-
 
         const projection = d3
             .geoIdentity()
@@ -92,54 +92,64 @@ const MapPanel: FC<MapPanelProps> = ({ countryData, countryGeoJson,filterByCount
 
         const {boundaryData,radiusRange,populationDensityRange} = getBoundaryData(countryGeoJson,countryData, path,fontSize);
 
+
+        const legendDx = 20;
+        const legendDy = svgHeight - fontSize * 1.5;
+
         svg.select(".legendLabel")
-            .attr("x", svgWidth - 10)
-            .attr("y", svgHeight - tabHeight - (fontSize * 2.5))
-            .attr("text-anchor","end")
+            .attr("pointer-events","none")
+            .attr("x", legendDx)
+            .attr("y", legendDy)
+            .attr("text-anchor","start")
             .attr("fill","#808080")
             .attr("font-size",fontSize * 0.7)
             .text("Population Density");
 
         svg.select(".legendMetricLabel")
-            .attr("x", svgWidth - 10)
-            .attr("y", svgHeight - tabHeight - (fontSize * 1.8))
-            .attr("text-anchor","end")
+            .attr("pointer-events","none")
+            .attr("x",  legendDx)
+            .attr("y", legendDy + (fontSize * 0.7))
+            .attr("text-anchor","start")
             .attr("fill","#808080")
             .attr("font-size",fontSize * 0.6)
             .text("people/km²");
 
         svg.select(".legendCircleMax")
+            .attr("pointer-events","none")
             .attr("r",radiusRange[1])
-            .attr("cx",svgWidth - 10 - radiusRange[1])
-            .attr("cy", svgHeight - tabHeight - (fontSize * 3.5) - radiusRange[1])
+            .attr("cx", legendDx + radiusRange[1])
+            .attr("cy", legendDy - fontSize - radiusRange[1])
             .attr("fill","transparent")
-            .attr("stroke","#D0D0D0")
+            .attr("stroke","#A0A0A0")
             .attr("stroke-width",0.75);
 
         svg.select(".legendLabelMax")
+            .attr("pointer-events","none")
             .attr("text-anchor","middle")
             .attr("font-size",fontSize * 0.7)
-            .attr("x",svgWidth - 10 - radiusRange[1])
-            .attr("y", svgHeight - tabHeight - (fontSize * 3.5) - radiusRange[1])
-            .attr("fill","#D0D0D0")
+            .attr("x", legendDx + radiusRange[1])
+            .attr("y", legendDy - fontSize  - radiusRange[1])
+            .attr("fill","#B0B0B0")
             .text(d3.format(".0f")(populationDensityRange[1] || 0))
 
 
         svg.select(".legendLabelMin")
+            .attr("pointer-events","none")
             .attr("text-anchor","middle")
             .attr("font-size",fontSize * 0.65)
-            .attr("x",svgWidth - 10 - radiusRange[1])
-            .attr("y", svgHeight - tabHeight - (fontSize * 3.3) - radiusRange[0])
-            .attr("fill","#D0D0D0")
+            .attr("x", legendDx + radiusRange[1])
+            .attr("y", legendDy - fontSize * 0.8 - radiusRange[0])
+            .attr("fill","#B0B0B0")
             .text(d3.format(".0f")(populationDensityRange[0] || 0))
 
 
         svg.select(".legendCircleMin")
+            .attr("pointer-events","none")
             .attr("r",radiusRange[0])
-            .attr("cx",svgWidth - 10 - radiusRange[1])
-            .attr("cy", svgHeight - tabHeight - (fontSize * 3.5) - radiusRange[0])
+            .attr("cx", legendDx + radiusRange[1])
+            .attr("cy", legendDy - fontSize  - radiusRange[0])
             .attr("fill","transparent")
-            .attr("stroke","#D0D0D0")
+            .attr("stroke","#A0A0A0")
             .attr("stroke-width",0.75);
 
         const resetBoundaryOpacity = (d: Boundary) =>  clickedNodes.current.length === 0 || clickedNodes.current.includes(d.iso) ? 1 : 0.2;
@@ -239,7 +249,7 @@ const MapPanel: FC<MapPanelProps> = ({ countryData, countryGeoJson,filterByCount
         simulation.tick(300); // instead of running simulation on tick, skip to tick 300 so no jittering
 
         // transform group
-        boundaryGroup.attr("transform", (d) => `translate(${d.x},${d.y + tabHeight/4})`);
+        boundaryGroup.attr("transform", (d) => `translate(${d.x},${(d.y ||0) + tabHeight/4})`);
 
         const regionData = getRegionData(boundaryData);
 
@@ -304,6 +314,7 @@ const MapPanel: FC<MapPanelProps> = ({ countryData, countryGeoJson,filterByCount
                 </filter>
             </defs>
             <text className={"dashboardTitle"}></text>
+            <path className={"mapTabPath"}></path>
             <text className={"selectedCountryOrRegion"}></text>
             <text className={"clickToFilterLabel"}></text>
             <text className={"legendLabel"}></text>
@@ -312,7 +323,7 @@ const MapPanel: FC<MapPanelProps> = ({ countryData, countryGeoJson,filterByCount
             <text className={"legendLabelMax"}></text>
             <circle className={"legendCircleMin"}></circle>
             <text className={"legendLabelMin"}></text>
-            <path className={"mapTabPath"}></path>
+
             <g className={"regionGroup"}></g>
             <g className={"countryGroup"}></g>
         </svg>

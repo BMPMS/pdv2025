@@ -80,7 +80,7 @@ export const formatData = (indicatorData: Indicator[], allData: DataEntry[]) => 
         if(indicator.type === "INVALID"){
             indicatorAcc.push({
                 countryFilter: "multiple",
-                indicator: indicator.indicator,
+                indicator: `${indicator.indicator} - ${indicator.indicatorName}`,
                 type: indicator.type,
                 data:[]
             })

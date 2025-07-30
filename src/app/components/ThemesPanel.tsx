@@ -4,7 +4,7 @@ import {Theme} from "@/types";
 
 import * as d3 from "d3";
 import {getRem} from "@/app/dataFunctions";
-import {measureWidth} from "@/app/components/VoronoiChart_functions";
+import {measureWidth} from "@/app/components/StatusPanel_functions";
 interface ThemesPanelProps {
     themeData: Theme[];
     filterByTheme: (themeIndex: number ) => void;
@@ -65,6 +65,7 @@ const ThemesPanel: FC<ThemesPanelProps> = ({ themeData, filterByTheme }) => {
         const tabWidth = measureWidth(themeLabel,fontSize) + sideMargins * 2.5;
 
         svg.select(".selectedTheme")
+            .attr("pointer-events","none")
             .attr("x", tabWidth/2)
             .attr("y",svgHeight  - (tabHeight * 0.85)/2 )
             .style("dominant-baseline", "middle")
@@ -74,21 +75,23 @@ const ThemesPanel: FC<ThemesPanelProps> = ({ themeData, filterByTheme }) => {
             .text(themeLabel);
 
         svg.select(".clickToFilterLabel")
+            .attr("pointer-events","none")
             .attr("x", tabWidth + 5)
-            .attr("y",svgHeight  - fontSize/2 )
+            .attr("y",svgHeight  - fontSize * 0.6 )
             .style("font-style","italic")
             .style("dominant-baseline", "middle")
-            .attr("font-size",fontSize * 0.6 )
+            .attr("font-size",fontSize * 0.7 )
             .attr("fill","#808080")
             .attr("text-anchor","start")
             .text("click themes to filter");
 
         svg.select(".themeTabPath")
+            .attr("pointer-events","none")
             .attr("fill","none")
             .attr("stroke","#E8E8E8")
             .attr("stroke-width",2)
             .attr("d", generateLeftTabPath(tabWidth,tabHeight,svgWidth ))
-            .attr("transform",`translate(0,${svgHeight - tabHeight - 1})`)
+            .attr("transform",`translate(0,${svgHeight - tabHeight - 0.5})`)
 
         const getThemeTransform = (d: Theme, i: number) => {
             const multiple = i;
