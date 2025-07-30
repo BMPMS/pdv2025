@@ -70,18 +70,18 @@ export const getBoundaryData = (
         d3.GeoPermissibleObjects>,
     maxRadius: number) => {
     const radiusRange = [maxRadius/3, maxRadius];
-    let populationRange = d3.extent(countryData, (d) => d.Population / d.landMass)
+    let populationDensityRange = d3.extent(countryData, (d) => d.Population / d.landMass)
 
     const boundaryByIso = Array.from(
         d3.group(geoJson.features, (g) => g.properties.ISO_Ter1)
     );
     const radiusScale = d3
         .scaleSqrt()
-        .domain([populationRange[0] || 0, populationRange[1] || 0])
+        .domain([populationDensityRange[0] || 0, populationDensityRange[1] || 0])
         .range(radiusRange)
         .clamp(true)
 
-    return boundaryByIso.reduce((acc, entry) => {
+    const boundaryData =  boundaryByIso.reduce((acc, entry) => {
         const centroids = entry[1].map((m) => path.centroid(m));
         const dataPoint = countryData.find(
             (f) => iso2ToIso3Map[f.ISOCode] === entry[0]
@@ -105,4 +105,21 @@ export const getBoundaryData = (
         }
         return acc;
     }, [] as Boundary[]);
+
+    return {boundaryData,radiusRange, populationDensityRange}
+}
+
+export const generateRightTabPath = (tabWidth: number, tabHeight: number, overallWidth: number, cornerRadius = 5) =>  {
+    const radius = Math.min(cornerRadius, Math.abs(tabHeight), tabWidth);
+    const tabStartX = overallWidth - tabWidth;
+
+    const path = [
+        `M 0 ${tabHeight}`,                                 // Start at origin
+        `H ${tabStartX}`,                        // Move to start of tab
+        `V ${0 + radius}`,              // Go up to just before the top
+        `A ${radius} ${radius} 0 0 1 ${tabStartX + radius} ${0}`, // Rounded convex corner (up and right)
+        `H ${overallWidth}`                      // End at top right of tab
+    ];
+
+    return path.join(' ');
 }

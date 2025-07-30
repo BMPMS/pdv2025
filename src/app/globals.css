@@ -75,3 +75,16 @@ body {
 .d3ChartContainer {
   position: relative;
 }
+.chartTooltip {
+  visibility: hidden;
+  position: absolute;
+  text-align: left;
+  border: 0.5px solid lightgrey;
+  padding: 5px;
+  font: 12px sans-serif;
+  background: white;
+  border-radius: 4px;
+  pointer-events: none;
+  width: auto;
+  height: auto;
+}

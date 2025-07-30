@@ -53,7 +53,8 @@ export default  function Home() {
     }
 
   return (
-      <><div className="w-screen h-screen  bg-white flex flex-col">
+      <> <div className={"chartTooltip"}></div>
+          <div className="w-screen h-screen  bg-white flex flex-col">
           <div className="flex h-[min(30vh,25vw)] w-full">
               <div className="w-1/3 flex flex-col">
                   <div className="h-1/2  p-4"><img src="/BP2050-Logo.png" alt="BP2050 Logo"  className=" w-full h-full object-left object-contain"/></div>

@@ -2,8 +2,9 @@ import type { FC } from "react";
 import React, {useRef, useEffect, useState} from 'react';
 import {Boundary, Country, EEZGeoJSON, Region, Theme} from "@/types";
 import * as d3 from "d3";
-import {getBoundaryData, getRegionData} from "@/app/components/MapPanel_functions";
+import {generateRightTabPath, getBoundaryData, getRegionData} from "@/app/components/MapPanel_functions";
 import {getRem} from "@/app/dataFunctions";
+import {measureWidth} from "@/app/components/VoronoiChart_functions";
 
 interface MapPanelProps {
     countryData: Country[];
@@ -15,7 +16,7 @@ const MapPanel: FC<MapPanelProps> = ({ countryData, countryGeoJson,filterByCount
 
     const [tick, setTick] = useState(0);
     const clickedNodes: React.RefObject<string[]>  = useRef([]);
-    const clickedLabel: React.RefObject<string>  = useRef("");
+    const [clickedLabel, setClickedLabel] = useState("All Countries");
 
     // Modified hook that returns the tick value
     useEffect(() => {
@@ -39,6 +40,9 @@ const MapPanel: FC<MapPanelProps> = ({ countryData, countryGeoJson,filterByCount
         svg.attr("width", svgWidth).attr("height", svgHeight);
 
         const fontSize = getRem() * 1.1;
+        const sideMargins = fontSize/2;
+        const tabWidth = measureWidth(clickedLabel,fontSize) + sideMargins * 2.5;
+        const tabHeight = fontSize * 1.5;
 
         svg.select(".dashboardTitle")
             .attr("x",svgWidth - 10)
@@ -47,35 +51,103 @@ const MapPanel: FC<MapPanelProps> = ({ countryData, countryGeoJson,filterByCount
             .style("dominant-baseline","text-before-edge")
             .attr("fill","#484848")
             .attr("text-anchor","end")
-            .text("DATA + TARGET tracker")
+            .text("DATA + TARGET tracker");
+
+        svg.select(".mapTabPath")
+            .attr("fill","none")
+            .attr("stroke","#E8E8E8")
+            .attr("stroke-width",2)
+            .attr("d", generateRightTabPath(tabWidth,tabHeight,svgWidth ))
+            .attr("transform",`translate(0,${svgHeight - tabHeight - 1})`)
+
+        svg.select(".selectedCountryOrRegion")
+            .attr("x",svgWidth - tabWidth/2)
+            .attr("y",svgHeight  - (tabHeight * 0.85)/2 )
+            .style("dominant-baseline", "middle")
+            .attr("font-size", fontSize)
+            .attr("fill","#484848")
+            .attr("text-anchor","middle")
+            .text(clickedLabel);
+
+        svg.select(".clickToFilterLabel")
+            .attr("x", svgWidth - tabWidth - 5)
+            .attr("y",svgHeight  - fontSize/2 )
+            .style("font-style","italic")
+            .style("dominant-baseline", "middle")
+            .attr("font-size",fontSize * 0.6 )
+            .attr("fill","#808080")
+            .attr("text-anchor","end")
+            .text("click countries or regions to filter");
+
+
 
 
 
         const projection = d3
             .geoIdentity()
             .reflectY(true)
-            .fitSize([svgWidth, svgHeight], countryGeoJson);
+            .fitSize([svgWidth, svgHeight-(tabHeight/2)], countryGeoJson);
 
         const path = d3.geoPath(projection);
 
-        const boundaryData = getBoundaryData(countryGeoJson,countryData, path,fontSize);
+        const {boundaryData,radiusRange,populationDensityRange} = getBoundaryData(countryGeoJson,countryData, path,fontSize);
 
-        const boundaryDataMinX = d3.min(boundaryData, (d) => d.centroid[0] - d.radius);
+        svg.select(".legendLabel")
+            .attr("x", svgWidth - 10)
+            .attr("y", svgHeight - tabHeight - (fontSize * 2.5))
+            .attr("text-anchor","end")
+            .attr("fill","#808080")
+            .attr("font-size",fontSize * 0.7)
+            .text("Population Density");
 
-        svg.select(".selectedCountryOrRegion")
-            .attr("x",boundaryDataMinX || 10)
-            .attr("y",svgHeight  - fontSize * 0.5)
-            .attr("font-size", fontSize)
-            .attr("fill","#484848")
-            .attr("text-anchor","start")
-            .text("")
+        svg.select(".legendMetricLabel")
+            .attr("x", svgWidth - 10)
+            .attr("y", svgHeight - tabHeight - (fontSize * 1.8))
+            .attr("text-anchor","end")
+            .attr("fill","#808080")
+            .attr("font-size",fontSize * 0.6)
+            .text("people/km²");
+
+        svg.select(".legendCircleMax")
+            .attr("r",radiusRange[1])
+            .attr("cx",svgWidth - 10 - radiusRange[1])
+            .attr("cy", svgHeight - tabHeight - (fontSize * 3.5) - radiusRange[1])
+            .attr("fill","transparent")
+            .attr("stroke","#D0D0D0")
+            .attr("stroke-width",0.75);
+
+        svg.select(".legendLabelMax")
+            .attr("text-anchor","middle")
+            .attr("font-size",fontSize * 0.7)
+            .attr("x",svgWidth - 10 - radiusRange[1])
+            .attr("y", svgHeight - tabHeight - (fontSize * 3.5) - radiusRange[1])
+            .attr("fill","#D0D0D0")
+            .text(d3.format(".0f")(populationDensityRange[1] || 0))
+
+
+        svg.select(".legendLabelMin")
+            .attr("text-anchor","middle")
+            .attr("font-size",fontSize * 0.65)
+            .attr("x",svgWidth - 10 - radiusRange[1])
+            .attr("y", svgHeight - tabHeight - (fontSize * 3.3) - radiusRange[0])
+            .attr("fill","#D0D0D0")
+            .text(d3.format(".0f")(populationDensityRange[0] || 0))
+
+
+        svg.select(".legendCircleMin")
+            .attr("r",radiusRange[0])
+            .attr("cx",svgWidth - 10 - radiusRange[1])
+            .attr("cy", svgHeight - tabHeight - (fontSize * 3.5) - radiusRange[0])
+            .attr("fill","transparent")
+            .attr("stroke","#D0D0D0")
+            .attr("stroke-width",0.75);
 
         const resetBoundaryOpacity = (d: Boundary) =>  clickedNodes.current.length === 0 || clickedNodes.current.includes(d.iso) ? 1 : 0.2;
         const resetHullOpacity = (d: Region) =>  clickedNodes.current.length === 0 || clickedNodes.current.includes(d.region) ? 0.2 : 0;
 
 
         const boundaryHullMouseout = () => {
-            svg.select(".selectedCountryOrRegion").text(clickedLabel.current);
+            svg.select(".selectedCountryOrRegion").text(clickedLabel);
             svg.selectAll<SVGPathElement,Region>(".regionHull").attr("opacity",resetHullOpacity);
             svg.selectAll<SVGCircleElement,Boundary>(".boundaryCircle").attr("fill-opacity",resetBoundaryOpacity);
 
@@ -119,24 +191,30 @@ const MapPanel: FC<MapPanelProps> = ({ countryData, countryGeoJson,filterByCount
             .attr("filter","url(#drop-shadow-map)")
             .attr("r", (d) => d.radius)
             .attr("fill", (d, i) => `url(#countryImage${i})`)
-            .on("mouseover",(event,d) => {
-                d3.select(".selectedCountryOrRegion").text(`${d.dataPoint["Country name"]}`);
+            .on("mousemove",(event,d) => {
+                d3.select(".chartTooltip")
+                    .style("visibility","visible")
+                    .style("left",`${event.pageX + 12}px`)
+                    .style("top",`${event.pageY - 6}px`)
+                    .html(d.dataPoint["Country name"])
                 d3.selectAll<SVGCircleElement,Boundary>(".boundaryCircle")
                     .attr("fill-opacity",(c) => c.iso === d.iso || clickedNodes.current.includes(c.iso)? 1 : 0.2);
                 d3.selectAll<SVGPathElement,Region>(".regionHull").attr("opacity",(h) => clickedNodes.current.includes(h.region) ? 0.2 : 0);
             })
             .on("mouseout",() => {
+                d3.select(".chartTooltip")
+                    .style("visibility","hidden");
                 boundaryHullMouseout();
               })
             .on("click", (event, d) => {
                 if(clickedNodes.current.length === 1 && clickedNodes.current.includes(d.iso)){
                     // this country clicked
                     clickedNodes.current = [];
-                    clickedLabel.current = "";
+                    setClickedLabel("All Countries");
                     filterByCountryOrRegion("","");
                 } else {
                     clickedNodes.current = [d.iso];
-                    clickedLabel.current = d.dataPoint["Country name"];
+                    setClickedLabel(d.dataPoint["Country name"]);
                     filterByCountryOrRegion(d.iso,"Country");
                 }
                 boundaryHullMouseout();
@@ -161,7 +239,7 @@ const MapPanel: FC<MapPanelProps> = ({ countryData, countryGeoJson,filterByCount
         simulation.tick(300); // instead of running simulation on tick, skip to tick 300 so no jittering
 
         // transform group
-        boundaryGroup.attr("transform", (d) => `translate(${d.x},${d.y})`);
+        boundaryGroup.attr("transform", (d) => `translate(${d.x},${d.y + tabHeight/4})`);
 
         const regionData = getRegionData(boundaryData);
 
@@ -186,32 +264,38 @@ const MapPanel: FC<MapPanelProps> = ({ countryData, countryGeoJson,filterByCount
             .attr("stroke-linejoin", "round")
             .attr("stroke-width", 30)
             .attr("d", (d) => `M${d.hull.join("L")}Z`)
-            .on("mouseover",(event,d) => {
-                d3.select(".selectedCountryOrRegion").text(`${d.region} - ${d.countries.length} countries`);
+            .on("mousemove",(event,d) => {
+                d3.select(".chartTooltip")
+                    .style("visibility","visible")
+                    .style("left",`${event.pageX + 12}px`)
+                    .style("top",`${event.pageY - 6}px`)
+                    .html(`${d.region} - ${d.countries.length} countries`)
+
                 d3.selectAll<SVGPathElement,Region>(".regionHull")
                     .attr("opacity",(h) => clickedNodes.current.includes(h.region) || h.region === d.region ? 0.2 : 0);
                 d3.selectAll<SVGCircleElement,Boundary>(".boundaryCircle")
                     .attr("fill-opacity", (c) => c.dataPoint.Region === d.region || clickedNodes.current.includes(c.iso) ? 1 : 0.2);
             })
             .on("mouseout",() => {
+                d3.select(".chartTooltip").style("visibility","hidden");
                 boundaryHullMouseout();
             })
             .on("click", (event, d) => {
                 if(clickedNodes.current.includes(d.region)){
                     clickedNodes.current = [];
-                    clickedLabel.current = "";
+                    setClickedLabel("All Countries");
                     filterByCountryOrRegion( "" , "");
 
                 } else {
                     clickedNodes.current = d.countries.concat([d.region]);
-                    clickedLabel.current = `${d.region} - ${d.countries.length} countries`;
+                    setClickedLabel(`${d.region} - ${d.countries.length} countries`);
                     filterByCountryOrRegion( d.region,"Region");
 
                 }
                 boundaryHullMouseout();
             })
 
-    }, [countryData, tick])
+    }, [countryData, tick, clickedLabel])
     return (
         <svg ref={ref}>
             <defs>
@@ -221,6 +305,14 @@ const MapPanel: FC<MapPanelProps> = ({ countryData, countryGeoJson,filterByCount
             </defs>
             <text className={"dashboardTitle"}></text>
             <text className={"selectedCountryOrRegion"}></text>
+            <text className={"clickToFilterLabel"}></text>
+            <text className={"legendLabel"}></text>
+            <text className={"legendMetricLabel"}></text>
+            <circle className={"legendCircleMax"}></circle>
+            <text className={"legendLabelMax"}></text>
+            <circle className={"legendCircleMin"}></circle>
+            <text className={"legendLabelMin"}></text>
+            <path className={"mapTabPath"}></path>
             <g className={"regionGroup"}></g>
             <g className={"countryGroup"}></g>
         </svg>
