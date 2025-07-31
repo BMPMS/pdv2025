@@ -94,6 +94,7 @@ svg{
   width: auto;
   max-width: 30vw;
   height: auto;
+  z-index: 3000;
 }
 
 
@@ -113,7 +114,7 @@ svg{
 .modal-box {
   text-align: center;
   background: white;
-  padding: 8px;
+  padding: 0px;
   border-radius: 8px;
   color: #484848;
 }

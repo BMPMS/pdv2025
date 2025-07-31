@@ -5,12 +5,15 @@ import * as d3 from "d3";
 import {getRem} from "@/app/dataFunctions";
 
 import {
+    drawLegend,
     getMissingData,
     getSplitRoundedPolygons, getVoronoi,
     getVoronoiData,
-    measureWidth
+    measureWidth,
+    wrap
 } from "@/app/components/StatusPanel_functions";
 import DatasetPopup from "@/app/components/DatasetPopup";
+import {COLOR_SCALE, COLORS, LEGEND_LABELS} from "@/constants/constants";
 
 interface DataPanelProps {
     chartData: FormattedData[];
@@ -45,7 +48,6 @@ const StatusPanel: FC<DataPanelProps> = ({ chartData }) => {
         svg.attr("width", svgWidth)
             .attr("height", svgHeight);
 
-
         const fontSize = getRem() * 1.5;
 
         svg.select(".dataTitle")
@@ -54,77 +56,30 @@ const StatusPanel: FC<DataPanelProps> = ({ chartData }) => {
             .attr("y",fontSize * 0.8)
             .attr("font-size",fontSize)
             .style("dominant-baseline","text-before-edge")
-            .attr("fill","#484848")
+            .attr("fill",COLORS.darkgrey)
             .attr("font-weight",500)
             .attr("text-anchor","start")
             .text("CURRENT STATUS");
 
-        const legendLabels = {overStretch: "> stretch Target",
-            onTarget: "on Target",
-            nearTarget: "near Target",
-            needsAttention: "needs attention",
-            missing: "missing",
-            }
 
-        const colorScale = {
-            missing: "#B0B0B0",
-            needsAttention: "#d80526",
-            nearTarget: "#ff980c",
-            onTarget: "#6da545",
-            overStretch: "#016600"
-        };
-
-        let currentX = 0;
-
-        const legendData = Object.keys(legendLabels).reduce((acc, entry) => {
-            const text = legendLabels[entry as keyof typeof legendLabels]
-            const labelLength = measureWidth(text, fontSize * 0.55);
-            acc.push({
-                text,
-                xPos: currentX,
-                fill: colorScale[entry as keyof typeof colorScale]
-            })
-            currentX += labelLength + 15;
-            return acc;
-        },[] as {text: string, xPos: number,fill: string}[])
-
-        const legendGroup = svg
-            .select(".legendGroup")
-            .selectAll(".legendLabelsGroup")
-            .data(legendData)
-            .join((group) => {
-                const enter = group.append("g").attr("class", "legendLabelsGroup");
-                enter.append("text").attr("class", "legendLabel");
-                return enter;
-            });
-
-        legendGroup.select(".legendLabel")
-            .attr("pointer-events","none")
-            .attr("fill", (d) => d.fill)
-            .attr("x", (d) => margins.left + d.xPos)
-            .attr("y", margins.top - fontSize * 0.5)
-            .style("text-anchor","start")
-            .attr("font-size",fontSize * 0.55)
-            .attr("font-weight",600)
-            .style("dominant-baseline","middle")
-            .text((d) => d.text)
-
+        drawLegend(svg,fontSize,margins.left, margins.top);
 
         const invalidData = chartData.filter((f) => f.type === "INVALID");
-        const invalidDataY = margins.right + fontSize
+        const invalidDataX = margins.left;
+        const invalidDataY = svgHeight - margins.bottom + fontSize;
 
         svg.select(".invalidCircle")
             .attr("fill","white")
-            .attr("stroke", colorScale.needsAttention)
+            .attr("stroke", COLOR_SCALE.needsAttention)
             .attr("stroke-width",fontSize * 0.05)
             .attr("r", fontSize * 0.5)
-            .attr("cx", svgWidth - margins.right - fontSize * 0.5)
+            .attr("cx", invalidDataX + fontSize * 0.5)
             .attr("cy", invalidDataY);
 
         svg.select(".invalidCircleLabel")
             .attr("pointer-events","none")
-            .attr("fill", colorScale.needsAttention)
-            .attr("x", svgWidth - margins.right - fontSize * 0.5)
+            .attr("fill", COLOR_SCALE.needsAttention)
+            .attr("x", invalidDataX+ fontSize * 0.5)
             .attr("y", invalidDataY + fontSize * 0.075)
             .style("text-anchor","middle")
             .attr("font-size",fontSize * 0.8)
@@ -133,10 +88,10 @@ const StatusPanel: FC<DataPanelProps> = ({ chartData }) => {
             .text("!")
 
          svg.select(".invalidLabel")
-            .attr("fill", colorScale.needsAttention)
-            .attr("x", svgWidth - margins.right - fontSize - 5)
-            .attr("y", invalidDataY)
-            .style("text-anchor","end")
+            .attr("fill", COLOR_SCALE.needsAttention)
+            .attr("x", invalidDataX +  fontSize + 5)
+            .attr("y", invalidDataY + 2)
+            .style("text-anchor","start")
             .attr("font-size",fontSize * 0.5)
             .attr("font-weight","normal")
             .style("dominant-baseline","middle")
@@ -144,12 +99,13 @@ const StatusPanel: FC<DataPanelProps> = ({ chartData }) => {
 
 
         svg.selectAll(".invalidItem")
+            .attr("cursor","pointer")
             .on("mousemove", (event) => {
                 d3.select(".chartTooltip")
                     .style("visibility","visible")
                     .style("left",`${event.pageX + 12}px`)
-                    .style("top",`${event.pageY - 6}px`)
-                    .html(invalidData.map((m) => `${m.indicator}<br>`).join(""))
+                    .style("top",`${event.pageY - 6 - (invalidData.length * 15)}px`)
+                    .html(`<span style="color:${COLOR_SCALE["needsAttention"]}">${invalidData.map((m) => `${m.indicator}-${m.indicatorName}<br>`).join("")}</span>`)
             })
             .on("mouseout",() => {
                 d3.select(".chartTooltip")
@@ -158,33 +114,32 @@ const StatusPanel: FC<DataPanelProps> = ({ chartData }) => {
             })
 
         const allCountries = [...new Set(chartData.map((m) => m.data.map((d) => d.country)).flat())];
-
-
         const voronoiData = getVoronoiData(chartData,allCountries);
 
+        const totalDatasets = d3.sum(voronoiData, (s) => s.value);
         svg.select(".datasetsCount")
             .attr("pointer-events","none")
-            .attr("x",margins.left)
-            .attr("y",svgHeight - margins.bottom + fontSize * 0.2)
-            .attr("font-size",fontSize * 0.9)
+            .attr("x",svgWidth - margins.right)
+            .attr("y",fontSize * 0.8)
+            .attr("font-size",fontSize)
             .style("dominant-baseline","text-before-edge")
-            .attr("fill","#484848")
+            .attr("fill",COLORS.black)
             .attr("font-weight",500)
-            .attr("text-anchor","start")
-            .text(`${d3.sum(voronoiData, (s) => s.value)} datasets*`);
+            .attr("text-anchor","end")
+            .text(`${totalDatasets} datasets*`);
 
-        svg.select(".datasetsCountInfo")
+        svg.select<SVGTextElement>(".datasetsCountInfo")
             .attr("pointer-events","none")
-            .attr("x",margins.left)
-            .attr("y",svgHeight - margins.bottom + fontSize * 1.3)
+            .attr("transform", `translate(${svgWidth - margins.right},${svgHeight - margins.bottom + fontSize * 0.5})`)
+            .attr("dy",0)
             .attr("font-size",fontSize * 0.5)
             .style("font-style","italic")
             .style("dominant-baseline","text-before-edge")
-            .attr("fill","#484848")
+            .attr("fill",COLORS.darkgrey)
             .attr("font-weight",500)
-            .attr("text-anchor","start")
-            .text("* dataset count > indicator count due to disaggregation by sub sets (ie SEX) in some cases");
-
+            .attr("text-anchor","end")
+            .text("* indicators x country count - some indicators have multiple sub sets due to disaggregation by SEX, EDUCATION and more.")
+            .call(wrap,svgWidth * 0.6, fontSize * 0.5);
 
 
         const valueExtent = d3.extent(voronoiData, (d) => d.value);
@@ -236,8 +191,31 @@ const StatusPanel: FC<DataPanelProps> = ({ chartData }) => {
             .select(".missingVoronoiPath")
             .attr("stroke", "#F5F5F2")
             .attr("stroke-width", (d) => (d.depth === 1 ? 0 : 0.75))
-            .attr("fill", (d) => (d.depth > 1 ? "transparent" : colorScale["missing"]))
-            .attr("d", (d) => d.path);
+            .attr("fill", (d) => (d.depth > 1 ? "transparent" : COLOR_SCALE["missing"]))
+            .attr("d", (d) => d.path)
+            .on("mousemove", (event, d) => {
+                let tooltipText = "";
+                if(countryFilter === "multiple"){
+                    tooltipText = `${d.value} datasets <span style="font-weight: bold; color:${COLOR_SCALE["missing"]};"> ${LEGEND_LABELS["missing"]} </span>(${d3.format(".0%")((d.value || 0)/totalDatasets)})`
+                } else {
+                    tooltipText = `<span>Indicator:</span> ${d.name}<br>Click for details`
+                }
+                d3.select(".chartTooltip")
+                    .style("visibility","visible")
+                    .style("left",`${event.pageX + 12}px`)
+                    .style("top",`${event.pageY - 6}px`)
+                    .html(tooltipText)
+            })
+            .on("mouseout", (event, d) => {
+                d3.select(".chartTooltip")
+                    .style("visibility","hidden")
+            })
+            .on("click",(event, d) => {
+                if(countryFilter !== "multiple"){
+                    setClickedIndicator(chartData.find((f) => f.indicator === d.name))
+                    setModalOpen(true);
+                }
+            });
 
         const missingPathCentroid = d3.polygonCentroid(rectangularPaths.right as [number,number][]);
 
@@ -250,7 +228,7 @@ const StatusPanel: FC<DataPanelProps> = ({ chartData }) => {
             .attr("y",  -valueFontSize * 0.8 )
             .attr("rx", 5)
             .attr("ry", 5)
-            .attr("fill", "#F5F5F2")
+            .attr("fill", "white")
             .attr("font-size", valueFontSize)
             .text( missingData ? missingData.value : "");
 
@@ -261,13 +239,13 @@ const StatusPanel: FC<DataPanelProps> = ({ chartData }) => {
             .attr("font-size", valueFontSize)
             .attr(
                 "transform",
-                (d) =>
+
                     `translate(${missingPathCentroid[0] + margins.left},${missingPathCentroid[1] + 6 + margins.top})`
             )
             .text(missingData ? missingData.value : "")
             .attr(
                 "fill",
-                formattedMissingData.length > 1 ? colorScale["missing"] : "white"
+                formattedMissingData.length > 1 ? COLOR_SCALE["missing"] : "white"
             );
 
         let allNodes = getVoronoi(childrenWithData, rectangularPaths.left as [number,number][]);
@@ -291,8 +269,25 @@ const StatusPanel: FC<DataPanelProps> = ({ chartData }) => {
             .attr("stroke", "#F5F5F2")
             .attr("stroke-width", (d) => (d.depth === 1 ? 2 : 0.75))
             .attr("fill", (d) =>
-                d.depth > 1 ? "transparent" : colorScale[d.data.name as keyof typeof colorScale]
+                d.depth > 1 ? "transparent" : COLOR_SCALE[d.data.name as keyof typeof COLOR_SCALE]
             )
+            .on("mousemove", (event, d) => {
+                let tooltipText = "";
+                if(countryFilter === "multiple"){
+                    tooltipText = `${d.value} datasets <span style="font-weight: bold; color:${COLOR_SCALE[d.data.name as keyof typeof COLOR_SCALE]};">${LEGEND_LABELS[d.data.name as keyof typeof LEGEND_LABELS]}</span> (${d3.format(".0%")((d.value || 0)/totalDatasets)})`
+                } else {
+                   tooltipText = `<strong>Indicator:</strong> ${d.data.name}<br>Click for details`
+                }
+                d3.select(".chartTooltip")
+                    .style("visibility","visible")
+                    .style("left",`${event.pageX + 12}px`)
+                    .style("top",`${event.pageY - 6}px`)
+                    .html(tooltipText)
+            })
+            .on("mouseout", (event, d) => {
+                d3.select(".chartTooltip")
+                    .style("visibility","hidden")
+            })
             .on("click",(event, d) => {
                 if(countryFilter !== "multiple"){
                     setClickedIndicator(chartData.find((f) => f.indicator === d.data.name))
@@ -327,7 +322,7 @@ const StatusPanel: FC<DataPanelProps> = ({ chartData }) => {
             .attr("y", (d) => -fontScale(d.data.value) *  0.8)
             .attr("rx", 2)
             .attr("ry", 2)
-            .attr("fill", "#F5F5F2")
+            .attr("fill", "white")
             .attr("font-size", (d) => fontScale(d.data.value))
             .text((d) => d.data.value);
 
@@ -337,7 +332,7 @@ const StatusPanel: FC<DataPanelProps> = ({ chartData }) => {
             .attr("text-anchor", "middle")
             .attr("font-size", (d) => fontScale(d.data.value))
             .text((d) => d.data.value)
-            .attr("fill", (d) => (d.children ? colorScale[d.data.name as keyof typeof colorScale] : "white"));
+            .attr("fill", (d) => (d.children ? COLOR_SCALE[d.data.name as keyof typeof COLOR_SCALE] : "white"));
 
 
 

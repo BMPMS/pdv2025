@@ -1,4 +1,4 @@
-import {DataEntry, DataResult, FormattedData, Indicator, Target, TimeData} from "@/types";
+import {Country, CountryStatus, DataEntry, DataResult, FormattedData, Indicator, Target, TimeData} from "@/types";
 import * as d3 from "d3";
 import themeData from "@/app/data/allThemes.json";
 import {iso3ToIso2Map} from "@/app/components/MapPanel_functions";
@@ -18,12 +18,16 @@ export const getFilteredChartData = (
 
 
     return filteredIndicators.reduce((acc, entry) => {
-        const filteredData = entry.data.filter((f) => filterCountries.includes(f.country))
+        const filteredData = entry.data.filter((f) => filterCountries.includes(f.country));
+        const indicatorData = selectedCountryOrRegion === "|" ? entry.data : filteredData;
         acc.push({
             countryFilter: filterType === "Country" ? filterVar : "multiple",
             indicator: entry.indicator,
+            indicatorName: entry.indicatorName,
+            targets: entry.targets,
             type: entry.type,
-            data: selectedCountryOrRegion === "|" ? entry.data : filteredData
+            countryStatus: entry.countryStatus,
+            data: indicatorData
         })
         return acc;
     }, [] as FormattedData[])
@@ -71,27 +75,47 @@ const getDataResults = (indicatorType: string, targets: Target, matchingData: Da
         return acc;
     }, [] as DataResult[])
 }
-export const formatData = (indicatorData: Indicator[], allData: DataEntry[]) => {
+const getCountryStatus = (currentData: DataResult[],allCountryCodes: string[]) => {
+    return   allCountryCodes.reduce((acc, entry) => {
+        const matchingData =currentData.find((f) => f.country === entry);
+        if(matchingData){
+            acc.push({ISOCode: entry, status: matchingData.targetResult})
+        } else {
+            acc.push({ISOCode: entry, status: "missing"})
+        }
+        return acc;
+    },[] as  CountryStatus[])
+}
+export const formatData = (indicatorData: Indicator[], allData: DataEntry[], allCountryCodes: string[]) => {
 
     const typeGroups: { [key: string]:string [] |  number[]} = {"SEX": ["M","F"], "URBANIZATION" :["U","R"]}
     const basicDataTypes = ["time","%","#", "YN"];
+
+
 
     return indicatorData.reduce((indicatorAcc, indicator) => {
         if(indicator.type === "INVALID"){
             indicatorAcc.push({
                 countryFilter: "multiple",
-                indicator: `${indicator.indicator} - ${indicator.indicatorName}`,
+                indicator: indicator.indicator,
+                indicatorName: indicator.indicatorName,
+                targets: indicator.targets,
                 type: indicator.type,
+                countryStatus: [],
                 data:[]
             })
         } else {
             const matchingData = allData.filter((f) => f.indicator === indicator.indicator);
             if(basicDataTypes.includes(indicator.type)){
+                const indicatorData = getDataResults(indicator.type, indicator.targets, matchingData);
                 indicatorAcc.push({
                     countryFilter: "multiple",
                     indicator: indicator.indicator,
+                    indicatorName: indicator.indicatorName,
+                    targets:indicator.targets,
                     type: indicator.type,
-                    data:getDataResults(indicator.type, indicator.targets, matchingData)
+                    countryStatus: getCountryStatus(indicatorData,allCountryCodes),
+                    data:indicatorData
                 })
             } else {
                 const splitType = indicator.type.split("_");
@@ -119,17 +143,18 @@ export const formatData = (indicatorData: Indicator[], allData: DataEntry[]) => 
                 dataGroups.forEach((d) => {
                     const groupData = matchingData.filter((f) => f[dataType as keyof DataEntry] === d);
                     const targets = indicator.targets[d] ? indicator.targets[d] : indicator.targets;
+                    const indicatorData = getDataResults(actualType, targets, groupData);
                     indicatorAcc.push({
                         countryFilter: "multiple",
                         indicator: `${indicator.indicator}-${d}`,
+                        indicatorName: indicator.indicatorName,
+                        targets,
                         type: indicator.type,
-                        data:getDataResults(actualType, targets, groupData)
+                        countryStatus: getCountryStatus(indicatorData,allCountryCodes),
+                        data:indicatorData
                     })
                 })
             }
-
-
-
         }
 
         return indicatorAcc;

@@ -1,3 +1,12 @@
+export type ProgressDataEntry = {
+    year: number;
+    needsAttention:  number;
+    nearTarget: number;
+    missing:  number;
+    overStretch:  number;
+    onTarget: number;
+}
+
 export type Region = {
 region: string;
 countries: string[];
@@ -26,6 +35,10 @@ export type Theme = {
     goals: any;
 }
 
+export type CountryStatus = {
+    ISOCode: string;
+    status: string;
+}
 export type Indicator = {
     indicator: string;
     indicatorName: string;
@@ -60,6 +73,9 @@ export type TimeData = {
 export type FormattedData = {
     countryFilter: string;
     indicator: string;
+    indicatorName: string;
+    targets: Target;
+    countryStatus: CountryStatus[];
     type: string;
     data: DataResult[];
 

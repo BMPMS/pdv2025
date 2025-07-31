@@ -1,0 +1,234 @@
+[
+  {
+    "year": 2022,
+    "needsAttention": 420,
+    "nearTarget": 260,
+    "missing": 1246,
+    "overStretch": 125,
+    "onTarget": 125
+  },
+  {
+    "year": 2023,
+    "needsAttention": 415,
+    "nearTarget": 275,
+    "missing": 1067,
+    "overStretch": 209,
+    "onTarget": 210
+  },
+  {
+    "year": 2024,
+    "needsAttention": 408,
+    "nearTarget": 282,
+    "missing": 932,
+    "overStretch": 284,
+    "onTarget": 270
+  },
+  {
+    "year": 2025,
+    "needsAttention": 402,
+    "nearTarget": 287,
+    "missing": 797,
+    "overStretch": 361,
+    "onTarget": 329
+  },
+  {
+    "year": 2026,
+    "needsAttention": 362,
+    "nearTarget": 258,
+    "missing": 717,
+    "overStretch": 408,
+    "onTarget": 431
+  },
+  {
+    "year": 2027,
+    "needsAttention": 326,
+    "nearTarget": 232,
+    "missing": 645,
+    "overStretch": 456,
+    "onTarget": 517
+  },
+  {
+    "year": 2028,
+    "needsAttention": 293,
+    "nearTarget": 209,
+    "missing": 580,
+    "overStretch": 502,
+    "onTarget": 592
+  },
+  {
+    "year": 2029,
+    "needsAttention": 264,
+    "nearTarget": 188,
+    "missing": 522,
+    "overStretch": 546,
+    "onTarget": 656
+  },
+  {
+    "year": 2030,
+    "needsAttention": 238,
+    "nearTarget": 169,
+    "missing": 470,
+    "overStretch": 588,
+    "onTarget": 711
+  },
+  {
+    "year": 2031,
+    "needsAttention": 214,
+    "nearTarget": 152,
+    "missing": 423,
+    "overStretch": 628,
+    "onTarget": 759
+  },
+  {
+    "year": 2032,
+    "needsAttention": 193,
+    "nearTarget": 137,
+    "missing": 381,
+    "overStretch": 666,
+    "onTarget": 799
+  },
+  {
+    "year": 2033,
+    "needsAttention": 174,
+    "nearTarget": 123,
+    "missing": 343,
+    "overStretch": 702,
+    "onTarget": 834
+  },
+  {
+    "year": 2034,
+    "needsAttention": 157,
+    "nearTarget": 111,
+    "missing": 309,
+    "overStretch": 737,
+    "onTarget": 862
+  },
+  {
+    "year": 2035,
+    "needsAttention": 141,
+    "nearTarget": 100,
+    "missing": 278,
+    "overStretch": 770,
+    "onTarget": 887
+  },
+  {
+    "year": 2036,
+    "needsAttention": 127,
+    "nearTarget": 90,
+    "missing": 250,
+    "overStretch": 801,
+    "onTarget": 908
+  },
+  {
+    "year": 2037,
+    "needsAttention": 114,
+    "nearTarget": 81,
+    "missing": 225,
+    "overStretch": 830,
+    "onTarget": 926
+  },
+  {
+    "year": 2038,
+    "needsAttention": 103,
+    "nearTarget": 73,
+    "missing": 203,
+    "overStretch": 857,
+    "onTarget": 940
+  },
+  {
+    "year": 2039,
+    "needsAttention": 93,
+    "nearTarget": 66,
+    "missing": 183,
+    "overStretch": 883,
+    "onTarget": 951
+  },
+  {
+    "year": 2040,
+    "needsAttention": 84,
+    "nearTarget": 59,
+    "missing": 165,
+    "overStretch": 907,
+    "onTarget": 961
+  },
+  {
+    "year": 2041,
+    "needsAttention": 76,
+    "nearTarget": 53,
+    "missing": 149,
+    "overStretch": 929,
+    "onTarget": 969
+  },
+  {
+    "year": 2042,
+    "needsAttention": 68,
+    "nearTarget": 48,
+    "missing": 134,
+    "overStretch": 950,
+    "onTarget": 976
+  },
+  {
+    "year": 2043,
+    "needsAttention": 61,
+    "nearTarget": 43,
+    "missing": 121,
+    "overStretch": 969,
+    "onTarget": 982
+  },
+  {
+    "year": 2044,
+    "needsAttention": 55,
+    "nearTarget": 39,
+    "missing": 109,
+    "overStretch": 987,
+    "onTarget": 986
+  },
+  {
+    "year": 2045,
+    "needsAttention": 50,
+    "nearTarget": 35,
+    "missing": 98,
+    "overStretch": 1004,
+    "onTarget": 989
+  },
+  {
+    "year": 2046,
+    "needsAttention": 45,
+    "nearTarget": 31,
+    "missing": 88,
+    "overStretch": 1020,
+    "onTarget": 992
+  },
+  {
+    "year": 2047,
+    "needsAttention": 31,
+    "nearTarget": 22,
+    "missing": 62,
+    "overStretch": 1038,
+    "onTarget": 1023
+  },
+  {
+    "year": 2048,
+    "needsAttention": 20,
+    "nearTarget": 14,
+    "missing": 40,
+    "overStretch": 1056,
+    "onTarget": 1046
+  },
+  {
+    "year": 2049,
+    "needsAttention": 11,
+    "nearTarget": 8,
+    "missing": 22,
+    "overStretch": 1071,
+    "onTarget": 1064
+  },
+  {
+    "year": 2050,
+    "needsAttention": 0,
+    "nearTarget": 0,
+    "missing": 0,
+    "overStretch": 1084,
+    "onTarget": 1092
+  }
+]

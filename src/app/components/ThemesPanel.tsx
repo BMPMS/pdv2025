@@ -5,13 +5,16 @@ import {Theme} from "@/types";
 import * as d3 from "d3";
 import {getRem} from "@/app/dataFunctions";
 import {measureWidth} from "@/app/components/StatusPanel_functions";
+import {COLORS} from "@/constants/constants";
 interface ThemesPanelProps {
     themeData: Theme[];
     filterByTheme: (themeIndex: number ) => void;
 }
 const ThemesPanel: FC<ThemesPanelProps> = ({ themeData, filterByTheme }) => {
+
+    const indicatorCount = d3.sum(themeData, (d) => d.indicators.length);
     const [tick, setTick] = useState(0);
-    const [themeLabel, setThemeLabel] = useState("All Thematic Areas");
+    const [themeLabel, setThemeLabel] = useState(`All Thematic Areas - ${indicatorCount} Indicators`);
     const clickedNode: React.RefObject<number>  = useRef(-1);
 
     // Modified hook that returns the tick value
@@ -70,25 +73,25 @@ const ThemesPanel: FC<ThemesPanelProps> = ({ themeData, filterByTheme }) => {
             .attr("y",svgHeight  - (tabHeight * 0.85)/2 )
             .style("dominant-baseline", "middle")
             .attr("font-size",fontSize )
-            .attr("fill","#484848")
+            .attr("fill",COLORS.darkgrey)
             .attr("text-anchor","middle")
             .text(themeLabel);
 
         svg.select(".clickToFilterLabel")
             .attr("pointer-events","none")
-            .attr("x", tabWidth + 5)
-            .attr("y",svgHeight  - fontSize * 0.6 )
+            .attr("x", svgWidth)
+            .attr("y",fontSize * 0.7 )
             .style("font-style","italic")
             .style("dominant-baseline", "middle")
             .attr("font-size",fontSize * 0.7 )
-            .attr("fill","#808080")
-            .attr("text-anchor","start")
+            .attr("fill",COLORS.midgrey)
+            .attr("text-anchor","end")
             .text("click themes to filter");
 
         svg.select(".themeTabPath")
             .attr("pointer-events","none")
             .attr("fill","none")
-            .attr("stroke","#E8E8E8")
+            .attr("stroke",COLORS.lightgrey)
             .attr("stroke-width",2)
             .attr("d", generateLeftTabPath(tabWidth,tabHeight,svgWidth ))
             .attr("transform",`translate(0,${svgHeight - tabHeight - 0.5})`)
@@ -123,7 +126,7 @@ const ThemesPanel: FC<ThemesPanelProps> = ({ themeData, filterByTheme }) => {
                     .style("visibility","visible")
                     .style("left",`${event.pageX + 12}px`)
                     .style("top",`${event.pageY - 6}px`)
-                    .html(d.theme)
+                    .html(`<strong>${d.theme}</strong><br>${d.indicators.length} indicators`)
             })
             .on("mouseout",() => {
                 d3.select(".chartTooltip").style("visibility","hidden");
@@ -136,9 +139,11 @@ const ThemesPanel: FC<ThemesPanelProps> = ({ themeData, filterByTheme }) => {
                 svg.selectAll<SVGGElement,Theme>(".themesGroup")
                     .interrupt()
                     .attr("opacity",resetThemeOpacity);
-                if(clickedNode.current !== -1){
-                    setThemeLabel(d.theme);
-                }
+
+                setThemeLabel(clickedNode.current === -1
+                    ? `All Thematic Areas - ${indicatorCount} Indicators`
+                    : `${d.theme} - ${d.indicators.length} Indicators`);
+
                 filterByTheme(clickedNode.current);
             })
 
@@ -157,7 +162,7 @@ const ThemesPanel: FC<ThemesPanelProps> = ({ themeData, filterByTheme }) => {
             .style("dominant-baseline","middle")
             .attr("font-weight",600)
             .attr("font-size",circleRadius * 1.5)
-            .attr("fill","#808080")
+            .attr("fill",COLORS.midgrey)
             .attr("dy",circleRadius * 0.15)
             .text((d) => d.index);
 

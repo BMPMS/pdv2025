@@ -3,6 +3,7 @@ import {FormattedData, DataResult} from "@/types";
 import { voronoiTreemap } from 'd3-voronoi-treemap';
 import seedrandom from 'seedrandom';
 import * as d3 from "d3";
+import {COLOR_SCALE, LEGEND_LABELS} from "@/constants/constants";
 
 type VoronoiData = {
     name: string;
@@ -40,11 +41,13 @@ export const getVoronoiData = (chartData: FormattedData[],allCountries:string[])
     const allResults = chartData.reduce((acc, entry) => {
         const result =
             entry.data.length === 0 ? "missing" : entry.data[0].targetResult;
-        acc.push({
-            indicator: entry.indicator,
-            result,
-            data: entry.data
-        });
+        if(entry.type !== "INVALID"){
+            acc.push({
+                indicator: entry.indicator,
+                result,
+                data: entry.data
+            });
+        }
         return acc;
     }, [] as {indicator: string, result: string, data: DataResult[]}[]);
 
@@ -84,7 +87,7 @@ export const getSplitRoundedPolygons = (
     height: number,
     percentLeft: number,
     percentRight: number,
-    gap = 5,
+    gap = 1.5,
     radius = 5,
     diagonalAngleDeg = 15
 ) => {
@@ -155,8 +158,7 @@ export const getVoronoi = (rootChildren: VoronoiData[], dataPoints: [number, num
         value
     });
 
-    root.descendants().map((m) => {
-        // @ts-ignore
+    root.descendants().map((m: any) => {
         m.value = m.data.value;
     });
 
@@ -175,6 +177,7 @@ export const getMissingData = (dataPoints: [number, number][], missingData: Voro
             {
                 path: `M${dataPoints.join("L")}Z`,
                 value: missingData.value,
+                name: missingData.name,
                 depth: 1
             }
         ];
@@ -184,12 +187,14 @@ export const getMissingData = (dataPoints: [number, number][], missingData: Voro
 
     return allData.reduce((acc, entry) => {
         acc.push({
+            //@ts-ignore
             path: `M${entry.polygon.join(",")}Z`,
-            value: entry.value,
+            value: entry.value || 0,
+            name: entry.data.name,
             depth: entry.depth
         });
         return acc;
-    }, [] as {path: string, value: number, depth: number}[]);
+    }, [] as {path: string, value: number, depth: number, name: string}[]);
 }
 
 export const measureWidth = (text: string, fontSize: number) => {
@@ -197,4 +202,105 @@ export const measureWidth = (text: string, fontSize: number) => {
     if(!context) return 0;
     context.font = `${fontSize}px Arial`;
     return context.measureText(text).width;
+}
+
+export const truncateTextToFit = (text: string, fontSize: number, maxWidth: number) =>  {
+    const ellipsis = '…';
+    if (measureWidth(text, fontSize) <= maxWidth) return text;
+
+    let truncated = text;
+    while (truncated.length > 0 && measureWidth(truncated + ellipsis, fontSize) > maxWidth) {
+        truncated = truncated.slice(0, -1);
+    }
+
+    return truncated + ellipsis;
+}
+
+export const wrap = (
+    text: d3.Selection<SVGTextElement, unknown, HTMLElement, undefined>,
+    width: number,
+    fontSize: number
+): void => {
+    text.each(function () {
+        const textElem = d3.select(this);
+        const words = textElem.text().split(/\s+/).reverse();
+        let word: string | undefined;
+        let line: string[] = [];
+        let lineNumber = 1;
+        const y = textElem.attr("y");
+        const dy = 0;
+
+        let tspan = textElem
+            .text(null)
+            .append("tspan")
+            .attr("x", 0)
+            .attr("y", y)
+            .attr("dy", dy);
+
+        while ((word = words.pop())) {
+            line.push(word);
+            const currentText = line.join(" ");
+            tspan.text(currentText);
+            if (measureWidth(currentText, fontSize) > width) {
+                line.pop();
+                tspan.text(line.join(" "));
+                line = [word];
+                if (word.trim() !== "") {
+                    if (tspan.text().trim() === "") {
+                        tspan.text(word);
+                    } else {
+                        lineNumber += 1;
+                        tspan = textElem
+                            .append("tspan")
+                            .attr("x", 0)
+                            .attr("y", y)
+                            .attr("dy", fontSize)
+                            .text(word);
+                    }
+                }
+            }
+        }
+    });
+};
+
+export const drawLegend = (
+    svg:  d3.Selection<SVGSVGElement, unknown, HTMLElement, any>,
+    fontSize: number,
+    startLeft: number,
+    startTop: number) => {
+    let currentX = 0;
+
+    const legendData = Object.keys(LEGEND_LABELS).reduce((acc, entry) => {
+        const text = LEGEND_LABELS[entry as keyof typeof LEGEND_LABELS]
+        const labelLength = measureWidth(text, fontSize * 0.55);
+        acc.push({
+            text,
+            xPos: currentX,
+            fill: COLOR_SCALE[entry as keyof typeof COLOR_SCALE]
+        })
+
+        currentX += labelLength + 15;
+        return acc;
+    },[] as {text: string, xPos: number,fill: string}[])
+
+    const legendGroup = svg
+        .select(".legendGroup")
+        .selectAll(".legendLabelsGroup")
+        .data(legendData)
+        .join((group) => {
+            const enter = group.append("g").attr("class", "legendLabelsGroup");
+            enter.append("text").attr("class", "legendLabel");
+            return enter;
+        });
+
+    legendGroup.select(".legendLabel")
+        .attr("pointer-events","none")
+        .attr("fill", (d) => d.fill)
+        .attr("x", (d) => startLeft + d.xPos)
+        .attr("y", startTop - fontSize * 0.5)
+        .style("text-anchor","start")
+        .attr("font-size",fontSize * 0.55)
+        .attr("font-weight",600)
+        .style("dominant-baseline","middle")
+        .text((d) => d.text)
 }

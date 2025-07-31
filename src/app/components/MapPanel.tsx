@@ -5,6 +5,7 @@ import * as d3 from "d3";
 import {generateRightTabPath, getBoundaryData, getRegionData} from "@/app/components/MapPanel_functions";
 import {getRem} from "@/app/dataFunctions";
 import {measureWidth} from "@/app/components/StatusPanel_functions";
+import {COLORS} from "@/constants/constants";
 
 interface MapPanelProps {
     countryData: Country[];
@@ -16,7 +17,7 @@ const MapPanel: FC<MapPanelProps> = ({ countryData, countryGeoJson,filterByCount
 
     const [tick, setTick] = useState(0);
     const clickedNodes: React.RefObject<string[]>  = useRef([]);
-    const [clickedLabel, setClickedLabel] = useState("All Countries");
+    const [clickedLabel, setClickedLabel] = useState(`All Countries - ${countryData.length} indicators`);
 
     // Modified hook that returns the tick value
     useEffect(() => {
@@ -48,16 +49,17 @@ const MapPanel: FC<MapPanelProps> = ({ countryData, countryGeoJson,filterByCount
             .attr("pointer-events","none")
             .attr("x",svgWidth - 10)
             .attr("y",fontSize * 0.3)
-            .attr("font-size", fontSize * 1.5)
+            .attr("font-size", fontSize * 1.6)
             .style("dominant-baseline","text-before-edge")
-            .attr("fill","#484848")
+            .attr("fill",COLORS.black)
+            .attr("font-weight",500)
             .attr("text-anchor","end")
-            .text("DATA + TARGET tracker");
+            .text("DATASET + TARGET tracker");
 
         svg.select(".mapTabPath")
             .attr("pointer-events","none")
             .attr("fill","transparent")
-            .attr("stroke","#E8E8E8")
+            .attr("stroke",COLORS.lightgrey)
             .attr("stroke-width",2)
             .attr("d", generateRightTabPath(tabWidth,tabHeight,svgWidth ))
             .attr("transform",`translate(0,${svgHeight - tabHeight - 0.5})`)
@@ -68,18 +70,18 @@ const MapPanel: FC<MapPanelProps> = ({ countryData, countryGeoJson,filterByCount
             .attr("y",svgHeight  - (tabHeight * 0.85)/2 )
             .style("dominant-baseline", "middle")
             .attr("font-size", fontSize)
-            .attr("fill","#484848")
+            .attr("fill",COLORS.darkgrey)
             .attr("text-anchor","middle")
             .text(clickedLabel);
 
         svg.select(".clickToFilterLabel")
             .attr("pointer-events","none")
-            .attr("x", svgWidth - tabWidth - 5)
-            .attr("y",svgHeight  - fontSize * 0.6 )
+            .attr("x", svgWidth - 10)
+            .attr("y",fontSize * 2.7 )
             .style("font-style","italic")
             .style("dominant-baseline", "middle")
             .attr("font-size",fontSize * 0.7 )
-            .attr("fill","#808080")
+            .attr("fill",COLORS.midgrey)
             .attr("text-anchor","end")
             .text("click countries or regions to filter");
 
@@ -92,7 +94,6 @@ const MapPanel: FC<MapPanelProps> = ({ countryData, countryGeoJson,filterByCount
 
         const {boundaryData,radiusRange,populationDensityRange} = getBoundaryData(countryGeoJson,countryData, path,fontSize);
 
-
         const legendDx = 20;
         const legendDy = svgHeight - fontSize * 1.5;
 
@@ -101,7 +102,7 @@ const MapPanel: FC<MapPanelProps> = ({ countryData, countryGeoJson,filterByCount
             .attr("x", legendDx)
             .attr("y", legendDy)
             .attr("text-anchor","start")
-            .attr("fill","#808080")
+            .attr("fill",COLORS.midgrey)
             .attr("font-size",fontSize * 0.7)
             .text("Population Density");
 
@@ -110,7 +111,7 @@ const MapPanel: FC<MapPanelProps> = ({ countryData, countryGeoJson,filterByCount
             .attr("x",  legendDx)
             .attr("y", legendDy + (fontSize * 0.7))
             .attr("text-anchor","start")
-            .attr("fill","#808080")
+            .attr("fill",COLORS.midgrey)
             .attr("font-size",fontSize * 0.6)
             .text("people/km²");
 
@@ -120,7 +121,7 @@ const MapPanel: FC<MapPanelProps> = ({ countryData, countryGeoJson,filterByCount
             .attr("cx", legendDx + radiusRange[1])
             .attr("cy", legendDy - fontSize - radiusRange[1])
             .attr("fill","transparent")
-            .attr("stroke","#A0A0A0")
+            .attr("stroke",COLORS.lightergrey)
             .attr("stroke-width",0.75);
 
         svg.select(".legendLabelMax")
@@ -129,7 +130,7 @@ const MapPanel: FC<MapPanelProps> = ({ countryData, countryGeoJson,filterByCount
             .attr("font-size",fontSize * 0.7)
             .attr("x", legendDx + radiusRange[1])
             .attr("y", legendDy - fontSize  - radiusRange[1])
-            .attr("fill","#B0B0B0")
+            .attr("fill",COLORS.lightergrey)
             .text(d3.format(".0f")(populationDensityRange[1] || 0))
 
 
@@ -139,7 +140,7 @@ const MapPanel: FC<MapPanelProps> = ({ countryData, countryGeoJson,filterByCount
             .attr("font-size",fontSize * 0.65)
             .attr("x", legendDx + radiusRange[1])
             .attr("y", legendDy - fontSize * 0.8 - radiusRange[0])
-            .attr("fill","#B0B0B0")
+            .attr("fill",COLORS.lightergrey)
             .text(d3.format(".0f")(populationDensityRange[0] || 0))
 
 
@@ -149,7 +150,7 @@ const MapPanel: FC<MapPanelProps> = ({ countryData, countryGeoJson,filterByCount
             .attr("cx", legendDx + radiusRange[1])
             .attr("cy", legendDy - fontSize  - radiusRange[0])
             .attr("fill","transparent")
-            .attr("stroke","#A0A0A0")
+            .attr("stroke",COLORS.lightergrey)
             .attr("stroke-width",0.75);
 
         const resetBoundaryOpacity = (d: Boundary) =>  clickedNodes.current.length === 0 || clickedNodes.current.includes(d.iso) ? 1 : 0.2;
@@ -220,7 +221,7 @@ const MapPanel: FC<MapPanelProps> = ({ countryData, countryGeoJson,filterByCount
                 if(clickedNodes.current.length === 1 && clickedNodes.current.includes(d.iso)){
                     // this country clicked
                     clickedNodes.current = [];
-                    setClickedLabel("All Countries");
+                    setClickedLabel(`All Countries - ${countryData.length}`);
                     filterByCountryOrRegion("","");
                 } else {
                     clickedNodes.current = [d.iso];
@@ -267,8 +268,8 @@ const MapPanel: FC<MapPanelProps> = ({ countryData, countryGeoJson,filterByCount
             .select(".regionHull")
             .attr("cursor","pointer")
             .attr("filter","url(#drop-shadow-map)")
-            .attr("fill", "#808080")
-            .attr("stroke", "#808080")
+            .attr("fill", COLORS.midgrey)
+            .attr("stroke", COLORS.midgrey)
             .attr("opacity", 0.15)
             .attr("stroke-linecap", "round")
             .attr("stroke-linejoin", "round")
@@ -293,7 +294,7 @@ const MapPanel: FC<MapPanelProps> = ({ countryData, countryGeoJson,filterByCount
             .on("click", (event, d) => {
                 if(clickedNodes.current.includes(d.region)){
                     clickedNodes.current = [];
-                    setClickedLabel("All Countries");
+                    setClickedLabel(`All Countries - ${countryData.length}`);
                     filterByCountryOrRegion( "" , "");
 
                 } else {
