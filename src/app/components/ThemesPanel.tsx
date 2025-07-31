@@ -167,7 +167,7 @@ const ThemesPanel: FC<ThemesPanelProps> = ({ themeData, filterByTheme }) => {
             .text((d) => d.index);
 
 
-    }, [themeData,tick,themeLabel])
+    }, [themeData,tick,themeLabel,filterByTheme,indicatorCount])
     return (
 
         <svg ref={ref}>

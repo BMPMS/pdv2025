@@ -7,7 +7,7 @@ export const COLOR_SCALE = {
     overStretch: "#016600"
 };
 
-export const LEGEND_LABELS = {overStretch: "> stretch Target",
+export const LEGEND_LABELS = {overStretch: "stretch Target",
     onTarget: "on Target",
     nearTarget: "near Target",
     needsAttention: "needs attention",

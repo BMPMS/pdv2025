@@ -1,3 +1,4 @@
+
 import {Boundary, Country, EEZGeoJSON, Region} from "@/types";
 import * as d3 from "d3";
 
@@ -70,7 +71,7 @@ export const getBoundaryData = (
         d3.GeoPermissibleObjects>,
     maxRadius: number) => {
     const radiusRange = [maxRadius/3, maxRadius];
-    let populationDensityRange = d3.extent(countryData, (d) => d.Population / d.landMass)
+    const populationDensityRange = d3.extent(countryData, (d) => d.Population / d.landMass)
 
     const boundaryByIso = Array.from(
         d3.group(geoJson.features, (g) => g.properties.ISO_Ter1)

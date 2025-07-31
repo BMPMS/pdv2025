@@ -1,11 +1,13 @@
+
 import type { FC } from "react";
 import React, {useRef, useEffect, useState} from 'react';
-import {FormattedData, ProgressDataEntry, Theme} from "@/types";
+import { ProgressDataEntry} from "@/types";
 
 import * as d3 from "d3";
 import {getRem} from "@/app/dataFunctions";
 import {drawLegend, measureWidth} from "@/app/components/StatusPanel_functions";
 import {COLOR_SCALE, COLORS} from "@/constants/constants";
+
 interface ProgressPanelProps {
     progressData: ProgressDataEntry[];
 }
@@ -20,13 +22,13 @@ const ProgressPanel: FC<ProgressPanelProps> = ({ progressData }) => {
     }, []);
 
     const ref = useRef(null);
-    const margins = { left: 20, right: 20, top: 80, middle: 40, bottom: 60 };
 
     useEffect(() => {
         if (!ref.current) return;
         const svg = d3.select<SVGSVGElement, unknown>(ref.current);
         const svgNode = svg.node();
         if (!svgNode) return;
+        const margins = { left: 20, right: 20, top: 80, middle: 40, bottom: 60 };
 
 
         const containerNode = svgNode.parentElement;
@@ -42,11 +44,15 @@ const ProgressPanel: FC<ProgressPanelProps> = ({ progressData }) => {
         const currentYearData = progressData.find((f) => f.year === currentYear);
         let currentYearTotal = 1;
         if(currentYearData){
-            const { year, ...metrics } = currentYearData;
-            currentYearTotal = d3.sum(Object.values(metrics));
+            const filteredKeys = Object.keys(COLOR_SCALE).filter((f) => f !== "year");
+            currentYearTotal = d3.sum(filteredKeys, (k) => currentYearData[k as keyof typeof currentYearData]);
+        }
+        if(progressData.length === 0){
+            currentYearTotal = 0;
         }
 
         svg.select(".dataTitle")
+            .attr("pointer-events","none")
             .attr("x",margins.left)
             .attr("y",fontSize)
             .attr("font-size",fontSize)
@@ -56,16 +62,6 @@ const ProgressPanel: FC<ProgressPanelProps> = ({ progressData }) => {
             .attr("text-anchor","start")
             .text("PROGRESS towards goal");
 
-        svg.select(".datasetsCount")
-            .attr("pointer-events","none")
-            .attr("x",svgWidth - margins.right)
-            .attr("y",fontSize * 0.8)
-            .attr("font-size",fontSize)
-            .style("dominant-baseline","text-before-edge")
-            .attr("fill",COLORS.black)
-            .attr("font-weight",500)
-            .attr("text-anchor","end")
-            .text(`${currentYearTotal} datasets*`);
 
         drawLegend(svg,fontSize,margins.left, svgHeight - fontSize/2);
 
@@ -84,12 +80,12 @@ const ProgressPanel: FC<ProgressPanelProps> = ({ progressData }) => {
         const xScale = d3
             .scaleBand<number>()
             .domain(years)
-            .padding(0.05)
             .range([0, svgWidth - margins.left - margins.right]);
 
-        const barWidth = xScale.bandwidth();
+        const barWidth = xScale.bandwidth() * 0.95;
 
         svg.select(".streamYLabel")
+            .attr("pointer-events","none")
             .attr("transform",`translate(${svgWidth - margins.right },${margins.top + streamHeight/2}) rotate(-90)`)
             .attr("font-size",fontSize)
             .style("dominant-baseline","middle")
@@ -99,9 +95,9 @@ const ProgressPanel: FC<ProgressPanelProps> = ({ progressData }) => {
             .text("all datasets");
 
         svg.select(".missingBarLabel")
+            .attr("pointer-events","none")
             .attr("transform",`translate(${svgWidth - margins.right },${svgHeight - margins.bottom})`)
             .attr("font-size",fontSize)
-         //   .style("dominant-baseline","middle")
             .attr("fill",COLORS.midgrey)
             .attr("font-weight","normal")
             .attr("text-anchor","end")
@@ -128,7 +124,7 @@ const ProgressPanel: FC<ProgressPanelProps> = ({ progressData }) => {
             .attr("y", fontSize * 0.3)
             .style("dominant-baseline", "middle")
             .attr("font-size", fontSize * 0.6)
-            .text((d, i) =>  d % 5 === 0 || d === 2022? d : "");
+            .text((d) =>  d % 5 === 0 || d === 2022? d : "");
 
         const barYMax = d3.max(progressData, (d) => d.missing) || 0;
 
@@ -137,12 +133,13 @@ const ProgressPanel: FC<ProgressPanelProps> = ({ progressData }) => {
             .domain([0, barYMax])
             .range([0, missingHeight]);
 
-        const missingBarGroup = svg.select(".chartGroup")
+        const missingBarGroup = svg.select(".barGroup")
             .selectAll(".missingBarGroup")
             .data(progressData)
             .join((group) => {
                 const enter = group.append("g").attr("class", "missingBarGroup");
                 enter.append("rect").attr("class", "missingBar");
+                enter.append("rect").attr("class", "mouseoverBar");
                 return enter;
             });
 
@@ -158,7 +155,87 @@ const ProgressPanel: FC<ProgressPanelProps> = ({ progressData }) => {
             .attr("fill", COLOR_SCALE["missing"])
             .attr("height", (d) => barYScale(d.missing));
 
+        const drawMouseoverLabels = (year: number, labelList: {label: string, fill: string}[] ) => {
+
+
+            const maxLabelWidth = d3.max(labelList, (d) => measureWidth(d.label, fontSize * 0.5)) || 0;
+            svg.select(".mouseoverBackgroundRect")
+                .attr("visibility","visible")
+                .attr("height", labelList.length > 1 ? 5 + labelList.length * fontSize * 0.6 : 0)
+                .attr("width",maxLabelWidth + 10)
+                .attr("x",margins.left + (xScale(year) || 0));
+
+            const labelGroup = svg.select(".mouseoverLabels")
+                .selectAll(".mouseoverLabelsGroup")
+                .data(labelList)
+                .join((group) => {
+                    const enter = group.append("g").attr("class", "mouseoverLabelsGroup");
+                    enter.append("text").attr("class", "mouseoverLabel");
+                    return enter;
+                });
+
+
+            labelGroup.select(".mouseoverLabel")
+                .attr("pointer-events","none")
+                .attr("transform",(d,i) => `translate(${(xScale(year) || 0) + margins.left + 5 - (year > 2048 ? fontSize : 0)},${5 + margins.top + (i * fontSize * 0.6)}) ${labelList.length === 1 ? "rotate(-90)" : ""}`)
+                .attr("text-anchor",labelList.length === 1 ? "end" : "start")
+                .attr("font-size",fontSize * 0.5)
+                .style("dominant-baseline",labelList.length === 1 ? "text-before-edge" : "auto")
+                .attr("fill",(d) => d.fill)
+                .text((d) => d.label)
+
+
+
+        }
+        missingBarGroup
+            .select(".mouseoverBar")
+            .attr("x", (d) => xScale(d.year) || 0)
+            .attr("y",-(margins.middle + streamHeight) )
+            .attr("height",streamHeight + margins.middle + missingHeight)
+            .attr("width", xScale.bandwidth())
+            .attr("fill", "transparent")
+            .on("mouseover",(event, d) => {
+                svg.select(".mouseoverLabels").attr("visibility","visible")
+                svg.select(".mouseoverYear")
+                    .attr("visibility","visible")
+                    .attr("x",margins.left + (xScale(d.year || 0) || 0))
+                    .text(d.year);
+
+                svg.select(".mouseoverLine")
+                    .attr("visibility","visible")
+                    .attr("x1",margins.left + (xScale(d.year || 0) || 0))
+                    .attr("x2",margins.left + (xScale(d.year || 0) || 0));
+
+
+                if(d.year > currentYear){
+                    drawMouseoverLabels(d.year ,[{label: "future projections", fill: COLORS.midgrey}])
+                } else {
+                    const values = Object.keys(d).filter((f) => f !== "year");
+                    const totalForYear = d3.sum(values, (s) => d[s as keyof typeof d] || 0)
+                    const labels = values.reduce((acc, entry) => {
+                        const label = `${entry} - ${d3.format(".0%")(d[entry as keyof typeof d]/totalForYear)}`
+                        acc.push({
+                            label,
+                            fill: COLOR_SCALE[entry as keyof typeof COLOR_SCALE]
+                        });
+                        return acc;
+                    },[] as {label: string, fill: string}[] )
+                    drawMouseoverLabels(d.year,labels)
+                }
+
+            })
+            .on("mouseout",() => {
+                svg.select(".mouseoverBackgroundRect")
+                    .attr("visibility","hidden")
+                svg.select(".mouseoverLabels").attr("visibility","hidden")
+                svg.select(".mouseoverLine")
+                    .attr("visibility","hidden");
+                svg.select(".mouseoverYear")
+                    .attr("visibility","hidden");
+            });
+
         svg.select(".missingOverlay")
+            .attr("pointer-events","none")
             .attr("width", svgWidth - margins.left - margins.right - (xScale(2027) || 0))
             .attr("height", missingHeight)
             .attr("fill", "white")
@@ -193,7 +270,7 @@ const ProgressPanel: FC<ProgressPanelProps> = ({ progressData }) => {
             .y0((d) => streamYScale(d[0]))
             .y1((d) => streamYScale(d[1]));
 
-        const pathGroup = svg.select(".chartGroup")
+        const pathGroup = svg.select(".streamGroup")
             .selectAll(".pathGroup")
             .data(series)
             .join((group) => {
@@ -209,6 +286,7 @@ const ProgressPanel: FC<ProgressPanelProps> = ({ progressData }) => {
             .attr("transform", `translate(${margins.left},${margins.top})`);
 
         svg.select(".streamOverlay")
+            .attr("pointer-events","none")
             .attr("width", svgWidth - margins.left - margins.right - (xScale(2027) || 0))
             .attr("height", streamHeight)
             .attr("fill", "white")
@@ -217,6 +295,26 @@ const ProgressPanel: FC<ProgressPanelProps> = ({ progressData }) => {
                 "transform",
                 `translate(${margins.left + (xScale(2026) || 0)},${margins.top})`
             );
+
+        svg.select(".mouseoverLine")
+            .attr("pointer-events","none")
+            .attr("visibility","hidden")
+            .attr("stroke",COLORS.lightgrey)
+            .attr("stroke-width",1)
+            .attr("y1",margins.top)
+            .attr("y2",svgHeight - margins.bottom);
+
+        svg.select(".mouseoverYear")
+            .attr("pointer-events","none")
+            .attr("visibility","hidden")
+            .attr("font-size",fontSize * 0.5)
+            .attr("text-anchor","middle")
+            .attr("fill",COLORS.darkgrey)
+            .attr("y",margins.top - fontSize * 0.5);
+
+        svg.select(".mouseoverBackgroundRect")
+            .attr("fill","white")
+            .attr("y",5 + margins.top - (fontSize * 0.6))
 
 
 
@@ -228,12 +326,17 @@ const ProgressPanel: FC<ProgressPanelProps> = ({ progressData }) => {
             <text className={"dataTitle"}></text>
             <text className={"datasetsCount"}></text>
             <g className={"xAxis"}></g>
-            <g className={"chartGroup"}></g>
+            <g className={"streamGroup"}></g>
+            <g className={"barGroup"}></g>
             <g className={"legendGroup"}></g>
             <rect className={"missingOverlay"}></rect>
             <rect className={"streamOverlay"}></rect>
             <text className={"streamYLabel"}></text>
             <text className={"missingBarLabel"}></text>
+            <text className={"mouseoverYear"}></text>
+            <rect className={"mouseoverBackgroundRect"}></rect>
+            <line className={"mouseoverLine"}></line>
+            <g className={"mouseoverLabels"}></g>
         </svg>
     );
 }

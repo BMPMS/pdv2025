@@ -70,6 +70,13 @@ export type TimeData = {
     value: number;
 }
 
+export type VoronoiData = {
+    name: string;
+    value: number;
+    data?: {indicator: string, country:string, result: string}[];
+    children?: VoronoiData[];
+
+}
 export type FormattedData = {
     countryFilter: string;
     indicator: string;

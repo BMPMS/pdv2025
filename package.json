@@ -2,6 +2,7 @@
   "name": "pdv2025",
   "version": "0.1.0",
   "private": true,
+  "homepage": "https://yourusername.github.io/pdv2025",
   "scripts": {
     "dev": "next dev",
     "build": "next build",

@@ -1,4 +1,4 @@
-import {Country, CountryStatus, DataEntry, DataResult, FormattedData, Indicator, Target, TimeData} from "@/types";
+import { CountryStatus, DataEntry, DataResult, FormattedData, Indicator, Target, TimeData} from "@/types";
 import * as d3 from "d3";
 import themeData from "@/app/data/allThemes.json";
 import {iso3ToIso2Map} from "@/app/components/MapPanel_functions";

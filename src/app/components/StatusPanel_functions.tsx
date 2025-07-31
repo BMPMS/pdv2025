@@ -1,17 +1,11 @@
-import {FormattedData, DataResult} from "@/types";
-// @ts-ignore
+import {FormattedData, DataResult, VoronoiData} from "@/types";
+// @ts-expect-error no typescript definition for voronoiTreemap
 import { voronoiTreemap } from 'd3-voronoi-treemap';
 import seedrandom from 'seedrandom';
 import * as d3 from "d3";
 import {COLOR_SCALE, LEGEND_LABELS} from "@/constants/constants";
 
-type VoronoiData = {
-    name: string;
-    value: number;
-    data?: {indicator: string, country:string, result: string}[];
-    children?: VoronoiData[];
 
-}
 export const getVoronoiData = (chartData: FormattedData[],allCountries:string[]) => {
     if(chartData.length === 0) return [];
     const countryFilter = chartData[0].countryFilter; // the same for all rows
@@ -187,7 +181,7 @@ export const getMissingData = (dataPoints: [number, number][], missingData: Voro
 
     return allData.reduce((acc, entry) => {
         acc.push({
-            //@ts-ignore
+            //@ts-expect-error voronoi treemap has no typescript definition
             path: `M${entry.polygon.join(",")}Z`,
             value: entry.value || 0,
             name: entry.data.name,
@@ -235,7 +229,8 @@ export const wrap = (
             .append("tspan")
             .attr("x", 0)
             .attr("y", y)
-            .attr("dy", dy);
+            .attr("dy", dy)
+            .attr("nothing",lineNumber)
 
         while ((word = words.pop())) {
             line.push(word);

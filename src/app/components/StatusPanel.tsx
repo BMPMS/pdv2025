@@ -1,6 +1,6 @@
 import type { FC } from "react";
 import React, {useRef, useEffect, useState} from 'react';
-import {FormattedData} from "@/types";
+import {FormattedData, VoronoiData} from "@/types";
 import * as d3 from "d3";
 import {getRem} from "@/app/dataFunctions";
 
@@ -33,13 +33,13 @@ const StatusPanel: FC<DataPanelProps> = ({ chartData }) => {
     }, []);
 
     const ref = useRef(null);
-    const margins = {left: 15, right: 15, top: 80, bottom: 50};
 
     useEffect(() => {
         if (!ref.current) return;
         const svg = d3.select<SVGSVGElement, unknown>(ref.current);
         const svgNode = svg.node();
         if (!svgNode) return;
+        const margins = {left: 15, right: 15, top: 80, bottom: 50};
 
         const containerNode = svgNode.parentElement;
         if (!containerNode) return;
@@ -104,7 +104,7 @@ const StatusPanel: FC<DataPanelProps> = ({ chartData }) => {
                 d3.select(".chartTooltip")
                     .style("visibility","visible")
                     .style("left",`${event.pageX + 12}px`)
-                    .style("top",`${event.pageY - 6 - (invalidData.length * 15)}px`)
+                    .style("top",`${event.pageY - 6 - (invalidData.length * 20)}px`)
                     .html(`<span style="color:${COLOR_SCALE["needsAttention"]}">${invalidData.map((m) => `${m.indicator}-${m.indicatorName}<br>`).join("")}</span>`)
             })
             .on("mouseout",() => {
@@ -126,7 +126,7 @@ const StatusPanel: FC<DataPanelProps> = ({ chartData }) => {
             .attr("fill",COLORS.black)
             .attr("font-weight",500)
             .attr("text-anchor","end")
-            .text(`${totalDatasets} datasets*`);
+            .text(totalDatasets === 0 ? "no valid data" : `${totalDatasets} datasets*`);
 
         svg.select<SVGTextElement>(".datasetsCountInfo")
             .attr("pointer-events","none")
@@ -194,6 +194,8 @@ const StatusPanel: FC<DataPanelProps> = ({ chartData }) => {
             .attr("fill", (d) => (d.depth > 1 ? "transparent" : COLOR_SCALE["missing"]))
             .attr("d", (d) => d.path)
             .on("mousemove", (event, d) => {
+                svg.selectAll<SVGPathElement,{path: string, value: number, depth: number, name: string}>(".missingVoronoiPath")
+                    .attr("fill-opacity", (p) => p.name === d.name ? 0.8 : 1);
                 let tooltipText = "";
                 if(countryFilter === "multiple"){
                     tooltipText = `${d.value} datasets <span style="font-weight: bold; color:${COLOR_SCALE["missing"]};"> ${LEGEND_LABELS["missing"]} </span>(${d3.format(".0%")((d.value || 0)/totalDatasets)})`
@@ -206,7 +208,8 @@ const StatusPanel: FC<DataPanelProps> = ({ chartData }) => {
                     .style("top",`${event.pageY - 6}px`)
                     .html(tooltipText)
             })
-            .on("mouseout", (event, d) => {
+            .on("mouseout", () => {
+                svg.selectAll(".missingVoronoiPath").attr("fill-opacity",1);
                 d3.select(".chartTooltip")
                     .style("visibility","hidden")
             })
@@ -248,7 +251,7 @@ const StatusPanel: FC<DataPanelProps> = ({ chartData }) => {
                 formattedMissingData.length > 1 ? COLOR_SCALE["missing"] : "white"
             );
 
-        let allNodes = getVoronoi(childrenWithData, rectangularPaths.left as [number,number][]);
+        const allNodes = getVoronoi(childrenWithData, rectangularPaths.left as [number,number][]);
 
         const nodeGroup = svg
             .select(".nodesGroup")
@@ -272,6 +275,8 @@ const StatusPanel: FC<DataPanelProps> = ({ chartData }) => {
                 d.depth > 1 ? "transparent" : COLOR_SCALE[d.data.name as keyof typeof COLOR_SCALE]
             )
             .on("mousemove", (event, d) => {
+                svg.selectAll<SVGPathElement, d3.HierarchyNode<{name: string, children: VoronoiData[], value: number}>>(".voronoiPath")
+                    .attr("fill-opacity", (p) => p.data.name === d.data.name ? 0.8 : 1)
                 let tooltipText = "";
                 if(countryFilter === "multiple"){
                     tooltipText = `${d.value} datasets <span style="font-weight: bold; color:${COLOR_SCALE[d.data.name as keyof typeof COLOR_SCALE]};">${LEGEND_LABELS[d.data.name as keyof typeof LEGEND_LABELS]}</span> (${d3.format(".0%")((d.value || 0)/totalDatasets)})`
@@ -284,7 +289,8 @@ const StatusPanel: FC<DataPanelProps> = ({ chartData }) => {
                     .style("top",`${event.pageY - 6}px`)
                     .html(tooltipText)
             })
-            .on("mouseout", (event, d) => {
+            .on("mouseout", () => {
+                svg.selectAll(".voronoiPath").attr("fill-opacity",1);
                 d3.select(".chartTooltip")
                     .style("visibility","hidden")
             })

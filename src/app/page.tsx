@@ -17,13 +17,11 @@ import ProgressPanel from "@/app/components/ProgressPanel";
 
 export default  function Home() {
     const allCountryCodes = countryData.map((m) => m.ISOCode);
-
     const allChartData = formatData(indicatorData,allData as DataEntry[], allCountryCodes);
     const [chartData, setChartData] = useState<FormattedData[]>(allChartData);
     const [progressData, setProgressData] = useState<ProgressDataEntry[]>(dummyProgressData["all"] as ProgressDataEntry[]);
     const selectedTheme: React.RefObject<number>  = useRef(-1);
     const selectedCountryOrRegion: React.RefObject<string>  = useRef("|");
-
 
     const regionSet = [...new Set(countryData.map((m) => m.Region))];
     const countryMapper = regionSet.reduce((acc, entry) => {
@@ -65,12 +63,12 @@ export default  function Home() {
   return (
       <> <div className={"chartTooltip"}></div>
           <div className="w-screen h-screen  bg-white flex flex-col  p-0">
-          <div className="sticky top-0 z-10 flex h-[min(30vh,25vw)] w-full   p-0">
-              <div className="w-1/3 flex flex-col  p-0">
-                  <div className="h-1/2  bg-white p-1"><img src="/BP2050-Logo.png" alt="BP2050 Logo"  className="ml-4 w-full h-full object-left object-contain"/></div>
+          <div className="sticky top-0 z-10 flex h-[30vh] w-full p-0 md:h-[min(30vh,25vw)]">
+              <div className="w-5/12 flex flex-col  p-0">
+                  <div className="h-1/2  bg-white p-1"><img src={`/pdv2025/BP2050-Logo.png`} alt="BP2050 Logo"  className="ml-4 w-full h-full object-left object-contain"/></div>
                   <div className="h-1/2 bg-white  p-0"><ThemesPanel themeData={themeData} filterByTheme={filterByTheme}></ThemesPanel></div>
               </div>
-              <div className="w-2/3 bg-white  p-0"><MapPanel countryData={countryData} filterByCountryOrRegion={filterByCountryOrRegion} countryGeoJson={countryGeoJson as EEZGeoJSON}></MapPanel></div>
+              <div className="w-7/12 bg-white  p-0"><MapPanel countryData={countryData} filterByCountryOrRegion={filterByCountryOrRegion} countryGeoJson={countryGeoJson as EEZGeoJSON}></MapPanel></div>
           </div>
               <div className="flex flex-col divide-y md:divide-y-0 md:divide-x divide-[#E8E8E8] md:flex-row h-[calc(100vh_-_min(30vh,_25vw))] w-full p-0">
                   <div className="w-full md:w-1/2 h-full min-h-[350px] md:min-h-0 flex flex-col bg-white p-0">

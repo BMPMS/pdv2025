@@ -66,9 +66,10 @@ const DatasetPopup: React.FC<ModalProps> = ({ isOpen, onClose, data }) => {
            if(data.type === "YN") {
                if(status === "needsAttention") return "N"
                if(status === "onTarget") return "Y"
+               return ""
            }
            // rushing so very bad code!
-           const format = data.type.includes("%") ? ".0%" : ".0f";
+           const format = data.type.includes("%") ? ".0%" : ".1~f";
            const denominator = data.type.includes("%") ? 100 : 1
            if(status === "needsAttention") return `below ${d3.format(format)(data.targets.needsAttention/denominator)}`
            if(status === "nearTarget") return `${d3.format(format)(data.targets.needsAttention/denominator)} - ${d3.format(format)(data.targets.target/denominator)}`
