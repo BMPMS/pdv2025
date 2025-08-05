@@ -7,6 +7,7 @@ import {getRem} from "@/app/dataFunctions";
 import {measureWidth} from "@/app/components/StatusPanel_functions";
 import {COLORS} from "@/constants/constants";
 
+
 interface MapPanelProps {
     countryData: Country[];
     countryGeoJson: EEZGeoJSON;
@@ -15,9 +16,10 @@ interface MapPanelProps {
 
 const MapPanel: FC<MapPanelProps> = ({ countryData, countryGeoJson,filterByCountryOrRegion }) => {
 
+
     const [tick, setTick] = useState(0);
     const clickedNodes: React.RefObject<string[]>  = useRef([]);
-    const [clickedLabel, setClickedLabel] = useState(`All Countries - ${countryData.length} indicators`);
+    const [clickedLabel, setClickedLabel] = useState(`All Countries - ${countryData.length}`);
 
     // Modified hook that returns the tick value
     useEffect(() => {
@@ -42,7 +44,10 @@ const MapPanel: FC<MapPanelProps> = ({ countryData, countryGeoJson,filterByCount
 
         const fontSize = getRem() * 1.1;
         const sideMargins = fontSize/2;
-        const tabWidth = measureWidth(clickedLabel,fontSize) + sideMargins * 2.5;
+        let tabWidth = measureWidth(clickedLabel,fontSize) + sideMargins * 2.5;
+
+        const labelExtra = (tabWidth + 40) < svgWidth ? " countries" : "";
+        tabWidth =  measureWidth(clickedLabel,fontSize) + sideMargins * 2.5;
         const tabHeight = fontSize * 1.5;
 
         svg.select(".dashboardTitle")
@@ -54,7 +59,7 @@ const MapPanel: FC<MapPanelProps> = ({ countryData, countryGeoJson,filterByCount
             .attr("fill",COLORS.black)
             .attr("font-weight",500)
             .attr("text-anchor","end")
-            .text("DATASET + TARGET tracker");
+            .text(svgWidth < measureWidth("DATASET + TARGET tracker",fontSize * 1.6) ? "DATASET tracker" :"DATASET + TARGET tracker");
 
         svg.select(".mapTabPath")
             .attr("pointer-events","none")
@@ -221,7 +226,7 @@ const MapPanel: FC<MapPanelProps> = ({ countryData, countryGeoJson,filterByCount
                 if(clickedNodes.current.length === 1 && clickedNodes.current.includes(d.iso)){
                     // this country clicked
                     clickedNodes.current = [];
-                    setClickedLabel(`All Countries - ${countryData.length}`);
+                    setClickedLabel(`All Countries - ${countryData.length} ${labelExtra}`)
                     filterByCountryOrRegion("","");
                 } else {
                     clickedNodes.current = [d.iso];
@@ -294,12 +299,12 @@ const MapPanel: FC<MapPanelProps> = ({ countryData, countryGeoJson,filterByCount
             .on("click", (event, d) => {
                 if(clickedNodes.current.includes(d.region)){
                     clickedNodes.current = [];
-                    setClickedLabel(`All Countries - ${countryData.length}`);
+                    setClickedLabel(`All Countries - ${countryData.length} ${labelExtra}`)
                     filterByCountryOrRegion( "" , "");
 
                 } else {
                     clickedNodes.current = d.countries.concat([d.region]);
-                    setClickedLabel(`${d.region} - ${d.countries.length} countries`);
+                    setClickedLabel(`${d.region} - ${d.countries.length} ${labelExtra}`)
                     filterByCountryOrRegion( d.region,"Region");
 
                 }

@@ -69,7 +69,7 @@ const ProgressPanel: FC<ProgressPanelProps> = ({ progressData }) => {
             svgHeight - margins.top - margins.bottom - margins.middle;
 
 
-        const proportionMissing = (currentYearData?.missing || 0) / currentYearTotal;
+        const proportionMissing = Math.min(0.7,(currentYearData?.missing || 0) / currentYearTotal);
         const missingHeight = chartTotalHeight * proportionMissing;
         const streamHeight = chartTotalHeight - missingHeight;
 
@@ -125,6 +125,7 @@ const ProgressPanel: FC<ProgressPanelProps> = ({ progressData }) => {
             .style("dominant-baseline", "middle")
             .attr("font-size", fontSize * 0.6)
             .text((d) =>  d % 5 === 0 || d === 2022? d : "");
+
 
         const barYMax = d3.max(progressData, (d) => d.missing) || 0;
 
@@ -256,6 +257,7 @@ const ProgressPanel: FC<ProgressPanelProps> = ({ progressData }) => {
                 progressData
             )
 
+
         const yExtent = d3.extent(series.flat(2));
         const streamYScale = d3
             .scaleLinear()
@@ -265,7 +267,6 @@ const ProgressPanel: FC<ProgressPanelProps> = ({ progressData }) => {
         // Construct an area shape.
         const area = d3
             .area<d3.SeriesPoint<ProgressDataEntry>>()
-            .curve(d3.curveCardinal)
             .x((d) => xScale(d.data.year) || 0)
             .y0((d) => streamYScale(d[0]))
             .y1((d) => streamYScale(d[1]));

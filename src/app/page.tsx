@@ -4,14 +4,14 @@ import themeData from "./data/allThemes.json"
 import allData from "./data/allData.json"
 import countryData from "./data/population.json";
 import countryGeoJson from "./data/boundaryGeojson.json";
-import dummyProgressData from "./data/newDummyProgressData.json";
+import dummyProgressData from "./data/allProgressData.json";
 
 import {DataEntry, EEZGeoJSON, FormattedData, ProgressDataEntry} from "@/types";
 import React, {useRef, useState} from "react";
 import ThemesPanel from "@/app/components/ThemesPanel";
 import MapPanel from "@/app/components/MapPanel";
 import StatusPanel from "@/app/components/StatusPanel";
-import {formatData, getFilteredChartData} from "@/app/dataFunctions"
+import {formatData,  getFilteredChartData, getProgressData} from "@/app/dataFunctions"
 import ProgressPanel from "@/app/components/ProgressPanel";
 
 
@@ -19,7 +19,7 @@ export default  function Home() {
     const allCountryCodes = countryData.map((m) => m.ISOCode);
     const allChartData = formatData(indicatorData,allData as DataEntry[], allCountryCodes);
     const [chartData, setChartData] = useState<FormattedData[]>(allChartData);
-    const [progressData, setProgressData] = useState<ProgressDataEntry[]>(dummyProgressData["all"] as ProgressDataEntry[]);
+    const [progressData, setProgressData] = useState<ProgressDataEntry[]>(dummyProgressData as ProgressDataEntry[]);
     const selectedTheme: React.RefObject<number>  = useRef(-1);
     const selectedCountryOrRegion: React.RefObject<string>  = useRef("|");
 
@@ -41,11 +41,16 @@ export default  function Home() {
             countryMapper
         );
         setChartData(newChartData);
-        const newProgressData = themeIndex === -1
-            ? dummyProgressData["all"]
-            : dummyProgressData[String(themeIndex) as keyof typeof dummyProgressData] as ProgressDataEntry[];
 
-        setProgressData(newProgressData);
+        const progressData = getProgressData(
+            dummyProgressData,
+            themeIndex,
+            selectedCountryOrRegion.current,
+            newChartData,
+            allCountryCodes.length,
+            countryMapper);
+
+        setProgressData(progressData);
     }
 
     const filterByCountryOrRegion = (filterVar: string, filterType: string) => {
@@ -58,6 +63,16 @@ export default  function Home() {
             countryMapper
         );
         setChartData(newChartData);
+
+        const progressData = getProgressData(
+            dummyProgressData,
+            selectedTheme.current,
+            selectedCountryOrRegion.current,
+            newChartData,
+            allCountryCodes.length,
+            countryMapper);
+
+        setProgressData(progressData);
     }
 
   return (

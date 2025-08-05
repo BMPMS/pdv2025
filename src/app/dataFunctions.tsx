@@ -1,8 +1,166 @@
-import { CountryStatus, DataEntry, DataResult, FormattedData, Indicator, Target, TimeData} from "@/types";
+import {
+    CountryStatus,
+    DataEntry,
+    DataResult,
+    FormattedData,
+    Indicator,
+    ProgressDataEntry,
+    Target,
+    TimeData
+} from "@/types";
 import * as d3 from "d3";
 import themeData from "@/app/data/allThemes.json";
 import {iso3ToIso2Map} from "@/app/components/MapPanel_functions";
 
+const generateTaperingArray = (startValue: number) =>  {
+    const length = 26;
+    const result: number[] = [startValue];
+    let current = startValue;
+
+    for (let i = 1; i < length; i++) {
+        if (current === 0) {
+            result.push(0);
+            continue;
+        }
+
+        // Randomly choose a drop, skewed toward smaller drops early
+        const maxDrop = Math.min(current, Math.ceil(startValue / (length - i)));
+        const drop = Math.floor(Math.random() * (maxDrop + 1));
+
+        current -= drop;
+        result.push(current);
+    }
+
+    // Ensure last value is exactly 0
+    result[length - 1] = 0;
+
+    return result;
+}
+
+function generateUnevenSteps(start: number, end: number) {
+    const a = Math.random();
+    const b = Math.random();
+    const [f1, f2] = [a, b].sort();
+
+    return [
+        start,
+        Math.round(start + (end - start) * f1),
+        Math.round(start + (end - start) * f2)
+    ];
+}
+
+const generateProgressData = (baseEntry: ProgressDataEntry) => {
+    baseEntry.year = 2025;
+    const otherValues = ["needsAttention","nearTarget","onTarget","overStretch"]
+    otherValues.forEach((d) => {
+        if(!baseEntry[d as keyof typeof baseEntry]){
+            baseEntry[d as keyof typeof baseEntry] = 0;
+        }
+    })
+    const missingArray = generateTaperingArray(baseEntry.missing);
+    const years = Array.from({ length: 26 }, (_, i) => 2025 + i);
+
+    let previousEntry = baseEntry;
+
+    const totalToShift = baseEntry.needsAttention + baseEntry.nearTarget;
+    const averageShift = parseInt(String(totalToShift/12)) ;
+    const shiftVars = ["needsAttention","nearTarget"];
+    const newVars = ["onTarget","overStretch"]
+    const dataFrom2025 = years.reduce((acc, entry,index) => {
+        if(entry === 2025) {
+            acc.push(previousEntry);
+        } else {
+           const newEntry = {
+               year: entry,
+               missing: missingArray[index],
+               needsAttention: previousEntry.needsAttention,
+               nearTarget: previousEntry.nearTarget,
+               onTarget: previousEntry.onTarget,
+               overStretch: previousEntry.overStretch
+           }
+           const difference = previousEntry.missing - newEntry.missing;
+           // compensate for reduction in missing
+           for(let i = difference; i > 0; i--){
+               const newValueIndex = Math.floor(Math.random() * 4);
+               newEntry[otherValues[newValueIndex as keyof typeof otherValues] as keyof typeof newEntry] += 1;
+           }
+            for(let i = averageShift; i > 0; i--){
+                const shiftValueIndex = Math.floor(Math.random() * 2);
+                const newValueIndex =  Math.random() < 0.8 ? 0 : 1;
+                const shiftVar = shiftVars[shiftValueIndex as keyof typeof shiftVars];
+                if(newEntry[shiftVar as keyof typeof newEntry] !== 0){
+                    newEntry[shiftVar as keyof typeof newEntry] -= 1;
+                    newEntry[newVars[newValueIndex as keyof typeof newVars] as keyof typeof newEntry] += 1;
+                }
+            }
+            acc.push(newEntry);
+            previousEntry = newEntry;
+        }
+        return acc;
+    },[] as ProgressDataEntry[]);
+
+    const previousDataStart = d3.sum(otherValues, (s) => baseEntry[s as keyof typeof baseEntry]) === 0
+        ? baseEntry.missing : parseInt(String(baseEntry.missing * 2));
+
+    const previousDataMissing = generateUnevenSteps(previousDataStart,baseEntry.missing);
+
+
+    let startYear = 2022;
+    previousDataMissing.forEach((d) => {
+        const newEntry = {
+            year: startYear,
+            missing: d,
+            needsAttention: baseEntry.needsAttention,
+            nearTarget: baseEntry.nearTarget,
+            onTarget: baseEntry.onTarget,
+            overStretch: baseEntry.overStretch
+        }
+        const difference = parseInt(String((d - baseEntry.missing)/4));
+        for(let i = difference; i > 0; i--){
+            const newValueIndex = Math.floor(Math.random() * 4);
+            newEntry[otherValues[newValueIndex as keyof typeof otherValues] as keyof typeof newEntry] -= 1;
+        }
+        dataFrom2025.push(newEntry)
+        startYear += 1
+    })
+    return dataFrom2025.sort((a,b) => d3.ascending(a.year, b.year));
+
+}
+
+export const getProgressData = (
+    allProgressData: ProgressDataEntry[],
+    currentTheme: number,
+    currentCountryOrRegion: string,
+    currentChartData: FormattedData[],
+    totalCountries: number,
+    countryMapper: {[key: string]: string[]}
+    ) => {
+    // apologies - bad code, will correct, rushing for deadline!
+    if(currentTheme !== -1 || currentCountryOrRegion !== "|"){
+        const noInvalidData = currentChartData.filter((f) => f.type !== "INVALID");
+        const flatData = noInvalidData.map((m) => m.data.flat()).flat();
+        const notMissing = Array.from(d3.group(flatData, (g) => g.targetResult)).reduce((acc, entry) => {
+            acc[entry[0]] = entry[1].length
+            return acc;
+        },{} as {[key: string] : number});
+        let countryCount = totalCountries;
+        if(currentCountryOrRegion !== "|") {
+            const countrySplit = currentCountryOrRegion.split("|");
+            const splitType = countrySplit[1];
+            if(splitType && splitType === "Country"){
+                countryCount = 1;
+            }
+            if(splitType && splitType === "Region" ){
+                countryCount = countryMapper[countrySplit[0]].length;
+            }
+        }
+        const totalDatasets = countryCount * noInvalidData.length;
+        const sumNoMissing = flatData.length;
+        notMissing["missing"] = totalDatasets - sumNoMissing;
+        return generateProgressData(notMissing as ProgressDataEntry);
+    }
+    return allProgressData;
+}
 export const getFilteredChartData = (
     selectedTheme: number,
     selectedCountryOrRegion: string,

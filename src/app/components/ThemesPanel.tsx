@@ -6,6 +6,7 @@ import * as d3 from "d3";
 import {getRem} from "@/app/dataFunctions";
 import {measureWidth} from "@/app/components/StatusPanel_functions";
 import {COLORS} from "@/constants/constants";
+
 interface ThemesPanelProps {
     themeData: Theme[];
     filterByTheme: (themeIndex: number ) => void;
@@ -65,7 +66,9 @@ const ThemesPanel: FC<ThemesPanelProps> = ({ themeData, filterByTheme }) => {
         }
 
 
-        const tabWidth = measureWidth(themeLabel,fontSize) + sideMargins * 2.5;
+        let tabWidth = measureWidth(themeLabel,fontSize) + sideMargins * 2.5;
+        const labelExtra = (tabWidth + 40) < svgWidth ? " Indicators" : "";
+        tabWidth =  measureWidth(themeLabel,fontSize) + sideMargins * 2.5;
 
         svg.select(".selectedTheme")
             .attr("pointer-events","none")
@@ -140,9 +143,11 @@ const ThemesPanel: FC<ThemesPanelProps> = ({ themeData, filterByTheme }) => {
                     .interrupt()
                     .attr("opacity",resetThemeOpacity);
 
+
                 setThemeLabel(clickedNode.current === -1
-                    ? `All Thematic Areas - ${indicatorCount} Indicators`
-                    : `${d.theme} - ${d.indicators.length} Indicators`);
+                    ? `All Thematic Areas - ${indicatorCount} ${labelExtra}`
+                    : `${d.theme} - ${d.indicators.length} ${labelExtra}`);
+
 
                 filterByTheme(clickedNode.current);
             })
