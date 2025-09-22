@@ -221,13 +221,15 @@ const getDataResults = (indicatorType: string, targets: Target, matchingData: Da
             acc.push({
                 country: entry[0],
                 data: indicatorType === "time" ? timeData : timeData.length === 0 ? "missing" : timeData[timeData.length - 1].value,
-                targetResult: timeData.length === 0 ? "missing" : targetScale(timeData[timeData.length - 1].value)
+                targetResult: timeData.length === 0 ? "missing" : targetScale(timeData[timeData.length - 1].value),
+                resultValue: timeData.length === 0 ? "n/a" : timeData[timeData.length - 1].value
             })
         } else if (indicatorType === "YN"){
             acc.push({
                 country: entry[0],
                 data: timeData.some((s) => +s.value === 1) ? "onTarget" : "needsAttention",
                 targetResult: timeData.some((s) => +s.value === 1) ? "onTarget" : "needsAttention",
+                resultValue:  timeData.some((s) => +s.value === 1) ? "Y" : "N"
             })
         }
         return acc;
@@ -237,9 +239,9 @@ const getCountryStatus = (currentData: DataResult[],allCountryCodes: string[]) =
     return   allCountryCodes.reduce((acc, entry) => {
         const matchingData =currentData.find((f) => f.country === entry);
         if(matchingData){
-            acc.push({ISOCode: entry, status: matchingData.targetResult})
+            acc.push({ISOCode: entry, status: matchingData.targetResult, resultValue: matchingData.resultValue})
         } else {
-            acc.push({ISOCode: entry, status: "missing"})
+            acc.push({ISOCode: entry, status: "missing", resultValue: "missing"})
         }
         return acc;
     },[] as  CountryStatus[])

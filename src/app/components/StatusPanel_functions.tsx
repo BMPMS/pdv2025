@@ -4,6 +4,7 @@ import { voronoiTreemap } from 'd3-voronoi-treemap';
 import seedrandom from 'seedrandom';
 import * as d3 from "d3";
 import {COLOR_SCALE, LEGEND_LABELS} from "@/constants/constants";
+import {iso3ToIso2Map} from "@/app/components/MapPanel_functions";
 
 
 export const getVoronoiData = (chartData: FormattedData[],allCountries:string[]) => {
@@ -14,19 +15,22 @@ export const getVoronoiData = (chartData: FormattedData[],allCountries:string[])
             allCountries.forEach((country) => {
                 const matchingData = entry.data.find((f) => f.country === country);
                 const result = matchingData ? matchingData.targetResult : "missing";
+                const resultValue = matchingData ? matchingData.resultValue : "missing";
                 acc.push({
                     indicator: entry.indicator,
                     country,
-                    result
+                    result,
+                    resultValue
                 });
             });
             return acc;
-        }, [] as {indicator: string, country:string, result: string}[]);
+        }, [] as {indicator: string, country:string, result: string, resultValue: string | number}[]);
 
         return Array.from(d3.group(allData, (g) => g.result)).reduce((acc, entry) => {
             acc.push({
                 name: entry[0],
                 value: entry[1].length,
+                resultValue: entry[0],
                 data: entry[1]
             });
             return acc;
@@ -35,15 +39,18 @@ export const getVoronoiData = (chartData: FormattedData[],allCountries:string[])
     const allResults = chartData.reduce((acc, entry) => {
         const result =
             entry.data.length === 0 ? "missing" : entry.data[0].targetResult;
+        const resultValue =
+            entry.data.length === 0 ? "missing" : entry.data[0].resultValue;
         if(entry.type !== "INVALID"){
             acc.push({
                 indicator: entry.indicator,
                 result,
-                data: entry.data
+                data: entry.data,
+                resultValue
             });
         }
         return acc;
-    }, [] as {indicator: string, result: string, data: DataResult[]}[]);
+    }, [] as {indicator: string, result: string, resultValue: string | number, data: DataResult[]}[]);
 
     return Array.from(d3.group(allResults, (d) => d.result)).reduce(
         (acc, entry) => {
@@ -51,6 +58,7 @@ export const getVoronoiData = (chartData: FormattedData[],allCountries:string[])
                 entryAcc.push({
                     name: child.indicator,
                     value: 1,
+                    resultValue: child.resultValue
                 })
                 return entryAcc;
             },[] as VoronoiData[])
@@ -58,6 +66,7 @@ export const getVoronoiData = (chartData: FormattedData[],allCountries:string[])
             acc.push({
                 name: entry[0],
                 value: children.length,
+                resultValue: entry[0],
                 children,
             });
             return acc;
@@ -299,3 +308,20 @@ export const drawLegend = (
         .style("dominant-baseline","middle")
         .text((d) => d.text)
 }
+
+export const getCountryResult = (matchingIndicator: FormattedData | undefined) => {
+    if(!matchingIndicator) return "missing";
+    const iso2 = iso3ToIso2Map[matchingIndicator.countryFilter] || "missing";
+    const matchingResult = matchingIndicator.countryStatus.find((f) => f.ISOCode === iso2);
+    if(matchingResult) {
+        let result = matchingResult.resultValue;
+        if (typeof result === "number" && matchingIndicator.type.includes("%")) {
+            result = d3.format(".0%")(result / 100);
+        } else if (typeof result === "number") {
+            result = d3.format(".3~f")(result);
+        }
+        return result;
+    }
+    return "missing"
+}
+

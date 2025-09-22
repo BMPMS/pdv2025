@@ -2,14 +2,17 @@ import React, { useEffect, useRef } from 'react';
 import * as d3 from 'd3';
 import { FormattedData } from '@/types';
 import {COLOR_SCALE, COLORS} from "@/constants/constants";
+import {getCountryResult} from "@/app/components/StatusPanel_functions";
+import {iso3ToIso2Map} from "@/app/components/MapPanel_functions";
 
 interface ModalProps {
     isOpen: boolean;
     onClose: () => void;
     data: FormattedData | undefined;
+    country: string;
 }
 
-const DatasetPopup: React.FC<ModalProps> = ({ isOpen, onClose, data }) => {
+const DatasetPopup: React.FC<ModalProps> = ({ isOpen, onClose, data, country }) => {
     const svgRef = useRef<SVGSVGElement | null>(null);
 
     useEffect(() => {
@@ -17,12 +20,13 @@ const DatasetPopup: React.FC<ModalProps> = ({ isOpen, onClose, data }) => {
         if(!data) return;
 
         // chosen so works @ min dimensions
-        const width = 450;
+        const width = 375;
         const height = 250;
         const margins = {left: 15, right: 0, top: 10, chartTop: 70, bottom: 35};
         const svg = d3.select(svgRef.current);
 
         const fontSize = 10;
+
 
         svg.select(".indicator")
             .attr("pointer-events","none")
@@ -35,6 +39,22 @@ const DatasetPopup: React.FC<ModalProps> = ({ isOpen, onClose, data }) => {
             .attr("text-anchor","start")
             .text(`${data.indicator}`);
 
+        const iso2 = iso3ToIso2Map[data.countryFilter];
+        const countryStatus = data.countryStatus.find((f) => f.ISOCode === iso2) || "";
+        const countryFill = countryStatus ? COLOR_SCALE[(countryStatus.status) as keyof typeof COLOR_SCALE] : "";
+
+        svg.select(".countryResult")
+            .attr("pointer-events","none")
+            .attr("x",width - 10)
+            .attr("y",margins.top)
+            .attr("font-size", fontSize * 1.2)
+            .style("dominant-baseline","text-before-edge")
+            .attr("fill",countryFill)
+            .attr("font-weight",500)
+            .attr("text-anchor","end")
+            .text(`${country} - ${getCountryResult(data)}`);
+
+
         svg.select(".indicatorName")
             .attr("pointer-events","none")
             .attr("x",10)
@@ -44,7 +64,7 @@ const DatasetPopup: React.FC<ModalProps> = ({ isOpen, onClose, data }) => {
             .attr("fill",COLORS.darkgrey)
             .attr("font-weight","normal")
             .attr("text-anchor","start")
-            .text(`${data.indicatorName}`);
+            .text(`${data.indicatorName.substring(0,75)}${data.indicatorName.length > 75 ? "..." : ""}`);
 
         const chartHeight = height - margins.chartTop - margins.bottom;
         svg.select(".yAxisLabel")
@@ -156,7 +176,9 @@ const DatasetPopup: React.FC<ModalProps> = ({ isOpen, onClose, data }) => {
             .text((d) => d.countries.length);
 
 
-    }, [isOpen, data]);
+        d3.select(".chartTooltip").style("visibility","hidden");
+
+    }, [isOpen, data,country]);
 
     return (
         <div
@@ -164,8 +186,9 @@ const DatasetPopup: React.FC<ModalProps> = ({ isOpen, onClose, data }) => {
             onClick={onClose}
         >
             <div className="modal-box" onClick={e => e.stopPropagation()}>
-                <svg ref={svgRef} width={450} height={250}>
+                <svg ref={svgRef} width={375} height={250}>
                     <text className={"indicator"}></text>
+                    <text className={"countryResult"}></text>
                     <text className={"indicatorName"}></text>
                     <text className={"yAxisLabel"}></text>
                     <g className={"xAxis"}></g>

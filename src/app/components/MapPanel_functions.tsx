@@ -126,3 +126,31 @@ export const generateRightTabPath = (tabWidth: number, tabHeight: number, overal
 
     return path.join(' ');
 }
+
+
+export function downloadJSONAsCSV(jsonData: {status: string, country: string, indicator: string, downloadDate: Date }[] , filename = 'data.csv') {
+    if (!Array.isArray(jsonData) || jsonData.length === 0) {
+        console.warn('Invalid or empty JSON data');
+        return;
+    }
+
+    const headers = Object.keys(jsonData[0]);
+    const csvRows = [
+        headers.join(','), // CSV header
+        ...jsonData.map(row =>
+            headers.map(field => {
+                const cell = row[field as keyof typeof row] ?? '';
+                const escaped = String(cell).replace(/"/g, '""');
+                return `"${escaped}"`;
+            }).join(',')
+        )
+    ];
+
+    const csvContent = csvRows.join('\n');
+    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+
+    const link = document.createElement('a');
+    link.href = URL.createObjectURL(blob);
+    link.download = filename;
+    link.click();
+}

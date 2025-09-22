@@ -83,11 +83,11 @@ export default  function Home() {
                   <div className="h-1/2  bg-white p-1"><img src={`/pdv2025/BP2050-Logo.png`} alt="BP2050 Logo"  className="ml-4 w-full h-full object-left object-contain"/></div>
                   <div className="h-1/2 bg-white  p-0"><ThemesPanel themeData={themeData} filterByTheme={filterByTheme}></ThemesPanel></div>
               </div>
-              <div className="w-7/12 bg-white  p-0"><MapPanel countryData={countryData} filterByCountryOrRegion={filterByCountryOrRegion} countryGeoJson={countryGeoJson as EEZGeoJSON}></MapPanel></div>
+              <div className="w-7/12 bg-white  p-0"><MapPanel  countryData={countryData} filterByCountryOrRegion={filterByCountryOrRegion} countryGeoJson={countryGeoJson as EEZGeoJSON}></MapPanel></div>
           </div>
               <div className="flex flex-col divide-y md:divide-y-0 md:divide-x divide-[#E8E8E8] md:flex-row h-[calc(100vh_-_min(30vh,_25vw))] w-full p-0">
                   <div className="w-full md:w-1/2 h-full min-h-[350px] md:min-h-0 flex flex-col bg-white p-0">
-                      <StatusPanel chartData={chartData} />
+                      <StatusPanel chartData={chartData} countryData={countryData}/>
                   </div>
                   <div className="w-full md:w-1/2 h-full min-h-[350px] md:min-h-0 flex flex-col bg-white p-0">
                       <ProgressPanel progressData={progressData} />

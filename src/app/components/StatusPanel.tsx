@@ -1,28 +1,34 @@
 import type { FC } from "react";
+import '@fortawesome/fontawesome-free/css/all.min.css';
 import React, {useRef, useEffect, useState} from 'react';
-import {FormattedData, VoronoiData} from "@/types";
+import {Country, FormattedData, VoronoiData} from "@/types";
 import * as d3 from "d3";
 import {getRem} from "@/app/dataFunctions";
 
 import {
     drawLegend,
+    getCountryResult,
     getMissingData,
-    getSplitRoundedPolygons, getVoronoi,
+    getSplitRoundedPolygons,
+    getVoronoi,
     getVoronoiData,
     measureWidth,
     wrap
 } from "@/app/components/StatusPanel_functions";
 import DatasetPopup from "@/app/components/DatasetPopup";
 import {COLOR_SCALE, COLORS, LEGEND_LABELS} from "@/constants/constants";
+import {downloadJSONAsCSV, iso3ToIso2Map} from "@/app/components/MapPanel_functions";
 
 interface DataPanelProps {
     chartData: FormattedData[];
+    countryData: Country[];
 }
-const StatusPanel: FC<DataPanelProps> = ({ chartData }) => {
+const StatusPanel: FC<DataPanelProps> = ({ chartData, countryData }) => {
 
     const [tick, setTick] = useState(0);
     const [isModalOpen, setModalOpen] = useState<boolean>(false);
     const [clickedIndicator, setClickedIndicator] = useState<FormattedData | undefined>(undefined);
+    const [clickedCountry, setClickedCountry] = useState<string>("");
     const closeModal = () => setModalOpen(false);
 
     // Modified hook that returns the tick value
@@ -214,7 +220,12 @@ const StatusPanel: FC<DataPanelProps> = ({ chartData }) => {
                     .style("visibility","hidden")
             })
             .on("click",(event, d) => {
+                d3.select(".chartTooltip")
+                    .style("visibility","hidden")
                 if(countryFilter !== "multiple"){
+                    const iso2 = iso3ToIso2Map[countryFilter];
+                    const matchingCountry = countryData.find((f) => f.ISOCode === iso2);
+                    setClickedCountry(matchingCountry ? matchingCountry["Country name"] : "");
                     setClickedIndicator(chartData.find((f) => f.indicator === d.name))
                     setModalOpen(true);
                 }
@@ -281,7 +292,14 @@ const StatusPanel: FC<DataPanelProps> = ({ chartData }) => {
                 if(countryFilter === "multiple"){
                     tooltipText = `${d.value} datasets <span style="font-weight: bold; color:${COLOR_SCALE[d.data.name as keyof typeof COLOR_SCALE]};">${LEGEND_LABELS[d.data.name as keyof typeof LEGEND_LABELS]}</span> (${d3.format(".0%")((d.value || 0)/totalDatasets)})`
                 } else {
-                   tooltipText = `<strong>Indicator:</strong> ${d.data.name}<br>Click for details`
+                    const matchingIndicator = chartData.find((f) => f.indicator === d.data.name);
+                    if(matchingIndicator){
+                        tooltipText = `<strong>Indicator:</strong> ${d.data.name}<br>`;
+                        const resultColor = d.parent ? COLOR_SCALE[d.parent.data.name as keyof typeof COLOR_SCALE] : "";
+                        const result = getCountryResult(matchingIndicator);
+                        tooltipText += `<span style="color: ${resultColor}">${result}</span>`
+                        tooltipText += "<br>Click for details";
+                    }
                 }
                 d3.select(".chartTooltip")
                     .style("visibility","visible")
@@ -296,6 +314,9 @@ const StatusPanel: FC<DataPanelProps> = ({ chartData }) => {
             })
             .on("click",(event, d) => {
                 if(countryFilter !== "multiple"){
+                    const iso2 = iso3ToIso2Map[countryFilter];
+                    const matchingCountry = countryData.find((f) => f.ISOCode === iso2);
+                    setClickedCountry(matchingCountry ? matchingCountry["Country name"] : "");
                     setClickedIndicator(chartData.find((f) => f.indicator === d.data.name))
                     setModalOpen(true);
                 }
@@ -340,14 +361,75 @@ const StatusPanel: FC<DataPanelProps> = ({ chartData }) => {
             .text((d) => d.data.value)
             .attr("fill", (d) => (d.children ? COLOR_SCALE[d.data.name as keyof typeof COLOR_SCALE] : "white"));
 
+        svg.select(".downloadButton")
+            .attr("cx", svgWidth - margins.right - 8)
+            .attr("cy",margins.top - 12)
+            .attr("fill","white")
+            .attr("stroke-width",0.75)
+            .attr("r", 8)
+            .attr("stroke", COLORS.darkgrey)
+            .on("mouseover", (event) => {
+                d3.select(event.currentTarget).attr("fill",COLORS.lightergrey);
+                d3.select(".chartTooltip")
+                    .style("visibility","visible")
+                    .style("left",`${event.pageX + 12}px`)
+                    .style("top",`${event.pageY - 6}px`)
+                    .html("download data")
+
+            })
+            .on("mouseout", (event) => {
+                d3.select(event.currentTarget).attr("fill","white")
+                d3.select(".chartTooltip")
+                    .style("visibility","hidden")
+            })
+            .on("click", () => {
+
+                const flatData = voronoiData.reduce((acc, entry) => {
+                 if(entry.data){
+                     entry.data.forEach((d) => {
+                         acc.push({
+                             status: entry.name,
+                             country: d.country,
+                             indicator: d.indicator,
+                             value: d.resultValue,
+                             downloadDate: new Date()
+                         })
+                     })
+                 } else if(entry.children){
+                     entry.children.forEach((c) => {
+                         acc.push({
+                             status: entry.name,
+                             country: iso3ToIso2Map[countryFilter],
+                             indicator: c.name,
+                             value: c.resultValue,
+                             downloadDate: new Date()
+                         })
+                     })
+                 }
+                    return acc;
+                    },[] as {status: string, country: string, indicator: string, value: number | string, downloadDate: Date }[])
+                downloadJSONAsCSV(flatData)
+            })
+
+        svg.select(".downloadButtonIcon")
+            .attr("pointer-events","none")
+            .attr("x", svgWidth - margins.right - 8)
+            .attr("y",margins.top - 13)
+            .attr("text-anchor","middle")
+            .style("dominant-baseline","middle")
+            .attr("font-size", 8)
+            .attr("fill", COLORS.darkgrey)
+            .text("\uf019")
 
 
-    }, [chartData, tick])
+    }, [chartData, tick, countryData])
     return (
         <>
-            <DatasetPopup isOpen={isModalOpen} onClose={closeModal} data={clickedIndicator}></DatasetPopup>
+            <DatasetPopup isOpen={isModalOpen} onClose={closeModal} data={clickedIndicator} country={clickedCountry}></DatasetPopup>
 
             <svg ref={ref}>
+           <circle className={"downloadButton"}/>
+                <text className={"fa downloadButtonIcon"}/>
             <text className={"dataTitle"}></text>
             <text className={"datasetsCount"}></text>
             <text className={"datasetsCountInfo"}></text>

@@ -2,7 +2,7 @@
 import type { FC } from "react";
 import React, {useRef, useEffect, useState} from 'react';
 import { ProgressDataEntry} from "@/types";
-
+import '@fortawesome/fontawesome-free/css/all.min.css';
 import * as d3 from "d3";
 import {getRem} from "@/app/dataFunctions";
 import {drawLegend, measureWidth} from "@/app/components/StatusPanel_functions";
@@ -318,12 +318,45 @@ const ProgressPanel: FC<ProgressPanelProps> = ({ progressData }) => {
             .attr("y",5 + margins.top - (fontSize * 0.6))
 
 
+        svg.select(".downloadButton")
+            .attr("cx", svgWidth - margins.right - 8)
+            .attr("cy",margins.top - 12)
+            .attr("fill","white")
+            .attr("stroke-width",0.75)
+            .attr("r", 8)
+            .attr("stroke", COLORS.darkgrey)
+            .on("mouseover", (event) => {
+                d3.select(event.currentTarget).attr("fill",COLORS.lightergrey);
+                d3.select(".chartTooltip")
+                    .style("visibility","visible")
+                    .style("left",`${event.pageX - 190}px`)
+                    .style("top",`${event.pageY - 50}px`)
+                    .html("download data - available when we have real data")
+
+            })
+            .on("mouseout", (event) => {
+                d3.select(event.currentTarget).attr("fill","white")
+                d3.select(".chartTooltip")
+                    .style("visibility","hidden")
+            })
+
+        svg.select(".downloadButtonIcon")
+            .attr("pointer-events","none")
+            .attr("x", svgWidth - margins.right - 8)
+            .attr("y",margins.top - 13)
+            .attr("text-anchor","middle")
+            .style("dominant-baseline","middle")
+            .attr("font-size", 8)
+            .attr("fill", COLORS.darkgrey)
+            .text("\uf019")
 
 
     }, [progressData,tick])
     return (
 
         <svg ref={ref}>
+            <circle className={"downloadButton"}/>
+            <text className={"fa downloadButtonIcon"}/>
             <text className={"dataTitle"}></text>
             <text className={"datasetsCount"}></text>
             <g className={"xAxis"}></g>

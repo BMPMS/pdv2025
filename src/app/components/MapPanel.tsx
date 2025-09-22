@@ -2,7 +2,11 @@ import type { FC } from "react";
 import React, {useRef, useEffect, useState} from 'react';
 import {Boundary, Country, EEZGeoJSON, Region} from "@/types";
 import * as d3 from "d3";
-import {generateRightTabPath, getBoundaryData, getRegionData} from "@/app/components/MapPanel_functions";
+import {
+    generateRightTabPath,
+    getBoundaryData,
+    getRegionData
+} from "@/app/components/MapPanel_functions";
 import {getRem} from "@/app/dataFunctions";
 import {measureWidth} from "@/app/components/StatusPanel_functions";
 import {COLORS} from "@/constants/constants";
@@ -310,6 +314,8 @@ const MapPanel: FC<MapPanelProps> = ({ countryData, countryGeoJson,filterByCount
                 }
                 boundaryHullMouseout();
             })
+
+
 
     }, [countryData, tick, clickedLabel, countryGeoJson,filterByCountryOrRegion])
     return (

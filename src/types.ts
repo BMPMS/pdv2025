@@ -38,6 +38,7 @@ export type Theme = {
 export type CountryStatus = {
     ISOCode: string;
     status: string;
+    resultValue: string | number;
 }
 export type Indicator = {
     indicator: string;
@@ -73,8 +74,10 @@ export type TimeData = {
 export type VoronoiData = {
     name: string;
     value: number;
-    data?: {indicator: string, country:string, result: string}[];
+    resultValue: number | string;
+    data?: {indicator: string, country:string, result: string, resultValue: string | number}[];
     children?: VoronoiData[];
+
 
 }
 export type FormattedData = {
@@ -92,6 +95,7 @@ export type DataResult = {
     country: string;
     data: string | number | TimeData[];
     targetResult: string;
+    resultValue: string | number;
 }
 
 // written by Perplexity
